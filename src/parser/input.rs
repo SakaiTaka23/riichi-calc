@@ -1,7 +1,7 @@
-use crate::constants::field::{Bakaze, Zikaze};
-use crate::constants::hand::Mentsu;
-use crate::constants::status::{RiichiStatus, SpecialWin, WinMethod};
-use crate::constants::tiles::pi::Tile;
+use crate::parser::field_input::FieldInput;
+use crate::parser::input_base::InputBase;
+use crate::parser::pi_input::PiInput;
+use crate::parser::status_input::StatusInput;
 
 pub struct Input {
     pub pi_input: PiInput,
@@ -9,21 +9,14 @@ pub struct Input {
     pub status_input: StatusInput,
 }
 
-pub struct PiInput {
-    pub hand: Vec<Tile>,
-    pub naki: Mentsu,
-    pub hora: Tile,
-    pub method: String,
-}
+impl InputBase for Input {
+    fn validate(&self) -> bool {
+        if !(self.pi_input.validate() &&
+            self.field_input.validate() &&
+            self.status_input.validate()) {
+            return false;
+        }
 
-pub struct FieldInput {
-    pub zikaze: Zikaze,
-    pub bakaze: Bakaze,
-    pub dora: Vec<Tile>,
-}
-
-pub struct StatusInput {
-    pub riichi: RiichiStatus,
-    pub win_method: WinMethod,
-    pub special_win: Vec<SpecialWin>,
+        true
+    }
 }
