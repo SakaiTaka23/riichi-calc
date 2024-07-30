@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use crate::constants::status::{RiichiStatus, SpecialWin, WinMethod};
 use crate::constants::status::SpecialWin::{DaiichiTumo, Haitei, Hotei, Ipatu, Rinshan};
 use crate::parser::input_base::InputBase;
@@ -5,7 +7,7 @@ use crate::parser::input_base::InputBase;
 pub struct StatusInput {
     pub riichi: RiichiStatus,
     pub win_method: WinMethod,
-    pub special_win: Vec<SpecialWin>,
+    pub special_win: HashSet<SpecialWin>,
 }
 
 impl InputBase for StatusInput {

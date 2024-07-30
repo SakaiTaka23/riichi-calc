@@ -11,7 +11,7 @@ pub enum WinMethod {
     Tumo,
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Hash, Eq)]
 pub enum SpecialWin {
     Ipatu,
     Chakan,
