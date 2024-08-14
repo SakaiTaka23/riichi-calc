@@ -4,7 +4,8 @@ use crate::constants::tiles::pi::{Tile, TileType};
 use crate::parser::pi_input::PiHandColor;
 use std::collections::HashMap;
 
-pub fn create_hand(mut colors: PiHandColor, head: &Tile) -> Option<Hand> {
+pub fn create_hand(colors: &PiHandColor, head: &Tile) -> Option<Hand> {
+    let mut colors = colors.clone();
     let head_mentsu = match head.tile_type {
         TileType::Dragon => {
             remove_two_occurrences(&mut colors.dragon, head.number);

@@ -1,10 +1,9 @@
 mod hand_creator;
 
-use crate::constants::hand::Mentsu::Koutsu;
 use crate::constants::hand::{Hand, Mentsu};
-use crate::constants::tiles::manzu::MANZU_1;
 use crate::constants::tiles::pi::{Tile, TileType};
 use crate::parser::input_base::InputBase;
+use crate::parser::pi_input::hand_creator::create_hand;
 
 pub struct PiInput {
     pub hand: Vec<Tile>,
@@ -12,7 +11,7 @@ pub struct PiInput {
     pub hora: Tile,
 }
 
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default)]
 struct PiHandColor {
     dragon: Vec<u8>,
     manzu: Vec<u8>,
@@ -32,19 +31,19 @@ impl InputBase for PiInput {
 }
 
 impl PiInput {
-    pub fn to_mentsu(&self) -> Vec<Hand> {
-        // TODO 色ごとのベクターに分ける
-        let _colors = self.to_hand_color();
-        // TODO handからトイツの抜き出し
+    pub fn to_mentsu(&self) -> Option<Vec<Hand>> {
+        let colors = self.to_hand_color();
         let head_candidate = self.find_toitu();
-        // TODO その色でできるか検証
-        for _head in head_candidate.iter() {}
+        for head in head_candidate.iter() {
+            let mut menzen_hand: Vec<Hand> = Vec::new();
+            let hand = create_hand(&colors.clone(), head);
+            if hand.is_some() {
+                menzen_hand.push(hand.unwrap());
+                return Some(menzen_hand);
+            }
+        }
 
-        // TODO 他の色についても実行
-        // TODO 鳴きと組み合わせて返却
-
-        let m = Koutsu(MANZU_1, false);
-        vec![[m.clone(), m.clone(), m.clone(), m.clone(), m.clone()]]
+        None
     }
 
     fn to_hand_color(&self) -> PiHandColor {
