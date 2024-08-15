@@ -1,6 +1,6 @@
 use crate::constants::hand::Mentsu::{Koutsu, Shuntsu};
 use crate::constants::hand::{Hand, Mentsu};
-use crate::constants::tiles::pi::{Tile, TileType};
+use crate::constants::tiles::{Tile, TileType};
 use crate::parser::pi_input::PiHandColor;
 use std::collections::HashMap;
 

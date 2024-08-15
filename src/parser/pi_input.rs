@@ -1,7 +1,7 @@
 mod hand_creator;
 
 use crate::constants::hand::{Hand, Mentsu};
-use crate::constants::tiles::pi::{Tile, TileType};
+use crate::constants::tiles::{Tile, TileType};
 use crate::parser::input_base::InputBase;
 use crate::parser::pi_input::hand_creator::create_hand;
 
