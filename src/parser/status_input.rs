@@ -1,6 +1,8 @@
 use std::collections::HashSet;
 
+use crate::constants::status::RiichiStatus::{DoubleRiichi, NoRiichi, Riichi};
 use crate::constants::status::SpecialWin::{Chakan, DaiichiTumo, Haitei, Hotei, Ipatu, Rinshan};
+use crate::constants::status::WinMethod::{Ron, Tumo};
 use crate::constants::status::{Dora, RiichiStatus, SpecialWin, WinMethod};
 use crate::parser::input_base::InputBase;
 
@@ -14,13 +16,13 @@ pub struct StatusInput {
 impl InputBase for StatusInput {
     fn validate(&self) -> bool {
         match &self.riichi {
-            RiichiStatus::NoRiichi => {}
-            RiichiStatus::Riichi(x) => {
+            NoRiichi => {}
+            Riichi(x) => {
                 if x.len() > 4 {
                     return false;
                 }
             }
-            RiichiStatus::DoubleRiichi(x) => {
+            DoubleRiichi(x) => {
                 if x.len() > 4 {
                     return false;
                 }
@@ -31,34 +33,34 @@ impl InputBase for StatusInput {
         if win.contains(&Ipatu) && win.contains(&Rinshan) {
             return false;
         }
-        if win.contains(&Ipatu) && self.riichi == RiichiStatus::NoRiichi {
+        if win.contains(&Ipatu) && self.riichi == NoRiichi {
             return false;
         }
 
         if win.contains(&Rinshan) && win.contains(&Chakan) {
             return false;
         }
-        if win.contains(&Chakan) && self.win_method != WinMethod::Ron {
+        if win.contains(&Chakan) && self.win_method != Ron {
             return false;
         }
-        if win.contains(&Rinshan) && self.win_method != WinMethod::Tumo {
+        if win.contains(&Rinshan) && self.win_method != Tumo {
             return false;
         }
 
         if win.contains(&Haitei) && win.contains(&Hotei) {
             return false;
         }
-        if win.contains(&Haitei) && self.win_method != WinMethod::Tumo {
+        if win.contains(&Haitei) && self.win_method != Tumo {
             return false;
         }
-        if win.contains(&Hotei) && self.win_method != WinMethod::Ron {
+        if win.contains(&Hotei) && self.win_method != Ron {
             return false;
         }
 
         if win.contains(&DaiichiTumo)
             && (win.len() != 1
-            || self.riichi != RiichiStatus::NoRiichi
-            || self.win_method != WinMethod::Tumo) {
+            || self.riichi != NoRiichi
+            || self.win_method != Tumo) {
             return false;
         }
 
@@ -73,7 +75,7 @@ pub mod status_input_utils {
     use crate::constants::tiles::TileType::Manzu;
 
     pub fn build_status_input(is_riichi: bool, win_method: WinMethod, special_win: Vec<SpecialWin>) -> StatusInput {
-        let riichi = if is_riichi { RiichiStatus::Riichi(vec![Tile { number: 1, tile_type: Manzu }]) } else { RiichiStatus::NoRiichi };
+        let riichi = if is_riichi { Riichi(vec![Tile { number: 1, tile_type: Manzu }]) } else { NoRiichi };
         StatusInput {
             dora: vec![Tile { number: 1, tile_type: Manzu }],
             riichi,
@@ -89,7 +91,7 @@ mod correct {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Ron, vec![]);
+        let input = build_status_input(false, Ron, vec![]);
         assert!(input.validate());
     }
 }
@@ -103,8 +105,8 @@ mod dora_related {
         use crate::constants::tiles::Tile;
         use crate::constants::tiles::TileType::Manzu;
 
-        let mut input = build_status_input(false, WinMethod::Ron, vec![]);
-        input.riichi = RiichiStatus::Riichi(vec![
+        let mut input = build_status_input(false, Ron, vec![]);
+        input.riichi = Riichi(vec![
             Tile { number: 1, tile_type: Manzu },
             Tile { number: 2, tile_type: Manzu },
             Tile { number: 3, tile_type: Manzu },
@@ -121,8 +123,8 @@ mod dora_related {
         use crate::constants::tiles::Tile;
         use crate::constants::tiles::TileType::Manzu;
 
-        let mut input = build_status_input(false, WinMethod::Ron, vec![]);
-        input.riichi = RiichiStatus::DoubleRiichi(vec![
+        let mut input = build_status_input(false, Ron, vec![]);
+        input.riichi = DoubleRiichi(vec![
             Tile { number: 1, tile_type: Manzu },
             Tile { number: 2, tile_type: Manzu },
             Tile { number: 3, tile_type: Manzu },
@@ -139,7 +141,7 @@ mod ipatu_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Ron, vec![Ipatu]);
+        let input = build_status_input(false, Ron, vec![Ipatu]);
         assert!(!input.validate());
     }
 
@@ -148,8 +150,8 @@ mod ipatu_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let mut input = build_status_input(true, WinMethod::Ron, vec![Ipatu, Rinshan]);
-        input.riichi = RiichiStatus::Riichi(vec![]);
+        let mut input = build_status_input(true, Ron, vec![Ipatu, Rinshan]);
+        input.riichi = Riichi(vec![]);
         assert!(!input.validate());
     }
 }
@@ -160,7 +162,7 @@ mod kan_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Ron, vec![Chakan, Rinshan]);
+        let input = build_status_input(false, Ron, vec![Chakan, Rinshan]);
         assert!(!input.validate());
     }
 
@@ -169,7 +171,7 @@ mod kan_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Ron, vec![Chakan]);
+        let input = build_status_input(false, Ron, vec![Chakan]);
         assert!(input.validate());
     }
 
@@ -178,7 +180,7 @@ mod kan_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Tumo, vec![Chakan]);
+        let input = build_status_input(false, Tumo, vec![Chakan]);
         assert!(!input.validate());
     }
 
@@ -187,7 +189,7 @@ mod kan_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Ron, vec![Rinshan]);
+        let input = build_status_input(false, Ron, vec![Rinshan]);
         assert!(!input.validate());
     }
 
@@ -196,7 +198,7 @@ mod kan_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Tumo, vec![Rinshan]);
+        let input = build_status_input(false, Tumo, vec![Rinshan]);
         assert!(input.validate());
     }
 }
@@ -207,7 +209,7 @@ mod kawa_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Ron, vec![Haitei, Hotei]);
+        let input = build_status_input(false, Ron, vec![Haitei, Hotei]);
         assert!(!input.validate());
     }
 
@@ -216,7 +218,7 @@ mod kawa_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Ron, vec![Haitei]);
+        let input = build_status_input(false, Ron, vec![Haitei]);
         assert!(!input.validate());
     }
 
@@ -225,7 +227,7 @@ mod kawa_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Tumo, vec![Haitei]);
+        let input = build_status_input(false, Tumo, vec![Haitei]);
         assert!(input.validate());
     }
 
@@ -234,7 +236,7 @@ mod kawa_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Ron, vec![Hotei]);
+        let input = build_status_input(false, Ron, vec![Hotei]);
         assert!(input.validate());
     }
 
@@ -243,7 +245,7 @@ mod kawa_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Tumo, vec![Hotei]);
+        let input = build_status_input(false, Tumo, vec![Hotei]);
         assert!(!input.validate());
     }
 }
@@ -254,7 +256,7 @@ mod tenchiho_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, WinMethod::Tumo, vec![DaiichiTumo]);
+        let input = build_status_input(false, Tumo, vec![DaiichiTumo]);
         assert!(input.validate());
     }
 
@@ -264,7 +266,7 @@ mod tenchiho_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(true, WinMethod::Tumo, vec![DaiichiTumo]);
+        let input = build_status_input(true, Tumo, vec![DaiichiTumo]);
         assert!(!input.validate());
     }
     #[test]
@@ -272,7 +274,7 @@ mod tenchiho_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(true, WinMethod::Ron, vec![DaiichiTumo]);
+        let input = build_status_input(true, Ron, vec![DaiichiTumo]);
         assert!(!input.validate());
     }
 }
