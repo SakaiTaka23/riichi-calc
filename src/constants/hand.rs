@@ -1,27 +1,4 @@
-use crate::constants::tiles::pi::Tile;
-
-#[derive(Debug)]
-pub struct KoutsuMentsu {
-    pub tile: Tile,
-    pub is_open: bool,
-}
-
-#[derive(Debug)]
-pub struct Shuntsu {
-    pub start_from: Tile,
-    pub is_open: bool,
-}
-
-#[derive(Debug)]
-pub struct Kantsu {
-    pub tile: Tile,
-    pub is_open: bool,
-}
-
-#[derive(Debug)]
-pub struct Janto {
-    pub tile: Tile,
-}
+use crate::constants::tiles::Tile;
 
 #[derive(Clone, Debug)]
 pub enum Mentsu {
@@ -36,8 +13,3 @@ pub enum Mentsu {
 }
 
 pub type Hand = [Mentsu; 5];
-
-pub enum WinMethod {
-    Tumo,
-    Ron,
-}
