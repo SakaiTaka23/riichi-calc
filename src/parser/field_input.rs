@@ -1,11 +1,12 @@
 use crate::constants::field::{Bakaze, Zikaze};
+use crate::constants::status::Dora;
 use crate::constants::tiles::{Tile, TileType};
 use crate::parser::input_base::InputBase;
 
 pub struct FieldInput {
     pub zikaze: Zikaze,
     pub bakaze: Bakaze,
-    pub dora: Vec<Tile>,
+    pub dora: Dora,
 }
 
 impl InputBase for FieldInput {

@@ -3,11 +3,10 @@ use std::collections::HashSet;
 use crate::constants::status::RiichiStatus::{DoubleRiichi, NoRiichi, Riichi};
 use crate::constants::status::SpecialWin::{Chakan, DaiichiTumo, Haitei, Hotei, Ipatu, Rinshan};
 use crate::constants::status::WinMethod::{Ron, Tumo};
-use crate::constants::status::{Dora, RiichiStatus, SpecialWin, WinMethod};
+use crate::constants::status::{RiichiStatus, SpecialWin, WinMethod};
 use crate::parser::input_base::InputBase;
 
 pub struct StatusInput {
-    pub dora: Dora,
     pub riichi: RiichiStatus,
     pub win_method: WinMethod,
     pub special_win: HashSet<SpecialWin>,
@@ -77,7 +76,6 @@ pub mod status_input_utils {
     pub fn build_status_input(is_riichi: bool, win_method: WinMethod, special_win: Vec<SpecialWin>) -> StatusInput {
         let riichi = if is_riichi { Riichi(vec![Tile { number: 1, tile_type: Manzu }]) } else { NoRiichi };
         StatusInput {
-            dora: vec![Tile { number: 1, tile_type: Manzu }],
             riichi,
             win_method,
             special_win: special_win.into_iter().collect(),
