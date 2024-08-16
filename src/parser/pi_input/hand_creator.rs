@@ -7,23 +7,23 @@ use std::collections::HashMap;
 pub fn create_hand(colors: &mut PiHandColor, head: &Tile, naki: &Vec<Mentsu>) -> Option<Hand> {
     let head_mentsu = match head.tile_type {
         TileType::Dragon => {
-            remove_two_occurrences(&mut colors.dragon, head.number);
+            remove_toitu(&mut colors.dragon, head.number);
             create_mentu_zihai(&colors.dragon, &TileType::Dragon)
         }
         TileType::Manzu => {
-            remove_two_occurrences(&mut colors.manzu, head.number);
+            remove_toitu(&mut colors.manzu, head.number);
             create_mentu_suhai(&colors.manzu, &TileType::Manzu)
         }
         TileType::Pinzu => {
-            remove_two_occurrences(&mut colors.pinzu, head.number);
+            remove_toitu(&mut colors.pinzu, head.number);
             create_mentu_suhai(&colors.pinzu, &TileType::Pinzu)
         }
         TileType::Souzu => {
-            remove_two_occurrences(&mut colors.souzu, head.number);
+            remove_toitu(&mut colors.souzu, head.number);
             create_mentu_suhai(&colors.souzu, &TileType::Souzu)
         }
         TileType::Wind => {
-            remove_two_occurrences(&mut colors.wind, head.number);
+            remove_toitu(&mut colors.wind, head.number);
             create_mentu_zihai(&colors.wind, &TileType::Wind)
         }
     };
@@ -82,8 +82,7 @@ fn create_mentu_suhai(hand: &Vec<u8>, tile_type: &TileType) -> Option<Vec<Mentsu
         let mut result: Vec<Mentsu> = Vec::new();
         let mut hand = hand.clone();
         for anko in &ankos {
-            // TODO 4枚構成に対応できないから専用の関数が必要
-            hand.retain(|&x| x != *anko);
+            remove_anko(&mut hand, *anko);
         }
         for _ in 0..hand.len() / 3 {
             let read_hand = hand.clone();
@@ -125,10 +124,18 @@ fn create_mentu_zihai(hand: &Vec<u8>, tile_type: &TileType) -> Option<Vec<Mentsu
     Some(result)
 }
 
-fn remove_two_occurrences(vec: &mut Vec<u8>, target: u8) {
+fn remove_toitu(vec: &mut Vec<u8>, target: u8) {
+    remove_duplicates(vec, target, 2)
+}
+
+fn remove_anko(vec: &mut Vec<u8>, target: u8) {
+    remove_duplicates(vec, target, 3)
+}
+
+fn remove_duplicates(vec: &mut Vec<u8>, target: u8, remove_count: u8) {
     let mut count = 0;
     vec.retain(|&x| {
-        if x == target && count < 2 {
+        if x == target && count < remove_count {
             count += 1;
             false
         } else {
