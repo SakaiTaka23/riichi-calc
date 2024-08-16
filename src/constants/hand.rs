@@ -1,6 +1,6 @@
 use crate::constants::tiles::Tile;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Mentsu {
     /// 刻子 `bool` defines if it is open
     Koutsu(Tile, bool),
