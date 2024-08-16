@@ -78,7 +78,7 @@ impl PiInput {
         let head_candidate = self.find_toitu();
         for head in head_candidate.iter() {
             let mut menzen_hand: Vec<Hand> = Vec::new();
-            let hand = create_hand(&colors.clone(), head);
+            let hand = create_hand(&mut colors.clone(), head, &self.naki);
             if hand.is_some() {
                 menzen_hand.push(hand.unwrap());
                 return Some(menzen_hand);
