@@ -89,11 +89,7 @@ fn create_mentu_suhai(hand: &Vec<u8>, tile_type: &TileType) -> Option<Vec<Mentsu
             let min = read_hand.iter().min()?;
             if read_hand.contains(&(min + 1)) && read_hand.contains(&(min + 2)) {
                 result.push(Shuntsu(Tile { number: *min, tile_type: tile_type.clone() }, false));
-
-                // for i in 0..3 {
-                //     let index = read_hand.iter().position(|x| *x == *min + i)?;
-                //     hand.remove(index);
-                // }
+                remove_shuntu(&mut hand, *min);
             } else {
                 continue;
             }
@@ -105,7 +101,6 @@ fn create_mentu_suhai(hand: &Vec<u8>, tile_type: &TileType) -> Option<Vec<Mentsu
             return Some(result);
         }
     }
-
 
     None
 }
@@ -122,6 +117,15 @@ fn create_mentu_zihai(hand: &Vec<u8>, tile_type: &TileType) -> Option<Vec<Mentsu
     }
 
     Some(result)
+}
+
+fn remove_shuntu(hand: &mut Vec<u8>, start_from: u8) {
+    let index = hand.iter().position(|x| *x == start_from).unwrap();
+    hand.remove(index);
+    let index = hand.iter().position(|x| *x == start_from + 1).unwrap();
+    hand.remove(index);
+    let index = hand.iter().position(|x| *x == start_from + 2).unwrap();
+    hand.remove(index);
 }
 
 fn remove_toitu(vec: &mut Vec<u8>, target: u8) {
