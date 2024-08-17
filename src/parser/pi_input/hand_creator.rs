@@ -183,10 +183,15 @@ fn generate_combinations(candidates: &Vec<u8>) -> Vec<Vec<u8>> {
         }
         combinations.push(combination);
     }
+
+    // prioritize anko combinations to find from
+    combinations.reverse();
     combinations
 }
 
 mod valid_hand_test {
+    use crate::constants::hand::Hand;
+
     #[test]
     fn all_shuntsu_pinfu_iipeco() {
         use crate::constants::hand::Mentsu::{Janto, Shuntsu};
@@ -210,6 +215,35 @@ mod valid_hand_test {
             Shuntsu(Tile { number: 6, tile_type: TileType::Souzu }, false),
         ];
         assert_eq!(create_hand(&mut colors.clone(), &head, &vec![]).unwrap(), hand);
+    }
+
+    #[test]
+    fn all_koutsu_suanko() {
+        use crate::constants::hand::Mentsu::{Janto, Koutsu};
+        use crate::constants::tiles::{Tile, TileType};
+        use crate::parser::pi_input::hand_creator::create_hand;
+        use crate::parser::pi_input::PiHandColor;
+
+        let colors = &PiHandColor {
+            dragon: vec![],
+            manzu: vec![],
+            pinzu: vec![1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5],
+            souzu: vec![],
+            wind: vec![],
+        };
+        let head = Tile { number: 5, tile_type: TileType::Pinzu };
+        let naki = vec![];
+
+        let hand = [
+            Janto(Tile { number: 5, tile_type: TileType::Pinzu }),
+            Koutsu(Tile { number: 3, tile_type: TileType::Pinzu }, false),
+            Koutsu(Tile { number: 4, tile_type: TileType::Pinzu }, false),
+            Koutsu(Tile { number: 2, tile_type: TileType::Pinzu }, false),
+            Koutsu(Tile { number: 1, tile_type: TileType::Pinzu }, false),
+        ];
+        let result: Hand = create_hand(&mut colors.clone(), &head, &naki).unwrap();
+        assert_eq!(result.len(), hand.len());
+        assert!(hand.iter().all(|x| result.contains(x)));
     }
 
     #[test]
