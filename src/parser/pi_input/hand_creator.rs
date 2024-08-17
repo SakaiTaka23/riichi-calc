@@ -94,7 +94,7 @@ fn create_mentu_suhai(hand: &Vec<u8>, tile_type: &TileType) -> Option<Vec<Mentsu
                 continue;
             }
         }
-        if result.len() == hand.len() / 3 {
+        if hand.len() == 0 {
             for anko in &ankos {
                 result.push(Koutsu(Tile { number: *anko, tile_type: tile_type.clone() }, false));
             }
