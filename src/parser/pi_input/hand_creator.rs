@@ -113,7 +113,7 @@ fn create_mentu_zihai(hand: &Vec<u8>, tile_type: &TileType) -> Option<Vec<Mentsu
 
     let mut result: Vec<Mentsu> = Vec::new();
     for anko in anko_candidate {
-        result.push(Mentsu::Koutsu(Tile { number: anko, tile_type: tile_type.clone() }, false));
+        result.push(Koutsu(Tile { number: anko, tile_type: tile_type.clone() }, false));
     }
 
     Some(result)
@@ -190,8 +190,6 @@ fn generate_combinations(candidates: &Vec<u8>) -> Vec<Vec<u8>> {
 }
 
 mod valid_hand_test {
-    use crate::constants::hand::Hand;
-
     #[test]
     fn all_shuntsu_pinfu_iipeco() {
         use crate::constants::hand::Mentsu::{Janto, Shuntsu};
@@ -223,6 +221,7 @@ mod valid_hand_test {
         use crate::constants::tiles::{Tile, TileType};
         use crate::parser::pi_input::hand_creator::create_hand;
         use crate::parser::pi_input::PiHandColor;
+        use crate::constants::hand::Hand;
 
         let colors = &PiHandColor {
             dragon: vec![],
