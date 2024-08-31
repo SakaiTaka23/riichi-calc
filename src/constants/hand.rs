@@ -1,5 +1,7 @@
 use crate::constants::tiles::Tile;
 
+pub type Hand = [Mentsu; 5];
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Mentsu {
     /// 刻子 `bool` defines if it is open
@@ -11,5 +13,3 @@ pub enum Mentsu {
     /// 雀頭 `bool` defines if it is open
     Janto(Tile),
 }
-
-pub type Hand = [Mentsu; 5];

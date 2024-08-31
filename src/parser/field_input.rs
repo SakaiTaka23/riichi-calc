@@ -1,15 +1,7 @@
-use crate::constants::field::{Bakaze, Zikaze};
-use crate::constants::status::Dora;
-use crate::constants::tiles::{Tile, TileType};
+use crate::constants::field::Field;
 use crate::parser::input_base::InputBase;
 
-pub struct FieldInput {
-    pub zikaze: Zikaze,
-    pub bakaze: Bakaze,
-    pub dora: Dora,
-}
-
-impl InputBase for FieldInput {
+impl InputBase for Field {
     fn validate(&self) -> bool {
         if self.dora.len() > 4 {
             return false;
@@ -21,7 +13,10 @@ impl InputBase for FieldInput {
 
 #[test]
 fn correct_input() {
-    let input = FieldInput {
+    use crate::constants::field::{Bakaze, Zikaze};
+    use crate::constants::tiles::{Tile, TileType};
+
+    let input = Field {
         zikaze: Zikaze::East,
         bakaze: Bakaze::East,
         dora: vec![Tile { number: 1, tile_type: TileType::Manzu }],
@@ -31,7 +26,10 @@ fn correct_input() {
 
 #[test]
 fn too_many_dora() {
-    let input = FieldInput {
+    use crate::constants::field::{Bakaze, Zikaze};
+    use crate::constants::tiles::{Tile, TileType};
+
+    let input = Field {
         zikaze: Zikaze::East,
         bakaze: Bakaze::East,
         dora: vec![

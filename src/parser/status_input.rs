@@ -1,18 +1,10 @@
-use std::collections::HashSet;
-
 use crate::constants::status::RiichiStatus::{DoubleRiichi, NoRiichi, Riichi};
 use crate::constants::status::SpecialWin::{Chakan, DaiichiTumo, Haitei, Hotei, Ipatu, Rinshan};
 use crate::constants::status::WinMethod::{Ron, Tumo};
-use crate::constants::status::{RiichiStatus, SpecialWin, WinMethod};
+use crate::constants::status::Status;
 use crate::parser::input_base::InputBase;
 
-pub struct StatusInput {
-    pub riichi: RiichiStatus,
-    pub win_method: WinMethod,
-    pub special_win: HashSet<SpecialWin>,
-}
-
-impl InputBase for StatusInput {
+impl InputBase for Status {
     fn validate(&self) -> bool {
         match &self.riichi {
             NoRiichi => {}
@@ -70,12 +62,13 @@ impl InputBase for StatusInput {
 #[cfg(test)]
 pub mod status_input_utils {
     use super::*;
+    use crate::constants::status::{SpecialWin, WinMethod};
     use crate::constants::tiles::Tile;
     use crate::constants::tiles::TileType::Manzu;
 
-    pub fn build_status_input(is_riichi: bool, win_method: WinMethod, special_win: Vec<SpecialWin>) -> StatusInput {
+    pub fn build_status_input(is_riichi: bool, win_method: WinMethod, special_win: Vec<SpecialWin>) -> Status {
         let riichi = if is_riichi { Riichi(vec![Tile { number: 1, tile_type: Manzu }]) } else { NoRiichi };
-        StatusInput {
+        Status {
             riichi,
             win_method,
             special_win: special_win.into_iter().collect(),

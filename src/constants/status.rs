@@ -1,7 +1,11 @@
 use crate::constants::tiles::Tile;
+use std::collections::HashSet;
 
-/// ドラ length 1~4
-pub type Dora = Vec<Tile>;
+pub struct Status {
+    pub riichi: RiichiStatus,
+    pub win_method: WinMethod,
+    pub special_win: HashSet<SpecialWin>,
+}
 
 #[derive(PartialEq, Eq)]
 pub enum RiichiStatus {
