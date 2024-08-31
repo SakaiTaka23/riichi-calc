@@ -6,6 +6,7 @@ pub struct Field {
     pub dora: Dora,
 }
 
+#[derive(PartialEq)]
 pub enum Wind {
     East,
     South,
