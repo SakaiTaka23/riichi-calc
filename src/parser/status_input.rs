@@ -1,7 +1,7 @@
 use crate::constants::status::RiichiStatus::{DoubleRiichi, NoRiichi, Riichi};
-use crate::constants::status::SpecialWin::{Chakan, DaiichiTumo, Haitei, Hotei, Ipatu, Rinshan};
-use crate::constants::status::WinMethod::{Ron, Tumo};
+use crate::constants::status::SpecialWin::{Chankan, DaiichiTumo, Haitei, Hotei, Ipatu, Rinshan};
 use crate::constants::status::Status;
+use crate::constants::status::WinMethod::{Ron, Tumo};
 use crate::parser::input_base::InputBase;
 
 impl InputBase for Status {
@@ -28,10 +28,10 @@ impl InputBase for Status {
             return false;
         }
 
-        if win.contains(&Rinshan) && win.contains(&Chakan) {
+        if win.contains(&Rinshan) && win.contains(&Chankan) {
             return false;
         }
-        if win.contains(&Chakan) && self.win_method != Ron {
+        if win.contains(&Chankan) && self.win_method != Ron {
             return false;
         }
         if win.contains(&Rinshan) && self.win_method != Tumo {
@@ -153,7 +153,7 @@ mod kan_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, Ron, vec![Chakan, Rinshan]);
+        let input = build_status_input(false, Ron, vec![Chankan, Rinshan]);
         assert!(!input.validate());
     }
 
@@ -162,7 +162,7 @@ mod kan_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, Ron, vec![Chakan]);
+        let input = build_status_input(false, Ron, vec![Chankan]);
         assert!(input.validate());
     }
 
@@ -171,7 +171,7 @@ mod kan_related {
         use super::*;
         use crate::parser::status_input::status_input_utils::build_status_input;
 
-        let input = build_status_input(false, Tumo, vec![Chakan]);
+        let input = build_status_input(false, Tumo, vec![Chankan]);
         assert!(!input.validate());
     }
 

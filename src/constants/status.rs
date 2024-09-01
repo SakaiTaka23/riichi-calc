@@ -38,7 +38,7 @@ pub enum SpecialWin {
     /// 搶槓
     /// - cannot be combined with `Rinshan`
     /// - must be `Ron`
-    Chakan,
+    Chankan,
     /// 嶺上開花
     /// - cannot be combined with `Chakan`
     /// - must be `Tumo`
