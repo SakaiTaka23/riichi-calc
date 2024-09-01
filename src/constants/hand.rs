@@ -2,7 +2,7 @@ use crate::constants::tiles::Tile;
 
 pub type Hand = [Mentsu; 5];
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Hash)]
 pub enum Mentsu {
     /// 刻子 `bool` defines if it is open
     Koutsu(Tile, bool),

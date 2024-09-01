@@ -10,6 +10,16 @@ mod tanyao;
 mod tumo;
 mod zikaze;
 mod bakaze;
+mod haku;
+mod hatu;
+mod chun;
+mod pinfu;
+mod iipeco;
+mod chankan;
+mod rinshan;
+mod haitei;
+mod hotei;
+mod ipatu;
 
 fn ii_han_yaku(field: &Field, hand: &Hand, status: &Status) {
     Riichi::validate(field, hand, status);

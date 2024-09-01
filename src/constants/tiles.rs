@@ -1,4 +1,4 @@
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TileType {
     /// 萬子
     Manzu,
@@ -20,7 +20,7 @@ pub enum TileType {
 ///
 /// [number]: #structfield.number
 /// [tile_type]: #structfield.tile_type
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Tile {
     /// - 1~9 for number tile types
     /// - 1~4 for wind tile type `order`: (東, 南, 西, 北)
