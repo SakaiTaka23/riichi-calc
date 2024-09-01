@@ -1,5 +1,5 @@
 use crate::constants::field::Field;
-use crate::constants::hand::{Hand, Mentsu};
+use crate::constants::hand::Hand;
 use crate::constants::status::Status;
 use crate::constants::tiles::TileType;
 use crate::finder::finder_base::YakuBase;
@@ -10,15 +10,10 @@ pub struct Bakaze {}
 impl YakuBase for Bakaze {
     fn validate(field: &Field, hand: &Hand, _: &Status) -> Option<(String, u8)> {
         for mentsu in hand {
-            match mentsu {
-                Mentsu::Koutsu(x, _)
-                | Mentsu::Kantsu(x, _) => {
-                    if x.tile_type != TileType::Wind { continue; }
-                    if is_same_wind(x.number, &field.bakaze) {
-                        return Some(("場風".to_string(), 1));
-                    }
-                }
-                _ => {}
+            let tile = mentsu.tile();
+            if tile.tile_type != TileType::Wind { continue; }
+            if is_same_wind(tile.number, &field.bakaze) {
+                return Some(("役牌:場風牌".to_string(), 1));
             }
         }
         None
