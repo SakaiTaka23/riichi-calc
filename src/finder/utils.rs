@@ -1,6 +1,6 @@
 use crate::constants::field::Wind;
 use crate::constants::hand::{Hand, Mentsu};
-use crate::constants::tiles::Tile;
+use crate::constants::tiles::{Tile, TileType};
 
 pub fn is_menzen(hand: &Hand) -> bool {
     for mentsu in hand {
@@ -13,6 +13,39 @@ pub fn is_menzen(hand: &Hand) -> bool {
     }
 
     true
+}
+
+pub fn check_kuisagari(hand: &Hand, yaku_name: String, han: u8) -> Option<(String, u8)> {
+    let han = if is_menzen(hand) { han } else { han - 1 };
+
+    Some((yaku_name, han))
+}
+
+/**
+* return: Manzu, Pinzu, Sozu, WInd, Dragon
+*/
+pub fn split_colors(hand: &Hand) -> (Vec<Mentsu>, Vec<Mentsu>, Vec<Mentsu>, Vec<Mentsu>, Vec<Mentsu>) {
+    let mut manzu = Vec::new();
+    let mut pinzu = Vec::new();
+    let mut sozu = Vec::new();
+    let mut wind = Vec::new();
+    let mut dragon = Vec::new();
+
+    for mentsu in hand {
+        if mentsu.tile().tile_type == TileType::Manzu {
+            manzu.push(mentsu.clone());
+        } else if mentsu.tile().tile_type == TileType::Pinzu {
+            pinzu.push(mentsu.clone());
+        } else if mentsu.tile().tile_type == TileType::Souzu {
+            sozu.push(mentsu.clone());
+        } else if mentsu.tile().tile_type == TileType::Wind {
+            wind.push(mentsu.clone());
+        } else if mentsu.tile().tile_type == TileType::Dragon {
+            dragon.push(mentsu.clone());
+        }
+    }
+
+    (manzu, pinzu, sozu, wind, dragon)
 }
 
 pub fn is_same_wind(tile_number: u8, wind: &Wind) -> bool {
