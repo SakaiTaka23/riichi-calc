@@ -1,0 +1,24 @@
+use crate::constants::field::Field;
+use crate::constants::hand::Hand;
+use crate::constants::status::Status;
+use crate::finder::finder_base::YakuBase;
+use crate::finder::utils::{check_kuisagari, split_colors};
+
+pub struct Hoinitu {}
+
+impl YakuBase for Hoinitu {
+    fn validate(_: &Field, hand: &Hand, _: &Status) -> Option<(String, u8)> {
+        let (manzu, pinzu, sozu, wind, dragon) = split_colors(hand);
+        let non_empty_count = [!manzu.is_empty(), !pinzu.is_empty(), !sozu.is_empty()]
+            .iter().filter(|&&x| x).count();
+
+        if non_empty_count != 1 {
+            return None;
+        }
+        if wind.is_empty() && dragon.is_empty() {
+            return None;
+        }
+
+        check_kuisagari(hand, "混一色".to_string(), 3)
+    }
+}

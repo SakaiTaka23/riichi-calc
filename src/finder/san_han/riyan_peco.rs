@@ -5,27 +5,30 @@ use crate::finder::finder_base::YakuBase;
 use crate::finder::utils::is_menzen;
 use std::collections::HashSet;
 
-pub struct IIPeco {}
+pub struct RiyanPeco {}
 
-impl YakuBase for IIPeco {
+impl YakuBase for RiyanPeco {
     fn validate(_: &Field, hand: &Hand, _: &Status) -> Option<(String, u8)> {
-        if !is_menzen(hand) {
+        if is_menzen(hand) {
             return None;
         }
 
-        let mut shuntu: Vec<Mentsu> = Vec::new();
+        let mut shuntu = Vec::new();
         for mentsu in hand {
             match mentsu {
-                Mentsu::Shuntsu(_, _) => shuntu.push(mentsu.clone()),
-                _ => {}
+                Mentsu::Shuntsu(_, _) => {
+                    shuntu.push(mentsu.clone());
+                }
+                Mentsu::Janto(_) => { continue }
+                _ => return None
             }
         }
 
         let unique_shuntu: HashSet<Mentsu> = shuntu.clone().into_iter().collect();
-        if unique_shuntu.len() == shuntu.len() - 1 {
+        if unique_shuntu.len() == 2 {
             return None;
         }
 
-        Some(("一盃口".to_string(), 1))
+        Some(("二盃口".to_string(), 3))
     }
 }
