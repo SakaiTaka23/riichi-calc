@@ -1,5 +1,5 @@
 use crate::constants::field::Field;
-use crate::constants::hand::Hand;
+use crate::constants::hand::WinningHand;
 use crate::constants::status::Status;
 use crate::finder::finder_base::YakuBase;
 use crate::finder::ryan_han::chanta::Chanta;
@@ -24,23 +24,19 @@ mod chanta;
 mod ixtukitukan;
 mod sanshoku_dojun;
 
-pub fn ryan_han_yaku(field: &Field, hand: &Hand, status: &Status) -> Option<Vec<(String, u8)>> {
+pub fn ryan_han_yaku(field: &Field, winning_hand: &WinningHand, status: &Status) -> Vec<(String, u8)> {
     let mut yaku: Vec<(String, u8)> = Vec::new();
 
-    if let Some(y) = DoubleRiichi::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = SanshokuDoko::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Sankantu::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = ToiToi::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Sananko::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Shosangen::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Honroto::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Chanta::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Ixtukitukan::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = SanshokuDojun::validate(field, hand, status) { yaku.push(y); }
+    if let Some(y) = DoubleRiichi::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = SanshokuDoko::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Sankantu::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = ToiToi::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Sananko::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Shosangen::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Honroto::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Chanta::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Ixtukitukan::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = SanshokuDojun::validate(field, winning_hand, status) { yaku.push(y); }
 
-    if yaku.is_empty() {
-        None
-    } else {
-        Some(yaku)
-    }
+    yaku
 }

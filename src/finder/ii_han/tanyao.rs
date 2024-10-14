@@ -1,5 +1,5 @@
 use crate::constants::field::Field;
-use crate::constants::hand::{Hand, Mentsu};
+use crate::constants::hand::{Mentsu, WinningHand};
 use crate::constants::status::Status;
 use crate::constants::tiles::TileType;
 use crate::finder::finder_base::YakuBase;
@@ -7,8 +7,8 @@ use crate::finder::finder_base::YakuBase;
 pub struct Tanyao {}
 
 impl YakuBase for Tanyao {
-    fn validate(_: &Field, hand: &Hand, _: &Status) -> Option<(String, u8)> {
-        for mentu in hand {
+    fn validate(_: &Field, hand: &WinningHand, _: &Status) -> Option<(String, u8)> {
+        for mentu in hand.hand {
             match mentu {
                 Mentsu::Koutsu(x, _)
                 | Mentsu::Kantsu(x, _)

@@ -1,5 +1,5 @@
 use crate::constants::field::Field;
-use crate::constants::hand::Hand;
+use crate::constants::hand::WinningHand;
 use crate::constants::status::Status;
 use crate::finder::finder_base::YakuBase;
 use crate::finder::ii_han::bakaze::Bakaze;
@@ -34,28 +34,24 @@ mod haitei;
 mod hotei;
 mod ipatu;
 
-pub fn ii_han_yaku(field: &Field, hand: &Hand, status: &Status) -> Option<Vec<(String, u8)>> {
+pub fn ii_han_yaku(field: &Field, winning_hand: &WinningHand, status: &Status) -> Vec<(String, u8)> {
     let mut yaku: Vec<(String, u8)> = Vec::new();
 
-    if let Some(y) = Riichi::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Tanyao::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Tumo::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Zikaze::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Bakaze::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Haku::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Hatu::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Chun::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Pinfu::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = IIPeco::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Chankan::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Rinshan::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Haitei::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Hotei::validate(field, hand, status) { yaku.push(y); }
-    if let Some(y) = Ipatu::validate(field, hand, status) { yaku.push(y); }
+    if let Some(y) = Riichi::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Tanyao::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Tumo::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Zikaze::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Bakaze::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Haku::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Hatu::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Chun::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Pinfu::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = IIPeco::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Chankan::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Rinshan::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Haitei::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Hotei::validate(field, winning_hand, status) { yaku.push(y); }
+    if let Some(y) = Ipatu::validate(field, winning_hand, status) { yaku.push(y); }
 
-    if yaku.is_empty() {
-        None
-    } else {
-        Some(yaku)
-    }
+    yaku
 }

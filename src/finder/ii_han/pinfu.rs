@@ -1,5 +1,5 @@
 use crate::constants::field::Field;
-use crate::constants::hand::{Hand, Mentsu};
+use crate::constants::hand::{Mentsu, WinningHand};
 use crate::constants::status::Status;
 use crate::constants::tiles::{Tile, TileType};
 use crate::finder::finder_base::YakuBase;
@@ -8,11 +8,11 @@ use crate::finder::utils::is_same_wind;
 pub struct Pinfu {}
 
 impl YakuBase for Pinfu {
-    fn validate(field: &Field, hand: &Hand, _: &Status) -> Option<(String, u8)> {
-        for mentsu in hand {
+    fn validate(field: &Field, hand: &WinningHand, _: &Status) -> Option<(String, u8)> {
+        for mentsu in hand.hand {
             match mentsu {
-                Mentsu::Shuntsu(_, open) => { if *open { return None; } }
-                Mentsu::Janto(tile) => { if !Self::is_valid_janto(tile, field) { return None; } }
+                Mentsu::Shuntsu(_, open) => { if open { return None; } }
+                Mentsu::Janto(tile) => { if !Self::is_valid_janto(&tile, field) { return None; } }
                 _ => { return None }
             }
         }
