@@ -5,3 +5,4 @@ mod ryan_han;
 mod san_han;
 mod roku_han;
 mod yakuman;
+mod finder;
