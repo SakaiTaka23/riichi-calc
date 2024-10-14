@@ -1,13 +1,14 @@
 use crate::constants::tiles::Tile;
 use std::collections::HashSet;
 
+#[derive(Clone)]
 pub struct Status {
     pub riichi: RiichiStatus,
     pub win_method: WinMethod,
     pub special_win: HashSet<SpecialWin>,
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub enum RiichiStatus {
     /// リーチなし or ダマ
     NoRiichi,
@@ -21,7 +22,7 @@ pub enum RiichiStatus {
     DoubleRiichi(Vec<Tile>),
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub enum WinMethod {
     /// ロン
     Ron,
@@ -29,7 +30,7 @@ pub enum WinMethod {
     Tumo,
 }
 
-#[derive(PartialEq, Hash, Eq)]
+#[derive(Clone, PartialEq, Hash, Eq)]
 pub enum SpecialWin {
     /// 一発
     /// - cannot be combined with `Rinshan`

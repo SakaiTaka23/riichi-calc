@@ -5,6 +5,7 @@ use crate::constants::tiles::{Tile, TileType};
 use crate::parser::input_base::InputBase;
 use crate::parser::pi_input::hand_creator::create_hand;
 
+#[derive(Clone)]
 pub struct PiInput {
     pub hand: Vec<Tile>,
     pub naki: Vec<Mentsu>,

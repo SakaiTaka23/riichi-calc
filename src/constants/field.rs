@@ -1,12 +1,13 @@
 use crate::constants::tiles::Tile;
 
+#[derive(Clone)]
 pub struct Field {
     pub zikaze: Zikaze,
     pub bakaze: Bakaze,
     pub dora: Dora,
 }
 
-#[derive(PartialEq)]
+#[derive(Clone, PartialEq)]
 pub enum Wind {
     East,
     South,

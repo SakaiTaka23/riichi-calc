@@ -1,8 +1,13 @@
 use crate::constants::tiles::Tile;
 
+pub struct WinningHand {
+    pub hand: Hand,
+    pub winning_tile: Tile,
+}
+
 pub type Hand = [Mentsu; 5];
 
-#[derive(Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub enum Mentsu {
     /// 刻子 `bool` defines if it is open
     Koutsu(Tile, bool),
