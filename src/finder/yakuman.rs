@@ -1,3 +1,10 @@
 mod tenho;
 mod chiho;
 mod daisangen;
+mod suanko;
+mod tuiso;
+mod ryuiso;
+mod chinroto;
+mod shosushi;
+mod sukantu;
+mod churen;
