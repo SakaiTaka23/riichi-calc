@@ -9,10 +9,10 @@ pub struct Field {
 
 #[derive(Clone, PartialEq)]
 pub enum Wind {
-    East,
-    South,
-    West,
-    North,
+    East = 1,
+    South = 2,
+    West = 3,
+    North = 4,
 }
 
 /// 場風
