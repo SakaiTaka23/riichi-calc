@@ -3,6 +3,7 @@ use crate::constants::tiles::Tile;
 pub struct WinningHand {
     pub hand: Hand,
     pub winning_tile: Tile,
+    pub red_tile: u8,
 }
 
 pub type Hand = [Mentsu; 5];

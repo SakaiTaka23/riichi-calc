@@ -45,7 +45,7 @@ impl InputBase for PiInput {
                     }
                 }
                 _ => {
-                    if tile.number > 9 {
+                    if tile.number > 10 {
                         return false;
                     }
                 }
@@ -74,25 +74,39 @@ impl InputBase for PiInput {
 }
 
 impl PiInput {
-    pub fn to_mentsu(&self) -> Option<Vec<Hand>> {
-        let colors = self.to_hand_color();
+    pub fn to_mentsu(&self) -> Option<(Vec<Hand>, u8)> {
+        let (colors, red_count) = self.to_hand_color();
         let head_candidate = self.find_toitu();
+        let mut menzen_hand: Vec<Hand> = Vec::new();
         for head in head_candidate.iter() {
-            let mut menzen_hand: Vec<Hand> = Vec::new();
             let hand = create_hand(&mut colors.clone(), head, &self.naki);
             if hand.is_some() {
                 menzen_hand.push(hand?);
-                return Some(menzen_hand);
             }
         }
 
-        None
+        if menzen_hand.is_empty() {
+            None
+        } else {
+            Some((menzen_hand, red_count))
+        }
     }
 
-    fn to_hand_color(&self) -> PiHandColor {
+    fn to_hand_color(&self) -> (PiHandColor, u8) {
         let mut hand = PiHandColor::default();
+        let mut red_count = 0;
 
-        for pi in self.hand.iter() {
+        for &pi in self.hand.iter() {
+            let pi = if pi.number == 10 {
+                red_count += 1;
+                Tile {
+                    number: 5,
+                    tile_type: pi.tile_type.clone(),
+                }
+            } else {
+                pi
+            };
+
             match pi.tile_type.clone() {
                 TileType::Dragon => hand.dragon.push(pi.number),
                 TileType::Manzu => hand.manzu.push(pi.number),
@@ -110,7 +124,7 @@ impl PiInput {
             TileType::Wind => hand.wind.push(self.hora.number),
         }
 
-        hand
+        (hand, red_count)
     }
 
     fn find_toitu(&self) -> Vec<Tile> {
@@ -372,6 +386,43 @@ mod convertor_test {
             Shuntsu(Tile { number: 6, tile_type: TileType::Souzu }, false),
         ]];
         assert!(input.validate());
-        assert_eq!(input.to_mentsu(), Some(hand))
+        assert_eq!(input.to_mentsu(), Some((hand, 0)))
+    }
+
+    #[test]
+    fn all_shuntsu_pinfu_iipeco_red() {
+        use crate::constants::hand::Mentsu::{Janto, Shuntsu};
+        use crate::constants::tiles::{Tile, TileType};
+        use crate::parser::input_base::InputBase;
+        use crate::parser::pi_input::PiInput;
+
+        let input = PiInput {
+            hand: vec![
+                Tile { number: 1, tile_type: TileType::Manzu },
+                Tile { number: 2, tile_type: TileType::Manzu },
+                Tile { number: 3, tile_type: TileType::Manzu },
+                Tile { number: 1, tile_type: TileType::Manzu },
+                Tile { number: 2, tile_type: TileType::Manzu },
+                Tile { number: 3, tile_type: TileType::Manzu },
+                Tile { number: 4, tile_type: TileType::Pinzu },
+                Tile { number: 10, tile_type: TileType::Pinzu },
+                Tile { number: 6, tile_type: TileType::Pinzu },
+                Tile { number: 9, tile_type: TileType::Pinzu },
+                Tile { number: 6, tile_type: TileType::Souzu },
+                Tile { number: 7, tile_type: TileType::Souzu },
+                Tile { number: 8, tile_type: TileType::Souzu },
+            ],
+            naki: vec![],
+            hora: Tile { number: 9, tile_type: TileType::Pinzu },
+        };
+        let hand = vec![[
+            Janto(Tile { number: 9, tile_type: TileType::Pinzu }),
+            Shuntsu(Tile { number: 4, tile_type: TileType::Pinzu }, false),
+            Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
+            Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
+            Shuntsu(Tile { number: 6, tile_type: TileType::Souzu }, false),
+        ]];
+        assert!(input.validate());
+        assert_eq!(input.to_mentsu(), Some((hand, 1)))
     }
 }

@@ -20,17 +20,20 @@ impl Input {
     pub fn parse_hand(self) -> Option<Vec<ParsedHand>> {
         if !self.validate() { return None; }
 
-        let hands = self.pi_input.to_mentsu();
-        if hands.is_none() { return None; }
+        let hand_results = self.pi_input.to_mentsu();
+        if hand_results.is_none() { return None; }
+        let (hands, red_tiles) = hand_results.unwrap();
+
         let mut result = Vec::new();
 
-        for hand in hands.unwrap() {
+        for hand in hands {
             result.push(
                 ParsedHand {
                     field: self.field_input.clone(),
                     winning_hand: WinningHand {
                         hand,
                         winning_tile: self.pi_input.hora.clone(),
+                        red_tile: red_tiles,
                     },
                     status: self.status_input.clone(),
                 }

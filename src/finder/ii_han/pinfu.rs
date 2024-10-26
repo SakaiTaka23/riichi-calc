@@ -36,7 +36,7 @@ impl Pinfu {
         }
     }
 
-    fn is_riyanmen(WinningHand { hand, winning_tile }: &WinningHand) -> bool {
+    fn is_riyanmen(WinningHand { hand, winning_tile, .. }: &WinningHand) -> bool {
         let start_number = hand.into_iter()
             .filter(|m| match m {
                 Mentsu::Shuntsu(_, _) => true,
