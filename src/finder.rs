@@ -6,3 +6,4 @@ mod san_han;
 mod roku_han;
 mod yakuman;
 mod finder;
+mod dora;

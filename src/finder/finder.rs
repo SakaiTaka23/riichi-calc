@@ -1,4 +1,5 @@
 use crate::constants::found_yaku::FoundYaku;
+use crate::finder::dora::dora_count;
 use crate::finder::ii_han::ii_han_yaku;
 use crate::finder::roku_han::roku_han_yaku;
 use crate::finder::ryan_han::ryan_han_yaku;
@@ -17,6 +18,7 @@ impl Finder {
 
         if is_yakuman {
             return FoundYaku {
+                dora: Vec::new(),
                 ii_han: Vec::new(),
                 ryan_han: Vec::new(),
                 san_han: Vec::new(),
@@ -24,12 +26,15 @@ impl Finder {
                 yakuman,
             };
         }
+
+        let dora = dora_count(&self.parsed_hand.field, &self.parsed_hand.winning_hand, &self.parsed_hand.status);
         let ii_han = ii_han_yaku(&self.parsed_hand.field, &self.parsed_hand.winning_hand, &self.parsed_hand.status);
         let ryan_han = ryan_han_yaku(&self.parsed_hand.field, &self.parsed_hand.winning_hand, &self.parsed_hand.status);
         let san_han = san_han_yaku(&self.parsed_hand.field, &self.parsed_hand.winning_hand, &self.parsed_hand.status);
         let roku_han = roku_han_yaku(&self.parsed_hand.field, &self.parsed_hand.winning_hand, &self.parsed_hand.status);
 
         FoundYaku {
+            dora,
             ii_han,
             ryan_han,
             san_han,
