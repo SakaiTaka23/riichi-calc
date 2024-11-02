@@ -26,6 +26,13 @@ pub struct ParsedHand {
     pub status: Status,
 }
 
+///
+/// # Fields
+///
+/// - `hand` - the hand including the hora tile (winning_tile)
+/// - `naki` - any mentsu created by naki
+/// - `hora` - the winning tile
+///
 #[derive(Clone)]
 pub struct PiInput {
     pub hand: Vec<Tile>,
@@ -33,6 +40,13 @@ pub struct PiInput {
     pub hora: Tile,
 }
 
+///
+/// # Fields
+///
+/// - [pi_input](PiInput)
+/// - [field_input](Field)
+/// - [status_input](Status)
+///
 pub struct Input {
     pub pi_input: PiInput,
     pub field_input: Field,

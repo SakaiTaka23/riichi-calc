@@ -1,3 +1,12 @@
+///
+/// # Types
+///
+/// - [Manzu](TileType::Manzu)
+/// - [Pinzu](TileType::Pinzu)
+/// - [Souzu](TileType::Souzu)
+/// - [Wind](TileType::Wind)
+/// - [Dragon](TileType::Dragon)
+///
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum TileType {
     /// 萬子
@@ -20,6 +29,7 @@ pub enum TileType {
 ///
 /// [number]: #structfield.number
 /// [tile_type]: #structfield.tile_type
+///
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Tile {
     /// - 1~10 for number tile types 10 is used when it is a red tile

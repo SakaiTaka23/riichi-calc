@@ -1,6 +1,14 @@
 use crate::constants::tiles::Tile;
 use std::collections::HashSet;
 
+/// Struct to contain information about the status of the hand that won
+///
+/// # Fields
+///
+/// [riichi](RiichiStatus) - whether the hand is riichi or not
+/// [win_method](WinMethod) - the method of winning
+/// [special_win](SpecialWin) - any special status in the winning hand in a hashset
+///
 #[derive(Clone)]
 pub struct Status {
     pub riichi: RiichiStatus,
@@ -8,6 +16,13 @@ pub struct Status {
     pub special_win: HashSet<SpecialWin>,
 }
 
+///
+/// # Types
+///
+/// - [NoRiichi](RiichiStatus::NoRiichi)
+/// - [Riichi](RiichiStatus::Riichi)
+/// - [DoubleRiichi](RiichiStatus::DoubleRiichi)
+///
 #[derive(Clone, PartialEq, Eq)]
 pub enum RiichiStatus {
     /// リーチなし or ダマ
@@ -22,6 +37,12 @@ pub enum RiichiStatus {
     DoubleRiichi(Vec<Tile>),
 }
 
+///
+/// # Types
+///
+/// - [Ron](WinMethod::Ron)
+/// - [Tumo](WinMethod::Tumo)
+///
 #[derive(Clone, PartialEq, Eq)]
 pub enum WinMethod {
     /// ロン
@@ -30,6 +51,16 @@ pub enum WinMethod {
     Tumo,
 }
 
+///
+/// # Types
+///
+/// - [Ipatu](SpecialWin::Ipatu)
+/// - [Chankan](SpecialWin::Chankan)
+/// - [Rinshan](SpecialWin::Rinshan)
+/// - [Haitei](SpecialWin::Haitei)
+/// - [Hotei](SpecialWin::Hotei)
+/// - [DaiichiTumo](SpecialWin::DaiichiTumo)
+///
 #[derive(Clone, PartialEq, Hash, Eq)]
 pub enum SpecialWin {
     /// 一発

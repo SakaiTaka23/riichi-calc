@@ -1,5 +1,12 @@
 use crate::constants::tiles::Tile;
 
+/// Field struct holds the game state
+///
+/// # Fields
+///
+/// - [zikaze](Zikaze) - self wind
+/// - [bakaze](Bakaze) - field wind
+/// - [dora](Dora) - dora must be the dora itself
 #[derive(Clone)]
 pub struct Field {
     pub zikaze: Zikaze,
