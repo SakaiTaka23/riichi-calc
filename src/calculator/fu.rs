@@ -11,7 +11,7 @@ trait FuBase {
     fn validate(field: &Field, hand: &WinningHand, status: &Status) -> u8;
 }
 
-fn calculate_fu(field: &Field, hand: &WinningHand, status: &Status) -> u8 {
+pub fn calculate_fu(field: &Field, hand: &WinningHand, status: &Status) -> u8 {
     let fu = futei::Futei::validate(field, hand, status)
         + mentsu::Mentsu::validate(field, hand, status)
         + agari::Agari::validate(field, hand, status)
