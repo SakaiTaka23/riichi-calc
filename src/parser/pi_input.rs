@@ -3,7 +3,8 @@ mod hand_creator;
 use crate::constants::hand::{Hand, Mentsu};
 use crate::constants::tiles::{Tile, TileType};
 use crate::parser::pi_input::hand_creator::create_hand;
-use crate::parser::InputBase;
+use crate::parser::ValidationError::{InvalidHand, InvalidTileNumber};
+use crate::parser::{InputBase, ValidationError};
 
 #[derive(Clone)]
 pub struct PiInput {
@@ -24,52 +25,55 @@ struct PiHandColor {
 // TODO convert mentsu to hand to check no tile has more than 4 pieces?
 // TODO check the dora and ura dora as well-to-do this
 impl InputBase for PiInput {
-    fn validate(&self) -> bool {
+    fn validate(&self) -> Result<(), ValidationError> {
         if self.naki.len() * 3 + self.hand.len() != 13 {
-            return false;
+            return Err(InvalidHand("Using too many tiles".to_string()));
         }
 
         for tile in &self.hand {
             if tile.number < 1 {
-                return false;
+                return Err(InvalidTileNumber("Tile number should be greater than or equal to 1".to_string(), tile.number));
             }
             match tile.tile_type {
                 TileType::Wind => {
                     if tile.number > 4 {
-                        return false;
+                        return Err(InvalidTileNumber("Invalid wind number".to_string(), tile.number));
                     }
                 }
                 TileType::Dragon => {
                     if tile.number > 3 {
-                        return false;
+                        return Err(InvalidTileNumber("Invalid dragon number".to_string(), tile.number));
                     }
                 }
                 _ => {
                     if tile.number > 10 {
-                        return false;
+                        return Err(InvalidTileNumber("Invalid number tile number".to_string(), tile.number));
                     }
                 }
             }
         }
 
         if self.naki.len() > 4 {
-            return false;
+            return Err(InvalidHand("Too many naki".to_string()));
         }
 
         for furo in &self.naki {
             match furo {
-                Mentsu::Koutsu(_, x) | Mentsu::Shuntsu(_, x) | Mentsu::Kantsu(_, x) => {
+                Mentsu::Koutsu(_, x) | Mentsu::Shuntsu(_, x) => {
                     if !x {
-                        return false;
+                        return Err(InvalidHand("Unopened koutsu or shuntsu in naki".to_string()));
                     }
                 }
                 Mentsu::Janto(_) => {
-                    return false;
+                    return Err(InvalidHand("Janto cannot be in naki".to_string()));
+                }
+                Mentsu::Kantsu(_, _) => {
+                    continue
                 }
             }
         }
 
-        true
+        Ok(())
     }
 }
 
@@ -149,14 +153,16 @@ impl PiInput {
     }
 }
 
+#[cfg(test)]
 mod validation_test {
+    use crate::constants::hand::Mentsu;
+    use crate::constants::tiles::{Tile, TileType};
+    use crate::parser::pi_input::PiInput;
     use crate::parser::InputBase;
+    use crate::parser::ValidationError::{InvalidHand, InvalidTileNumber};
 
     #[test]
     fn menzen_input() {
-        use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::pi_input::PiInput;
-
         let input = PiInput {
             hand: vec![
                 Tile { number: 1, tile_type: TileType::Manzu, },
@@ -177,15 +183,11 @@ mod validation_test {
             hora: Tile { number: 9, tile_type: TileType::Manzu },
         };
 
-        assert!(input.validate());
+        assert_eq!(input.validate(), Ok(()));
     }
 
     #[test]
     fn furo_input() {
-        use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::pi_input::PiInput;
-        use crate::constants::hand::Mentsu;
-
         let input = PiInput {
             hand: vec![
                 Tile { number: 1, tile_type: TileType::Manzu, },
@@ -205,15 +207,11 @@ mod validation_test {
             hora: Tile { number: 9, tile_type: TileType::Manzu },
         };
 
-        assert!(input.validate());
+        assert_eq!(input.validate(), Ok(()));
     }
 
     #[test]
     fn invalid_pi() {
-        use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::pi_input::PiInput;
-        use crate::constants::hand::Mentsu;
-
         let too_big_suhai_input = PiInput {
             hand: vec![
                 Tile { number: 1, tile_type: TileType::Manzu, },
@@ -233,7 +231,7 @@ mod validation_test {
             hora: Tile { number: 9, tile_type: TileType::Manzu },
         };
 
-        assert!(!too_big_suhai_input.validate());
+        assert_eq!(too_big_suhai_input.validate(), Err(InvalidTileNumber("Invalid number tile number".to_string(), 90)));
 
         let too_big_wind_input = PiInput {
             hand: vec![
@@ -254,7 +252,7 @@ mod validation_test {
             hora: Tile { number: 9, tile_type: TileType::Manzu },
         };
 
-        assert!(!too_big_wind_input.validate());
+        assert_eq!(too_big_wind_input.validate(), Err(InvalidTileNumber("Invalid wind number".to_string(), 9)));
 
         let too_big_dragon_input = PiInput {
             hand: vec![
@@ -275,7 +273,7 @@ mod validation_test {
             hora: Tile { number: 9, tile_type: TileType::Manzu },
         };
 
-        assert!(!too_big_dragon_input.validate());
+        assert_eq!(too_big_dragon_input.validate(), Err(InvalidTileNumber("Invalid dragon number".to_string(), 4)));
 
         let too_small_suhai_input = PiInput {
             hand: vec![
@@ -296,15 +294,11 @@ mod validation_test {
             hora: Tile { number: 9, tile_type: TileType::Manzu },
         };
 
-        assert!(!too_small_suhai_input.validate());
+        assert_eq!(too_small_suhai_input.validate(), Err(InvalidTileNumber("Tile number should be greater than or equal to 1".to_string(), 0)));
     }
 
     #[test]
     fn menzen_naki() {
-        use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::pi_input::PiInput;
-        use crate::constants::hand::Mentsu;
-
         let naki_anko_input = PiInput {
             hand: vec![
                 Tile { number: 1, tile_type: TileType::Manzu, },
@@ -324,7 +318,7 @@ mod validation_test {
             hora: Tile { number: 9, tile_type: TileType::Manzu },
         };
 
-        assert!(!naki_anko_input.validate());
+        assert_eq!(naki_anko_input.validate(), Err(InvalidHand("Unopened koutsu or shuntsu in naki".to_string())));
 
         let naki_janto_input = PiInput {
             hand: vec![
@@ -345,19 +339,19 @@ mod validation_test {
             hora: Tile { number: 9, tile_type: TileType::Manzu },
         };
 
-        assert!(!naki_janto_input.validate());
+        assert_eq!(naki_janto_input.validate(), Err(InvalidHand("Janto cannot be in naki".to_string())));
     }
 }
 
+#[cfg(test)]
 mod convertor_test {
+    use crate::constants::hand::Mentsu::{Janto, Shuntsu};
+    use crate::constants::tiles::{Tile, TileType};
+    use crate::parser::pi_input::PiInput;
     use crate::parser::InputBase;
 
     #[test]
     fn all_shuntsu_pinfu_iipeco() {
-        use crate::constants::hand::Mentsu::{Janto, Shuntsu};
-        use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::pi_input::PiInput;
-
         let input = PiInput {
             hand: vec![
                 Tile { number: 1, tile_type: TileType::Manzu },
@@ -384,16 +378,12 @@ mod convertor_test {
             Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
             Shuntsu(Tile { number: 6, tile_type: TileType::Souzu }, false),
         ]];
-        assert!(input.validate());
+        assert!(input.validate().is_ok());
         assert_eq!(input.to_mentsu(), Some((hand, 0)))
     }
 
     #[test]
     fn all_shuntsu_pinfu_iipeco_red() {
-        use crate::constants::hand::Mentsu::{Janto, Shuntsu};
-        use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::pi_input::PiInput;
-
         let input = PiInput {
             hand: vec![
                 Tile { number: 1, tile_type: TileType::Manzu },
@@ -420,7 +410,7 @@ mod convertor_test {
             Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
             Shuntsu(Tile { number: 6, tile_type: TileType::Souzu }, false),
         ]];
-        assert!(input.validate());
+        assert!(input.validate().is_ok());
         assert_eq!(input.to_mentsu(), Some((hand, 1)))
     }
 }

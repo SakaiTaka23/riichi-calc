@@ -1,13 +1,14 @@
 use crate::constants::field::Field;
-use crate::parser::InputBase;
+use crate::parser::ValidationError::OutOfRange;
+use crate::parser::{InputBase, ValidationError};
 
 impl InputBase for Field {
-    fn validate(&self) -> bool {
+    fn validate(&self) -> Result<(), ValidationError> {
         if self.dora.len() > 4 {
-            return false;
+            return Err(OutOfRange("The number of dora should be less than or equal to 4".to_string()));
         }
 
-        true
+        Ok(())
     }
 }
 
@@ -21,7 +22,7 @@ fn correct_input() {
         bakaze: Bakaze::East,
         dora: vec![Tile { number: 1, tile_type: TileType::Manzu }],
     };
-    assert!(input.validate());
+    assert_eq!(input.validate(), Ok(()));
 }
 
 #[test]
@@ -40,5 +41,5 @@ fn too_many_dora() {
             Tile { number: 1, tile_type: TileType::Manzu }
         ],
     };
-    assert!(!input.validate());
+    assert_eq!(input.validate(), Err(OutOfRange("The number of dora should be less than or equal to 4".to_string())));
 }

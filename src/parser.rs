@@ -7,8 +7,16 @@ mod pi_input;
 mod field_input;
 mod status_input;
 
+#[derive(Debug, PartialEq)]
+pub enum ValidationError {
+    InvalidHand(String),
+    InvalidTileNumber(String, u8),
+    InvalidWinCombination(String, String),
+    OutOfRange(String),
+}
+
 trait InputBase {
-    fn validate(&self) -> bool;
+    fn validate(&self) -> Result<(), ValidationError>;
 }
 
 pub struct ParsedHand {
@@ -24,8 +32,8 @@ pub struct Input {
 }
 
 impl Input {
-    pub fn parse_hand(self) -> Option<Vec<ParsedHand>> {
-        if !self.validate() { return None; }
+    pub fn parse_hand(self) -> Result<Vec<ParsedHand>, ValidationError> {
+        self.validate()?;
 
         let hand_results = self.pi_input.to_mentsu();
         if hand_results.is_none() { return None; }
@@ -56,13 +64,11 @@ impl Input {
 }
 
 impl InputBase for Input {
-    fn validate(&self) -> bool {
-        if !(self.pi_input.validate() &&
-            self.field_input.validate() &&
-            self.status_input.validate()) {
-            return false;
-        }
+    fn validate(&self) -> Result<(), ValidationError> {
+        self.pi_input.validate()?;
+        self.field_input.validate()?;
+        self.status_input.validate()?;
 
-        true
+        Ok(())
     }
 }
