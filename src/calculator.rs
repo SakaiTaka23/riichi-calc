@@ -1,3 +1,3 @@
-pub mod fu;
-mod score;
+mod fu;
+pub mod score;
 mod result;
