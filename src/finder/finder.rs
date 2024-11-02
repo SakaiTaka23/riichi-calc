@@ -5,7 +5,7 @@ use crate::finder::roku_han::roku_han_yaku;
 use crate::finder::ryan_han::ryan_han_yaku;
 use crate::finder::san_han::san_han_yaku;
 use crate::finder::yakuman::yakuman_yaku;
-use crate::parser::input::ParsedHand;
+use crate::parser::ParsedHand;
 
 pub struct Finder {}
 

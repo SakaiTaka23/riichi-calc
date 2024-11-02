@@ -2,8 +2,8 @@ mod hand_creator;
 
 use crate::constants::hand::{Hand, Mentsu};
 use crate::constants::tiles::{Tile, TileType};
-use crate::parser::input_base::InputBase;
 use crate::parser::pi_input::hand_creator::create_hand;
+use crate::parser::InputBase;
 
 #[derive(Clone)]
 pub struct PiInput {
@@ -150,10 +150,11 @@ impl PiInput {
 }
 
 mod validation_test {
+    use crate::parser::InputBase;
+
     #[test]
     fn menzen_input() {
         use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::input_base::InputBase;
         use crate::parser::pi_input::PiInput;
 
         let input = PiInput {
@@ -182,7 +183,6 @@ mod validation_test {
     #[test]
     fn furo_input() {
         use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::input_base::InputBase;
         use crate::parser::pi_input::PiInput;
         use crate::constants::hand::Mentsu;
 
@@ -211,7 +211,6 @@ mod validation_test {
     #[test]
     fn invalid_pi() {
         use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::input_base::InputBase;
         use crate::parser::pi_input::PiInput;
         use crate::constants::hand::Mentsu;
 
@@ -303,7 +302,6 @@ mod validation_test {
     #[test]
     fn menzen_naki() {
         use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::input_base::InputBase;
         use crate::parser::pi_input::PiInput;
         use crate::constants::hand::Mentsu;
 
@@ -352,11 +350,12 @@ mod validation_test {
 }
 
 mod convertor_test {
+    use crate::parser::InputBase;
+
     #[test]
     fn all_shuntsu_pinfu_iipeco() {
         use crate::constants::hand::Mentsu::{Janto, Shuntsu};
         use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::input_base::InputBase;
         use crate::parser::pi_input::PiInput;
 
         let input = PiInput {
@@ -393,7 +392,6 @@ mod convertor_test {
     fn all_shuntsu_pinfu_iipeco_red() {
         use crate::constants::hand::Mentsu::{Janto, Shuntsu};
         use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::input_base::InputBase;
         use crate::parser::pi_input::PiInput;
 
         let input = PiInput {

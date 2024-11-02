@@ -2,7 +2,7 @@ use crate::constants::status::RiichiStatus::{DoubleRiichi, NoRiichi, Riichi};
 use crate::constants::status::SpecialWin::{Chankan, DaiichiTumo, Haitei, Hotei, Ipatu, Rinshan};
 use crate::constants::status::Status;
 use crate::constants::status::WinMethod::{Ron, Tumo};
-use crate::parser::input_base::InputBase;
+use crate::parser::InputBase;
 
 impl InputBase for Status {
     fn validate(&self) -> bool {

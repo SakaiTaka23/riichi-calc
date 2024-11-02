@@ -1,5 +1,5 @@
 use crate::constants::field::Field;
-use crate::parser::input_base::InputBase;
+use crate::parser::InputBase;
 
 impl InputBase for Field {
     fn validate(&self) -> bool {
