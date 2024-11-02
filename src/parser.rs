@@ -1,7 +1,8 @@
 use crate::constants::field::Field;
-use crate::constants::hand::WinningHand;
+use crate::constants::hand::{Mentsu, WinningHand};
 use crate::constants::status::Status;
-use crate::parser::pi_input::PiInput;
+use crate::constants::tiles::Tile;
+use crate::parser::ValidationError::InvalidHand;
 
 mod pi_input;
 mod field_input;
@@ -25,6 +26,13 @@ pub struct ParsedHand {
     pub status: Status,
 }
 
+#[derive(Clone)]
+pub struct PiInput {
+    pub hand: Vec<Tile>,
+    pub naki: Vec<Mentsu>,
+    pub hora: Tile,
+}
+
 pub struct Input {
     pub pi_input: PiInput,
     pub field_input: Field,
@@ -36,7 +44,7 @@ impl Input {
         self.validate()?;
 
         let hand_results = self.pi_input.to_mentsu();
-        if hand_results.is_none() { return None; }
+        if hand_results.is_none() { return Err(InvalidHand("Not a valid winning hand".to_string())); }
         let (hands, red_tiles) = hand_results.unwrap();
 
         let mut result = Vec::new();
@@ -55,11 +63,7 @@ impl Input {
             )
         }
 
-        if result.len() > 0 {
-            Some(result)
-        } else {
-            None
-        }
+        Ok(result)
     }
 }
 

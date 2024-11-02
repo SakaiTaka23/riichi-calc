@@ -189,14 +189,16 @@ fn generate_combinations(candidates: &Vec<u8>) -> Vec<Vec<u8>> {
     combinations
 }
 
+#[cfg(test)]
 mod valid_hand_test {
+    use crate::constants::hand::Hand;
+    use crate::constants::hand::Mentsu::{Janto, Koutsu, Shuntsu};
+    use crate::constants::tiles::{Tile, TileType};
+    use crate::parser::pi_input::hand_creator::create_hand;
+    use crate::parser::pi_input::PiHandColor;
+
     #[test]
     fn all_shuntsu_pinfu_iipeco() {
-        use crate::constants::hand::Mentsu::{Janto, Shuntsu};
-        use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::pi_input::hand_creator::create_hand;
-        use crate::parser::pi_input::PiHandColor;
-
         let colors = &PiHandColor {
             dragon: vec![],
             manzu: vec![1, 2, 3, 1, 2, 3],
@@ -217,12 +219,6 @@ mod valid_hand_test {
 
     #[test]
     fn all_koutsu_suanko() {
-        use crate::constants::hand::Mentsu::{Janto, Koutsu};
-        use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::pi_input::hand_creator::create_hand;
-        use crate::parser::pi_input::PiHandColor;
-        use crate::constants::hand::Hand;
-
         let colors = &PiHandColor {
             dragon: vec![],
             manzu: vec![],
@@ -247,11 +243,6 @@ mod valid_hand_test {
 
     #[test]
     fn anko_bukumi_ryuiso_with_naki() {
-        use crate::constants::hand::Mentsu::{Janto, Koutsu, Shuntsu};
-        use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::pi_input::hand_creator::create_hand;
-        use crate::parser::pi_input::PiHandColor;
-
         let colors = &PiHandColor {
             dragon: vec![2, 2, 2],
             manzu: vec![],
@@ -273,13 +264,14 @@ mod valid_hand_test {
     }
 }
 
+#[cfg(test)]
 mod private_fn_test {
+    use crate::constants::hand::Mentsu::{Koutsu, Shuntsu};
+    use crate::constants::tiles::{Tile, TileType};
+    use crate::parser::pi_input::hand_creator::create_mentu_suhai;
+
     #[test]
     fn shuntsu_from_suhai() {
-        use crate::constants::hand::Mentsu::Shuntsu;
-        use crate::constants::tiles::{Tile, TileType};
-        use crate::parser::pi_input::hand_creator::create_mentu_suhai;
-
         let hand: Vec<u8> = vec![1, 2, 3];
         let hand = create_mentu_suhai(&hand, &TileType::Manzu).unwrap();
         assert_eq!(hand, vec![
@@ -289,11 +281,6 @@ mod private_fn_test {
 
     #[test]
     fn anko_from_suhai() {
-        use crate::constants::hand::Mentsu::Koutsu;
-        use crate::constants::tiles::Tile;
-        use crate::constants::tiles::TileType;
-        use crate::parser::pi_input::hand_creator::create_mentu_suhai;
-
         let hand: Vec<u8> = vec![1, 1, 1];
         let hand = create_mentu_suhai(&hand, &TileType::Manzu).unwrap();
         assert_eq!(hand, vec![
@@ -303,12 +290,6 @@ mod private_fn_test {
 
     #[test]
     fn shuntsu_anko_combination_from_suhai() {
-        use crate::constants::hand::Mentsu::Koutsu;
-        use crate::constants::hand::Mentsu::Shuntsu;
-        use crate::constants::tiles::Tile;
-        use crate::constants::tiles::TileType;
-        use crate::parser::pi_input::hand_creator::create_mentu_suhai;
-
         let hand: Vec<u8> = vec![1, 1, 1, 4, 5, 6];
         let hand = create_mentu_suhai(&hand, &TileType::Manzu).unwrap();
         assert_eq!(hand, vec![
@@ -319,12 +300,6 @@ mod private_fn_test {
 
     #[test]
     fn shuntsu_anko_combination_from_suhai_reverse() {
-        use crate::constants::hand::Mentsu::Koutsu;
-        use crate::constants::hand::Mentsu::Shuntsu;
-        use crate::constants::tiles::Tile;
-        use crate::constants::tiles::TileType;
-        use crate::parser::pi_input::hand_creator::create_mentu_suhai;
-
         let hand: Vec<u8> = vec![4, 5, 6, 7, 7, 7];
         let hand = create_mentu_suhai(&hand, &TileType::Manzu).unwrap();
         assert_eq!(hand, vec![
@@ -335,11 +310,6 @@ mod private_fn_test {
 
     #[test]
     fn anko_from_zihai() {
-        use crate::constants::hand::Mentsu::Koutsu;
-        use crate::constants::tiles::Tile;
-        use crate::constants::tiles::TileType;
-        use crate::parser::pi_input::hand_creator::create_mentu_suhai;
-
         let hand: Vec<u8> = vec![1, 1, 1];
         let hand = create_mentu_suhai(&hand, &TileType::Dragon).unwrap();
         assert_eq!(hand, vec![

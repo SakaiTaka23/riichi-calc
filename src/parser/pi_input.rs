@@ -4,14 +4,7 @@ use crate::constants::hand::{Hand, Mentsu};
 use crate::constants::tiles::{Tile, TileType};
 use crate::parser::pi_input::hand_creator::create_hand;
 use crate::parser::ValidationError::{InvalidHand, InvalidTileNumber};
-use crate::parser::{InputBase, ValidationError};
-
-#[derive(Clone)]
-pub struct PiInput {
-    pub hand: Vec<Tile>,
-    pub naki: Vec<Mentsu>,
-    pub hora: Tile,
-}
+use crate::parser::{InputBase, PiInput, ValidationError};
 
 #[derive(Clone, Debug, Default)]
 struct PiHandColor {
@@ -85,7 +78,7 @@ impl PiInput {
         for head in head_candidate.iter() {
             let hand = create_hand(&mut colors.clone(), head, &self.naki);
             if hand.is_some() {
-                menzen_hand.push(hand?);
+                menzen_hand.push(hand.unwrap());
             }
         }
 
