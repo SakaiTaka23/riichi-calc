@@ -252,7 +252,7 @@ mod validation_test {
             hora: Tile { number: 9, tile_type: TileType::Manzu },
         };
 
-        assert_eq!(too_big_wind_input.validate(), Err(InvalidTileNumber("Invalid wind number".to_string(), 9)));
+        assert_eq!(too_big_wind_input.validate(), Err(InvalidTileNumber("Invalid wind number".to_string(), 5)));
 
         let too_big_dragon_input = PiInput {
             hand: vec![

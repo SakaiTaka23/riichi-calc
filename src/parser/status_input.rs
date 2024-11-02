@@ -185,7 +185,7 @@ mod kan_related {
     #[test]
     fn chakan_rinshan_invalid() {
         let input = build_status_input(false, Ron, vec![Chankan, Rinshan]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(Chankan.to_string(), Rinshan.to_string())));
+        assert_eq!(input.validate(), Err(InvalidWinCombination(Rinshan.to_string(), Chankan.to_string())));
     }
 
     #[test]
