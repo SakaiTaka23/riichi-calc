@@ -28,6 +28,15 @@ fn yakuman_calc(han: u8, win_method: WinMethod) -> ScoreResult {
 }
 
 fn tumo_calc(fu: u8, han: u8) -> ScoreResult {
+    match han {
+        0..=4 => {}
+        5 => return ScoreResult::DealerTumo(4000),
+        6 | 7 => return ScoreResult::DealerTumo(6000),
+        8 | 9 | 10 => return ScoreResult::DealerTumo(8000),
+        11 | 12 => return ScoreResult::DealerTumo(12000),
+        13..=u8::MAX => return ScoreResult::DealerTumo(16000),
+    }
+
     match fu {
         20 => tumo_20fu(han),
         25 => tumo_25fu(han),
@@ -45,6 +54,15 @@ fn tumo_calc(fu: u8, han: u8) -> ScoreResult {
 }
 
 fn ron_calc(fu: u8, han: u8) -> ScoreResult {
+    match han {
+        0..=4 => {}
+        5 => return ScoreResult::Ron(12000),
+        6 | 7 => return ScoreResult::Ron(18000),
+        8 | 9 | 10 => return ScoreResult::Ron(24000),
+        11 | 12 => return ScoreResult::Ron(36000),
+        13..=u8::MAX => return ScoreResult::Ron(48000),
+    }
+
     match fu {
         25 => ron_25fu(han),
         30 => ron_30fu(han),
