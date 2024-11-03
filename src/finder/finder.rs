@@ -7,7 +7,7 @@ use crate::finder::san_han::san_han_yaku;
 use crate::finder::yakuman::yakuman_yaku;
 use crate::parser::ParsedHand;
 
-pub struct Finder {}
+pub struct Finder;
 
 impl Finder {
     pub fn find_hand(parsed_hand: &ParsedHand) -> FoundResult {

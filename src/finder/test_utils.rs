@@ -4,8 +4,8 @@ use crate::constants::status::{RiichiStatus, Status, WinMethod};
 use crate::constants::tiles::{Tile, TileType};
 use rand::{random, Rng};
 use std::collections::HashSet;
-// Hand related utility functions
 
+// Hand related utility functions
 #[cfg(test)]
 const ALL_TILE_VARIANTS: [TileType; 5] = [
     TileType::Manzu,

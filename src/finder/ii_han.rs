@@ -1,7 +1,7 @@
 use crate::constants::field::Field;
 use crate::constants::hand::WinningHand;
 use crate::constants::status::Status;
-use crate::finder::finder_base::YakuBase;
+use crate::finder::finder_base::{YakuBase, YakuValidator};
 use crate::finder::ii_han::bakaze::Bakaze;
 use crate::finder::ii_han::chankan::Chankan;
 use crate::finder::ii_han::chun::Chun;
@@ -35,23 +35,26 @@ mod hotei;
 mod ipatu;
 
 pub fn ii_han_yaku(field: &Field, winning_hand: &WinningHand, status: &Status) -> Vec<(String, u8)> {
-    let mut yaku: Vec<(String, u8)> = Vec::new();
+    let validators: Vec<YakuValidator> = vec![
+        Riichi::validate,
+        Tanyao::validate,
+        Tumo::validate,
+        Zikaze::validate,
+        Bakaze::validate,
+        Haku::validate,
+        Hatu::validate,
+        Chun::validate,
+        Pinfu::validate,
+        IIPeco::validate,
+        Chankan::validate,
+        Rinshan::validate,
+        Haitei::validate,
+        Hotei::validate,
+        Ipatu::validate,
+    ];
 
-    if let Some(y) = Riichi::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Tanyao::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Tumo::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Zikaze::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Bakaze::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Haku::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Hatu::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Chun::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Pinfu::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = IIPeco::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Chankan::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Rinshan::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Haitei::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Hotei::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = Ipatu::validate(field, winning_hand, status) { yaku.push(y); }
-
-    yaku
+    validators
+        .iter()
+        .filter_map(|validator| validator(field, winning_hand, status))
+        .collect()
 }

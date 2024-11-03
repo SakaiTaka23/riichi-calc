@@ -10,7 +10,7 @@ impl YakuBase for DoubleRiichi {
     fn validate(_: &Field, _: &WinningHand, status: &Status) -> Option<(String, u8)> {
         match status.riichi {
             DoubleRiichiStatus(_) => {
-                return Some(("ダブルリーチ".to_string(), 2))
+                Some(("ダブルリーチ".to_string(), 2))
             }
             _ => None
         }
