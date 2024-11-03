@@ -1,4 +1,5 @@
 use crate::constants::tiles::Tile;
+use std::fmt;
 
 ///
 /// # Fields
@@ -36,4 +37,37 @@ pub enum Mentsu {
     Kantsu(Tile, bool),
     /// 雀頭
     Janto(Tile),
+}
+
+impl fmt::Display for Mentsu {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Mentsu::Koutsu(tile, is_open) => {
+                write!(f, "[{}{}{}]{}",
+                       tile, tile, tile,
+                       if *is_open { "!" } else { "" }
+                )
+            }
+            Mentsu::Shuntsu(start_tile, is_open) => {
+                let start_tile = *start_tile;
+                let mut second_tile = start_tile;
+                second_tile.number += 1;
+                let mut third_tile = second_tile;
+                third_tile.number += 1;
+                write!(f, "[{}{}{}]{}",
+                       start_tile, second_tile, third_tile,
+                       if *is_open { "!" } else { "" }
+                )
+            }
+            Mentsu::Kantsu(tile, is_open) => {
+                write!(f, "[{}{}{}{}]{}",
+                       tile, tile, tile, tile,
+                       if *is_open { "!" } else { "" }
+                )
+            }
+            Mentsu::Janto(tile) => {
+                write!(f, "[{}{}]", tile, tile)
+            }
+        }
+    }
 }

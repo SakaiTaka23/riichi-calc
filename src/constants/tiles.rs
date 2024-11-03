@@ -1,3 +1,5 @@
+use std::fmt;
+
 ///
 /// # Types
 ///
@@ -21,6 +23,18 @@ pub enum TileType {
     Dragon,
 }
 
+impl fmt::Display for TileType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            TileType::Manzu => write!(f, "Manzu"),
+            TileType::Pinzu => write!(f, "Pinzu"),
+            TileType::Souzu => write!(f, "Souzu"),
+            TileType::Wind => write!(f, "Wind"),
+            TileType::Dragon => write!(f, "Dragon"),
+        }
+    }
+}
+
 /// represents a single tile
 ///
 /// # Fields
@@ -38,4 +52,10 @@ pub struct Tile {
     pub number: u8,
     /// types in the enum [TileType]
     pub tile_type: TileType,
+}
+
+impl fmt::Display for Tile {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}{}", self.tile_type, self.number)
+    }
 }
