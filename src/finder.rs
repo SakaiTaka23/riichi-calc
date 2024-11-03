@@ -8,3 +8,4 @@ mod yakuman;
 pub mod finder;
 mod dora;
 pub mod result;
+mod test_utils;
