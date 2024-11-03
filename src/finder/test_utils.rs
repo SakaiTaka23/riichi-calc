@@ -6,6 +6,7 @@ use rand::{random, Rng};
 use std::collections::HashSet;
 // Hand related utility functions
 
+#[cfg(test)]
 const ALL_TILE_VARIANTS: [TileType; 5] = [
     TileType::Manzu,
     TileType::Pinzu,
@@ -14,18 +15,20 @@ const ALL_TILE_VARIANTS: [TileType; 5] = [
     TileType::Dragon,
 ];
 
+#[cfg(test)]
 const SUHAI_TILE_VARIANTS: [TileType; 3] = [
     TileType::Manzu,
     TileType::Pinzu,
     TileType::Souzu,
 ];
 
+#[cfg(test)]
 pub fn random_tile_number(tile_type: &TileType) -> u8 {
     match tile_type {
         TileType::Manzu |
         TileType::Pinzu |
         TileType::Souzu => {
-            rand::thread_rng().gen_range(1..=10)
+            rand::thread_rng().gen_range(1..=9)
         }
         TileType::Wind => {
             rand::thread_rng().gen_range(1..=4)
@@ -36,7 +39,8 @@ pub fn random_tile_number(tile_type: &TileType) -> u8 {
     }
 }
 
-fn random_tile() -> Tile {
+#[cfg(test)]
+pub fn random_tile() -> Tile {
     let tile_type = random_tile_type();
     Tile {
         number: random_tile_number(&tile_type),
@@ -44,18 +48,22 @@ fn random_tile() -> Tile {
     }
 }
 
+#[cfg(test)]
 pub fn random_tile_type() -> TileType {
     ALL_TILE_VARIANTS[rand::thread_rng().gen_range(0..ALL_TILE_VARIANTS.len())]
 }
 
+#[cfg(test)]
 pub fn random_suhai_tile_type() -> TileType {
     SUHAI_TILE_VARIANTS[rand::thread_rng().gen_range(0..SUHAI_TILE_VARIANTS.len())]
 }
 
+#[cfg(test)]
 pub fn random_shuntu_number() -> u8 {
     rand::thread_rng().gen_range(1..=7)
 }
 
+#[cfg(test)]
 pub fn random_shuntu(can_be_open: bool) -> Mentsu {
     Mentsu::Shuntsu(
         Tile {
@@ -66,6 +74,7 @@ pub fn random_shuntu(can_be_open: bool) -> Mentsu {
     )
 }
 
+#[cfg(test)]
 pub fn random_koutsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
     let tile_type = if suhai_only { random_suhai_tile_type() } else { random_tile_type() };
     Mentsu::Koutsu(
@@ -77,6 +86,7 @@ pub fn random_koutsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
     )
 }
 
+#[cfg(test)]
 pub fn random_kantsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
     let tile_type = if suhai_only { random_suhai_tile_type() } else { random_tile_type() };
     Mentsu::Kantsu(
@@ -88,6 +98,7 @@ pub fn random_kantsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
     )
 }
 
+#[cfg(test)]
 pub fn random_mentsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
     match random::<u8>() % 3 {
         0 => random_shuntu(can_be_open),
@@ -97,6 +108,7 @@ pub fn random_mentsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
     }
 }
 
+#[cfg(test)]
 pub fn random_janto(suhai_only: bool) -> Mentsu {
     let tile_type = if suhai_only { random_suhai_tile_type() } else { random_tile_type() };
     Mentsu::Janto(
@@ -107,6 +119,7 @@ pub fn random_janto(suhai_only: bool) -> Mentsu {
     )
 }
 
+#[cfg(test)]
 pub fn from_hand(hand: Hand) -> WinningHand {
     WinningHand {
         hand,
@@ -116,7 +129,7 @@ pub fn from_hand(hand: Hand) -> WinningHand {
 }
 
 // Field related utility functions
-
+#[cfg(test)]
 pub fn random_wind() -> Wind {
     match random::<u8>() % 4 {
         0 => Wind::East,
@@ -127,6 +140,7 @@ pub fn random_wind() -> Wind {
     }
 }
 
+#[cfg(test)]
 pub fn random_field() -> Field {
     Field {
         zikaze: random_wind(),
@@ -136,7 +150,7 @@ pub fn random_field() -> Field {
 }
 
 // status related utility functions
-
+#[cfg(test)]
 pub fn random_status() -> Status {
     let riichi = match random::<u8>() % 3 {
         0 => RiichiStatus::NoRiichi,

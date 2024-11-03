@@ -41,9 +41,9 @@ mod valid {
                 Tile { tile_type: TileType::Wind, number: 1 },
                 random(),
             ),
-            random_mentsu(true, false),
-            random_mentsu(true, false),
-            random_mentsu(true, false),
+            random_mentsu(true, true),
+            random_mentsu(true, true),
+            random_mentsu(true, true),
             random_janto(false),
         ];
         assert_eq!(Bakaze::validate(&field, &from_hand(hand), &random_status()), Some(("役牌:場風牌".to_string(), 1)), "{:?}", hand);
@@ -67,10 +67,10 @@ mod invalid {
             Mentsu::Janto(
                 Tile { tile_type: TileType::Wind, number: 1 },
             ),
-            random_mentsu(true, false),
-            random_mentsu(true, false),
-            random_mentsu(true, false),
-            random_mentsu(true, false),
+            random_mentsu(true, true),
+            random_mentsu(true, true),
+            random_mentsu(true, true),
+            random_mentsu(true, true),
         ];
         assert_eq!(Bakaze::validate(&field, &from_hand(hand), &random_status()), None, "{:?}", hand);
     }

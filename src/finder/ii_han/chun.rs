@@ -36,9 +36,9 @@ mod valid {
                 Tile { tile_type: TileType::Dragon, number: 3 },
                 random(),
             ),
-            random_mentsu(true, false),
-            random_mentsu(true, false),
-            random_mentsu(true, false),
+            random_mentsu(true, true),
+            random_mentsu(true, true),
+            random_mentsu(true, true),
             random_janto(false),
         ];
         let winning_hand = from_hand(hand);
@@ -62,10 +62,10 @@ mod invalid {
             Mentsu::Janto(
                 Tile { tile_type: TileType::Dragon, number: 3 },
             ),
-            random_mentsu(true, false),
-            random_mentsu(true, false),
-            random_mentsu(true, false),
-            random_mentsu(true, false),
+            random_mentsu(true, true),
+            random_mentsu(true, true),
+            random_mentsu(true, true),
+            random_mentsu(true, true),
         ];
         let winning_hand = from_hand(hand);
         let status = random_status();
