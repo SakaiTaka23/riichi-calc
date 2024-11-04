@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use crate::constants::field::{Field, Wind};
 use crate::constants::hand::{Hand, Mentsu, WinningHand};
 use crate::constants::status::{RiichiStatus, Status, WinMethod};
