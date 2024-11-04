@@ -43,7 +43,7 @@ mod valid {
 mod invalid {
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::chankan::Chankan;
-    use crate::finder::test_utils::{from_hand, random_field, random_mentsu, random_status};
+    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_status};
 
     #[test]
     fn invalid_chankan() {
@@ -53,7 +53,7 @@ mod invalid {
             random_mentsu(true, false),
             random_mentsu(true, false),
             random_mentsu(true, false),
-            random_mentsu(true, false),
+            random_janto(false),
         ];
         let winning_hand = from_hand(hand);
         let status = random_status();
