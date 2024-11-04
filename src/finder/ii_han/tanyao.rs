@@ -1,10 +1,8 @@
 use crate::constants::field::Field;
 use crate::constants::hand::{Mentsu, WinningHand};
 use crate::constants::status::Status;
-use crate::constants::tiles::{Tile, TileType};
+use crate::constants::tiles::TileType;
 use crate::finder::finder_base::YakuBase;
-use crate::finder::test_utils::random_suhai_tile_type;
-use rand::{random, Rng};
 
 pub struct Tanyao;
 
@@ -26,32 +24,39 @@ impl YakuBase for Tanyao {
     }
 }
 
-#[allow(dead_code)]
-fn generate_chuchan_pi_mentsu() -> Mentsu {
-    let tile_type = random_suhai_tile_type();
-    match random::<u8>() % 3 {
-        0 => Mentsu::Shuntsu(
-            Tile {
-                number: rand::thread_rng().gen_range(2..=6),
-                tile_type,
-            },
-            random(),
-        ),
-        1 => Mentsu::Koutsu(
-            Tile {
-                number: rand::thread_rng().gen_range(2..=8),
-                tile_type,
-            },
-            random(),
-        ),
-        2 => Mentsu::Kantsu(
-            Tile {
-                number: rand::thread_rng().gen_range(2..=8),
-                tile_type,
-            },
-            random(),
-        ),
-        _ => unreachable!(),
+#[cfg(test)]
+mod tanyao_test_util {
+    use crate::constants::hand::Mentsu;
+    use crate::constants::tiles::Tile;
+    use crate::finder::test_utils::random_suhai_tile_type;
+    use rand::{random, Rng};
+
+    pub fn generate_chuchan_pi_mentsu() -> Mentsu {
+        let tile_type = random_suhai_tile_type();
+        match random::<u8>() % 3 {
+            0 => Mentsu::Shuntsu(
+                Tile {
+                    number: rand::thread_rng().gen_range(2..=6),
+                    tile_type,
+                },
+                random(),
+            ),
+            1 => Mentsu::Koutsu(
+                Tile {
+                    number: rand::thread_rng().gen_range(2..=8),
+                    tile_type,
+                },
+                random(),
+            ),
+            2 => Mentsu::Kantsu(
+                Tile {
+                    number: rand::thread_rng().gen_range(2..=8),
+                    tile_type,
+                },
+                random(),
+            ),
+            _ => unreachable!(),
+        }
     }
 }
 
@@ -60,7 +65,8 @@ mod valid {
     use crate::constants::hand::Mentsu;
     use crate::constants::tiles::Tile;
     use crate::finder::finder_base::YakuBase;
-    use crate::finder::ii_han::tanyao::{generate_chuchan_pi_mentsu, Tanyao};
+    use crate::finder::ii_han::tanyao::tanyao_test_util::generate_chuchan_pi_mentsu;
+    use crate::finder::ii_han::tanyao::Tanyao;
     use crate::finder::test_utils::{from_hand, random_field, random_status, random_suhai_tile_type};
     use rand::Rng;
 
@@ -85,7 +91,8 @@ mod invalid {
     use crate::constants::hand::Mentsu;
     use crate::constants::tiles::{Tile, TileType};
     use crate::finder::finder_base::YakuBase;
-    use crate::finder::ii_han::tanyao::{generate_chuchan_pi_mentsu, Tanyao};
+    use crate::finder::ii_han::tanyao::tanyao_test_util::generate_chuchan_pi_mentsu;
+    use crate::finder::ii_han::tanyao::Tanyao;
     use crate::finder::test_utils::{from_hand, random_field, random_status, random_suhai_tile_type};
     use rand::{random, Rng};
 
