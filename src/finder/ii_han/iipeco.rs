@@ -22,11 +22,11 @@ impl YakuBase for IIPeco {
         }
 
         let unique_shuntu: HashSet<Mentsu> = shuntu.clone().into_iter().collect();
-        if unique_shuntu.len() != shuntu.len() {
-            return Some(("一盃口".to_string(), 1));
+        if unique_shuntu.len() != 1 {
+            return None;
         }
 
-        None
+        Some(("一盃口".to_string(), 1))
     }
 }
 
@@ -51,9 +51,18 @@ mod valid {
         let status = random_status();
         assert_eq!(IIPeco::validate(&field, &winning_hand, &status), Some(("一盃口".to_string(), 1)), "{:?}", hand);
     }
+}
+
+#[cfg(test)]
+mod invalid {
+    use crate::constants::hand::Mentsu;
+    use crate::constants::tiles::{Tile, TileType};
+    use crate::finder::finder_base::YakuBase;
+    use crate::finder::ii_han::iipeco::IIPeco;
+    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_koutsu, random_mentsu, random_shuntu, random_shuntu_number, random_status, random_tile_type};
 
     #[test]
-    fn valid_with_ryanpeko() {
+    fn ryanpeko() {
         let random_shuntsu_1 = random_shuntu(false);
         let random_shuntsu_2 = random_shuntu(false);
         let hand = [
@@ -66,17 +75,8 @@ mod valid {
         let winning_hand = from_hand(hand);
         let field = random_field();
         let status = random_status();
-        assert_eq!(IIPeco::validate(&field, &winning_hand, &status), Some(("一盃口".to_string(), 1)), "{:?}", hand);
+        assert_eq!(IIPeco::validate(&field, &winning_hand, &status), None, "{:?}", hand);
     }
-}
-
-#[cfg(test)]
-mod invalid {
-    use crate::constants::hand::Mentsu;
-    use crate::constants::tiles::{Tile, TileType};
-    use crate::finder::finder_base::YakuBase;
-    use crate::finder::ii_han::iipeco::IIPeco;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_koutsu, random_mentsu, random_shuntu_number, random_status, random_tile_type};
 
     #[test]
     fn open_iipeco() {
