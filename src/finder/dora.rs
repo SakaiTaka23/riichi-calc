@@ -1,19 +1,22 @@
 use crate::constants::field::Field;
 use crate::constants::hand::WinningHand;
 use crate::constants::status::Status;
-use crate::finder::finder_base::YakuBase;
+use crate::finder::finder_base::{YakuBase, YakuValidator};
 
 mod aka;
 mod omote;
 mod ura;
 mod dora_finder;
 
-pub fn dora_count(field: &Field, hand: &WinningHand, status: &Status) -> Vec<(String, u8)> {
-    let mut dora = Vec::new();
+pub fn dora_count(field: &Field, winning_hand: &WinningHand, status: &Status) -> Vec<(String, u8)> {
+    let validators: Vec<YakuValidator> = vec![
+        aka::Aka::validate,
+        omote::Omote::validate,
+        ura::Ura::validate,
+    ];
 
-    if let Some(y) = aka::Aka::validate(field, hand, status) { dora.push(y); }
-    if let Some(y) = omote::Omote::validate(field, hand, status) { dora.push(y); }
-    if let Some(y) = ura::Ura::validate(field, hand, status) { dora.push(y); }
-
-    dora
+    validators
+        .iter()
+        .filter_map(|validator| validator(field, winning_hand, status))
+        .collect()
 }
