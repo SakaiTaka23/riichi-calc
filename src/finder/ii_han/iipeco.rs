@@ -22,7 +22,7 @@ impl YakuBase for IIPeco {
         }
 
         let unique_shuntu: HashSet<Mentsu> = shuntu.clone().into_iter().collect();
-        if unique_shuntu.len() != 1 {
+        if shuntu.len() - unique_shuntu.len() != 1 {
             return None;
         }
 
@@ -32,6 +32,7 @@ impl YakuBase for IIPeco {
 
 #[cfg(test)]
 mod valid {
+    use crate::constants::hand::Mentsu;
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::iipeco::IIPeco;
     use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_shuntu, random_status};
@@ -39,6 +40,22 @@ mod valid {
     #[test]
     fn valid_iipeco() {
         let random_shuntsu = random_shuntu(false);
+        let mut random_mentsu_1: Mentsu;
+        let mut random_mentsu_2: Mentsu;
+
+        loop {
+            random_mentsu_1 = random_mentsu(false, false);
+            random_mentsu_2 = random_mentsu(false, false);
+
+            if random_mentsu_1 == random_mentsu_2 {
+                continue;
+            }
+            if random_mentsu_1 == random_shuntsu || random_mentsu_2 == random_shuntsu {
+                continue;
+            }
+            break;
+        }
+
         let hand = [
             random_shuntsu,
             random_shuntsu,
