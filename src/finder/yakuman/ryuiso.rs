@@ -4,7 +4,7 @@ use crate::constants::status::Status;
 use crate::constants::tiles::{Tile, TileType};
 use crate::finder::finder_base::YakuBase;
 
-pub struct Ryuiso {}
+pub struct Ryuiso;
 
 impl YakuBase for Ryuiso {
     fn validate(_: &Field, hand: &WinningHand, _: &Status) -> Option<(String, u8)> {
@@ -53,5 +53,49 @@ impl Ryuiso {
         } else {
             false
         }
+    }
+}
+
+#[cfg(test)]
+mod valid {
+    use crate::constants::hand::Mentsu;
+    use crate::constants::tiles::{Tile, TileType};
+    use crate::finder::finder_base::YakuBase;
+    use crate::finder::test_utils::{from_hand, random_field, random_status};
+    use crate::finder::yakuman::ryuiso::Ryuiso;
+    use rand::random;
+
+    #[test]
+    fn valid_ryuiso() {
+        let hand = [
+            Mentsu::Shuntsu(Tile { tile_type: TileType::Souzu, number: 2 }, random()),
+            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 3 }, random()),
+            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 6 }, random()),
+            Mentsu::Kantsu(Tile { tile_type: TileType::Souzu, number: 8 }, random()),
+            Mentsu::Janto(Tile { tile_type: TileType::Dragon, number: 2 }),
+        ];
+        assert_eq!(Ryuiso::validate(&random_field(), &from_hand(hand), &random_status()), Some(("緑一色".to_string(), 1)), "{:?}", hand);
+    }
+}
+
+#[cfg(test)]
+mod invalid {
+    use crate::constants::hand::Mentsu;
+    use crate::constants::tiles::{Tile, TileType};
+    use crate::finder::finder_base::YakuBase;
+    use crate::finder::test_utils::{from_hand, random_field, random_status};
+    use crate::finder::yakuman::ryuiso::Ryuiso;
+    use rand::random;
+
+    #[test]
+    fn using_iiso() {
+        let hand = [
+            Mentsu::Shuntsu(Tile { tile_type: TileType::Souzu, number: 2 }, random()),
+            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 3 }, random()),
+            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 1 }, random()),
+            Mentsu::Kantsu(Tile { tile_type: TileType::Souzu, number: 8 }, random()),
+            Mentsu::Janto(Tile { tile_type: TileType::Dragon, number: 2 }),
+        ];
+        assert_eq!(Ryuiso::validate(&random_field(), &from_hand(hand), &random_status()), None, "{:?}", hand);
     }
 }

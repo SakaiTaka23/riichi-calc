@@ -1,7 +1,7 @@
 use crate::constants::field::Field;
 use crate::constants::hand::WinningHand;
 use crate::constants::status::Status;
-use crate::finder::finder_base::YakuBase;
+use crate::finder::finder_base::{YakuBase, YakuValidator};
 
 mod tenho;
 mod chiho;
@@ -15,18 +15,21 @@ mod sukantu;
 mod churen;
 
 pub fn yakuman_yaku(field: &Field, winning_hand: &WinningHand, status: &Status) -> Vec<(String, u8)> {
-    let mut yaku = Vec::new();
+    let validators: Vec<YakuValidator> = vec![
+        tenho::Tenho::validate,
+        chiho::Chiho::validate,
+        daisangen::Daisangen::validate,
+        suanko::Suanko::validate,
+        tuiso::Tuiso::validate,
+        ryuiso::Ryuiso::validate,
+        chinroto::ChinRoto::validate,
+        shosushi::Shosushi::validate,
+        sukantu::Sukantu::validate,
+        churen::Churen::validate
+    ];
 
-    if let Some(y) = tenho::Tenho::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = chiho::Chiho::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = daisangen::Daisangen::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = suanko::Suanko::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = tuiso::Tuiso::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = ryuiso::Ryuiso::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = chinroto::ChinRoto::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = shosushi::Shosushi::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = sukantu::Sukantu::validate(field, winning_hand, status) { yaku.push(y); }
-    if let Some(y) = churen::Churen::validate(field, winning_hand, status) { yaku.push(y); }
-
-    yaku
+    validators
+        .iter()
+        .filter_map(|validator| validator(field, winning_hand, status))
+        .collect()
 }
