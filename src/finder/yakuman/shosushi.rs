@@ -71,7 +71,7 @@ mod valid {
             Mentsu::Koutsu(Tile { tile_type: TileType::Wind, number: 2 }, random()),
             Mentsu::Koutsu(Tile { tile_type: TileType::Wind, number: 3 }, random()),
             Mentsu::Koutsu(Tile { tile_type: TileType::Wind, number: 4 }, random()),
-            random_janto(false),
+            random_janto(true),
         ];
 
         assert_eq!(Shosushi::validate(&random_field(), &from_hand(hand), &random_status()), Some(("大四喜".to_string(), 2)), "{:?}", hand);

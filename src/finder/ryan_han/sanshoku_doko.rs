@@ -26,7 +26,7 @@ impl YakuBase for SanshokuDoko {
         for number in suhai.clone() {
             let count = count_u8_in_vec(number, &suhai);
             if count == 3 {
-                return Some(("三色同順".to_string(), 2));
+                return Some(("三色同刻".to_string(), 2));
             }
         }
 
@@ -44,7 +44,7 @@ mod valid {
     use crate::constants::tiles::{Tile, TileType};
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ryan_han::sanshoku_doko::SanshokuDoko;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_status};
+    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_shuntu, random_status};
     use rand::{random, Rng};
 
     #[test]
@@ -54,11 +54,11 @@ mod valid {
             Mentsu::Koutsu(Tile { tile_type: TileType::Manzu, number: kotu_number }, random()),
             Mentsu::Koutsu(Tile { tile_type: TileType::Pinzu, number: kotu_number }, random()),
             Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: kotu_number }, random()),
-            random_mentsu(true, true),
+            random_shuntu(true),
             random_janto(false),
         ];
 
-        assert_eq!(SanshokuDoko::validate(&random_field(), &from_hand(hand), &random_status()), Some(("三色同順".to_string(), 2)), "{:?}", hand);
+        assert_eq!(SanshokuDoko::validate(&random_field(), &from_hand(hand), &random_status()), Some(("三色同刻".to_string(), 2)), "{:?}", hand);
     }
 }
 

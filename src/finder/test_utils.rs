@@ -76,6 +76,16 @@ pub fn random_shuntu(can_be_open: bool) -> Mentsu {
 }
 
 #[cfg(test)]
+pub fn random_shuntu_unique(can_be_open: bool, existing: Vec<Mentsu>) -> Mentsu {
+    loop {
+        let shuntu = random_shuntu(can_be_open);
+        if !existing.contains(&shuntu) {
+            return shuntu;
+        }
+    }
+}
+
+#[cfg(test)]
 pub fn random_koutsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
     let tile_type = if suhai_only { random_suhai_tile_type() } else { random_tile_type() };
     Mentsu::Koutsu(
@@ -85,6 +95,16 @@ pub fn random_koutsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
         },
         if can_be_open { random() } else { false },
     )
+}
+
+#[cfg(test)]
+pub fn random_koutsu_unique(can_be_open: bool, suhai_only: bool, existing: Vec<Mentsu>) -> Mentsu {
+    loop {
+        let koutsu = random_koutsu(can_be_open, suhai_only);
+        if !existing.contains(&koutsu) {
+            return koutsu;
+        }
+    }
 }
 
 #[cfg(test)]
@@ -106,6 +126,16 @@ pub fn random_mentsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
         1 => random_koutsu(can_be_open, suhai_only),
         2 => random_kantsu(can_be_open, suhai_only),
         _ => unreachable!(),
+    }
+}
+
+#[cfg(test)]
+pub fn random_mentsu_unique(can_be_open: bool, suhai_only: bool, existing: Vec<Mentsu>) -> Mentsu {
+    loop {
+        let mentsu = random_mentsu(can_be_open, suhai_only);
+        if !existing.contains(&mentsu) {
+            return mentsu;
+        }
     }
 }
 

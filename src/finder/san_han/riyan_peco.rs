@@ -28,6 +28,12 @@ impl YakuBase for RiyanPeco {
         if unique_shuntu.len() != 2 {
             return None;
         }
+        let unique_shuntu = unique_shuntu.into_iter().collect::<Vec<Mentsu>>();
+        let count1 = shuntu.iter().filter(|&&x| x == unique_shuntu[0]).count();
+        let count2 = shuntu.iter().filter(|&&x| x == unique_shuntu[1]).count();
+        if count1 != 2 || count2 != 2 {
+            return None;
+        }
 
         Some(("二盃口".to_string(), 3))
     }
@@ -63,7 +69,7 @@ mod valid {
 mod invalid {
     use crate::finder::finder_base::YakuBase;
     use crate::finder::san_han::riyan_peco::RiyanPeco;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_shuntu, random_status};
+    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_shuntu, random_shuntu_unique, random_status};
 
     #[test]
     fn iipeco() {
@@ -73,6 +79,22 @@ mod invalid {
             random_shuntsu,
             random_mentsu(false, false),
             random_mentsu(false, false),
+            random_janto(false),
+        ];
+        let winning_hand = from_hand(hand);
+        let field = random_field();
+        let status = random_status();
+        assert_eq!(RiyanPeco::validate(&field, &winning_hand, &status), None, "{:?}", hand);
+    }
+
+    #[test]
+    fn sananko_type() {
+        let random_shuntsu = random_shuntu(false);
+        let hand = [
+            random_shuntsu,
+            random_shuntsu,
+            random_shuntsu,
+            random_shuntu_unique(false, vec![random_shuntsu]),
             random_janto(false),
         ];
         let winning_hand = from_hand(hand);

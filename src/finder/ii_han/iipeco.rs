@@ -32,35 +32,21 @@ impl YakuBase for IIPeco {
 
 #[cfg(test)]
 mod valid {
-    use crate::constants::hand::Mentsu;
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::iipeco::IIPeco;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_shuntu, random_status};
+    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu_unique, random_shuntu, random_status};
 
     #[test]
     fn valid_iipeco() {
         let random_shuntsu = random_shuntu(false);
-        let mut random_mentsu_1: Mentsu;
-        let mut random_mentsu_2: Mentsu;
-
-        loop {
-            random_mentsu_1 = random_mentsu(false, false);
-            random_mentsu_2 = random_mentsu(false, false);
-
-            if random_mentsu_1 == random_mentsu_2 {
-                continue;
-            }
-            if random_mentsu_1 == random_shuntsu || random_mentsu_2 == random_shuntsu {
-                continue;
-            }
-            break;
-        }
+        let random_mentsu_1 = random_mentsu_unique(false, false, vec![random_shuntsu.clone()]);
+        let random_mentsu_2 = random_mentsu_unique(false, false, vec![random_shuntsu.clone(), random_mentsu_1.clone()]);
 
         let hand = [
             random_shuntsu,
             random_shuntsu,
-            random_mentsu(false, false),
-            random_mentsu(false, false),
+            random_mentsu_1,
+            random_mentsu_2,
             random_janto(false),
         ];
         let winning_hand = from_hand(hand);
@@ -76,12 +62,12 @@ mod invalid {
     use crate::constants::tiles::{Tile, TileType};
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::iipeco::IIPeco;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_koutsu, random_mentsu, random_shuntu, random_shuntu_number, random_status, random_tile_type};
+    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_koutsu, random_mentsu, random_shuntu, random_shuntu_number, random_shuntu_unique, random_status, random_tile_type};
 
     #[test]
     fn ryanpeko() {
         let random_shuntsu_1 = random_shuntu(false);
-        let random_shuntsu_2 = random_shuntu(false);
+        let random_shuntsu_2 = random_shuntu_unique(false, vec![random_shuntsu_1.clone()]);
         let hand = [
             random_shuntsu_1,
             random_shuntsu_1,

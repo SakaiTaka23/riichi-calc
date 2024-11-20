@@ -38,22 +38,40 @@ impl YakuBase for Suanko {
 }
 
 #[cfg(test)]
+mod util {
+    use crate::constants::hand::{Hand, Mentsu};
+    use crate::finder::test_utils::{random_janto, random_koutsu_unique};
+
+    pub fn generate_hand() -> Hand {
+        let anko1 = random_koutsu_unique(false, false, vec![]);
+        let anko2 = random_koutsu_unique(false, false, vec![anko1]);
+        let anko3 = random_koutsu_unique(false, false, vec![anko1, anko2]);
+        let anko4 = random_koutsu_unique(false, false, vec![anko1, anko2, anko3]);
+        let mut janto: Mentsu;
+        loop {
+            janto = random_janto(false);
+            if !vec![anko1.tile(), anko2.tile(), anko3.tile(), anko4.tile()].contains(&janto.tile()) {
+                break;
+            }
+        }
+
+        [anko1, anko2, anko3, anko4, janto]
+    }
+}
+
+
+#[cfg(test)]
 mod valid {
     use crate::constants::hand::WinningHand;
     use crate::constants::status::WinMethod;
     use crate::finder::finder_base::YakuBase;
-    use crate::finder::test_utils::{random_field, random_janto, random_kantsu, random_koutsu, random_status};
+    use crate::finder::test_utils::{random_field, random_status};
+    use crate::finder::yakuman::suanko::util::generate_hand;
     use crate::finder::yakuman::suanko::Suanko;
 
     #[test]
     fn valid_suanko() {
-        let hand = [
-            random_koutsu(false, false),
-            random_koutsu(false, false),
-            random_kantsu(false, false),
-            random_koutsu(false, false),
-            random_janto(false)
-        ];
+        let hand = generate_hand();
         let winning_hand = WinningHand { hand, winning_tile: hand[0].tile(), red_tile: 0 };
         let mut status = random_status();
         status.win_method = WinMethod::Tumo;
@@ -63,13 +81,7 @@ mod valid {
 
     #[test]
     fn valid_suanko_tanki() {
-        let hand = [
-            random_koutsu(false, false),
-            random_koutsu(false, false),
-            random_kantsu(false, false),
-            random_koutsu(false, false),
-            random_janto(false)
-        ];
+        let hand = generate_hand();
         let winning_hand = WinningHand { hand, winning_tile: hand[4].tile(), red_tile: 0 };
         let status = random_status();
 
@@ -82,18 +94,13 @@ mod invalid {
     use crate::constants::hand::WinningHand;
     use crate::constants::status::WinMethod;
     use crate::finder::finder_base::YakuBase;
-    use crate::finder::test_utils::{random_field, random_janto, random_kantsu, random_koutsu, random_status};
+    use crate::finder::test_utils::{random_field, random_status};
+    use crate::finder::yakuman::suanko::util::generate_hand;
     use crate::finder::yakuman::suanko::Suanko;
 
     #[test]
     fn ron_suanko() {
-        let hand = [
-            random_koutsu(false, false),
-            random_koutsu(false, false),
-            random_kantsu(false, false),
-            random_koutsu(false, false),
-            random_janto(false)
-        ];
+        let hand = generate_hand();
         let winning_hand = WinningHand { hand, winning_tile: hand[0].tile(), red_tile: 0 };
         let mut status = random_status();
         status.win_method = WinMethod::Ron;

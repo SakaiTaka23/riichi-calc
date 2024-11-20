@@ -15,7 +15,7 @@ impl YakuBase for SanshokuDojun {
 
         for mentsu in manzu_start_numbers {
             if pinzu_start_numbers.contains(&mentsu) && sozu_start_numbers.contains(&mentsu) {
-                return check_kuisagari(&hand.hand, "三色同刻".to_string(), 2);
+                return check_kuisagari(&hand.hand, "三色同順".to_string(), 2);
             }
         }
 
@@ -57,7 +57,7 @@ mod valid {
             random_janto(false),
         ];
 
-        assert_eq!(SanshokuDojun::validate(&random_field(), &from_hand(hand), &random_status()), Some(("三色同刻".to_string(), 2)), "{:?}", hand);
+        assert_eq!(SanshokuDojun::validate(&random_field(), &from_hand(hand), &random_status()), Some(("三色同順".to_string(), 2)), "{:?}", hand);
     }
 
     #[test]
@@ -71,7 +71,7 @@ mod valid {
             random_janto(false),
         ];
 
-        assert_eq!(SanshokuDojun::validate(&random_field(), &from_hand(hand), &random_status()), Some(("三色同刻".to_string(), 1)), "{:?}", hand);
+        assert_eq!(SanshokuDojun::validate(&random_field(), &from_hand(hand), &random_status()), Some(("三色同順".to_string(), 1)), "{:?}", hand);
     }
 }
 
