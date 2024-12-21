@@ -1,5 +1,5 @@
 use crate::calculator;
-use crate::calculator::result::ScoreResult;
+use crate::calculator::result::{Points, ScoreResult};
 use crate::constants::hand::WinningHand;
 use crate::core::CalcError::{HandValidationError, NoYakuError};
 use crate::finder::finder;
@@ -61,9 +61,9 @@ fn get_highest(results: Outputs) -> Output {
     let mut result_sum: HashMap<u32, Output> = HashMap::new();
 
     for result in results {
-        let sum = match result.score_result {
-            ScoreResult::ChildTumo(x, y) => x * 2 + y,
-            ScoreResult::DealerTumo(x) | ScoreResult::Ron(x) => x,
+        let sum = match result.score_result.points {
+            Points::ChildTumo(x, y) => x * 2 + y,
+            Points::DealerTumo(x) | Points::Ron(x) => x,
         };
 
         result_sum.insert(sum, result);

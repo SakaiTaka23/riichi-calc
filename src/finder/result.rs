@@ -22,11 +22,11 @@ impl FoundResult {
     pub fn count_yaku(&self) -> u8 {
         match self {
             FoundResult::FoundYaku(yaku) => {
-                yaku.dora.len() as u8
+                yaku.dora.iter().map(|(_, value)| value).sum::<u8>()
                     + yaku.ii_han.len() as u8
-                    + yaku.ryan_han.len() as u8
-                    + yaku.san_han.len() as u8
-                    + yaku.roku_han.len() as u8
+                    + yaku.ryan_han.iter().map(|(_, value)| value).sum::<u8>()
+                    + yaku.san_han.iter().map(|(_, value)| value).sum::<u8>()
+                    + yaku.roku_han.iter().map(|(_, value)| value).sum::<u8>()
             }
             FoundResult::FoundYakuman(yakuaman) => yakuaman.yakuman.len() as u8,
         }
