@@ -24,6 +24,11 @@ pub struct Output {
 type Outputs = Vec<Output>;
 
 impl Input {
+    /// calculate the score of the hand
+    ///
+    /// outputs [Output] if success
+    ///
+    /// outputs [CalcError] if fails
     pub fn calc_hand(self) -> Result<Output, CalcError> {
         let hands = self.parse_hand();
         if hands.is_err() {

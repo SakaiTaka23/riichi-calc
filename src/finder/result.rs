@@ -1,3 +1,4 @@
+/// represents which yaku was found
 #[derive(Debug)]
 pub enum FoundResult {
     FoundYaku(FoundYaku),
