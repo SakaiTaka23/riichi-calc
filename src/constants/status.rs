@@ -9,7 +9,7 @@ use std::collections::HashSet;
 /// [win_method](WinMethod) - the method of winning
 /// [special_win](SpecialWin) - any special status in the winning hand in a hashset
 ///
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Status {
     pub riichi: RiichiStatus,
     pub win_method: WinMethod,
@@ -23,16 +23,16 @@ pub struct Status {
 /// - [Riichi](RiichiStatus::Riichi)
 /// - [DoubleRiichi](RiichiStatus::DoubleRiichi)
 ///
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RiichiStatus {
     /// リーチなし or ダマ
     NoRiichi,
-    /// リーチ 
-    /// - takes uradora info as vector 
+    /// リーチ
+    /// - takes uradora info as vector
     /// - length: 1~4
     Riichi(Vec<Tile>),
     /// ダブルリーチ
-    /// - takes uradora info as vector 
+    /// - takes uradora info as vector
     /// - length: 1~4
     DoubleRiichi(Vec<Tile>),
 }
@@ -43,7 +43,7 @@ pub enum RiichiStatus {
 /// - [Ron](WinMethod::Ron)
 /// - [Tumo](WinMethod::Tumo)
 ///
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum WinMethod {
     /// ロン
     Ron,
@@ -61,7 +61,7 @@ pub enum WinMethod {
 /// - [Hotei](SpecialWin::Hotei)
 /// - [DaiichiTumo](SpecialWin::DaiichiTumo)
 ///
-#[derive(Clone, PartialEq, Hash, Eq)]
+#[derive(Debug, Clone, PartialEq, Hash, Eq)]
 pub enum SpecialWin {
     /// 一発
     /// - cannot be combined with `Rinshan`

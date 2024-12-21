@@ -7,14 +7,14 @@ use crate::constants::tiles::Tile;
 /// - [zikaze](Zikaze) - self wind
 /// - [bakaze](Bakaze) - field wind
 /// - [dora](Dora) - dora must be the dora itself
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Field {
     pub zikaze: Zikaze,
     pub bakaze: Bakaze,
     pub dora: Dora,
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Wind {
     East = 1,
     South = 2,

@@ -20,6 +20,7 @@ trait InputBase {
     fn validate(&self) -> Result<(), ValidationError>;
 }
 
+#[derive(Debug)]
 pub struct ParsedHand {
     pub field: Field,
     pub winning_hand: WinningHand,

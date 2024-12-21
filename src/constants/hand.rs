@@ -8,6 +8,7 @@ use std::fmt;
 /// - [winning_tile](Tile) - the winning tile
 /// - [red_tile](u8) - number red tile in the hand
 ///
+#[derive(Debug)]
 pub struct WinningHand {
     pub hand: Hand,
     pub winning_tile: Tile,
@@ -43,9 +44,13 @@ impl fmt::Display for Mentsu {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Mentsu::Koutsu(tile, is_open) => {
-                write!(f, "[{}{}{}]{}",
-                       tile, tile, tile,
-                       if *is_open { "!" } else { "" }
+                write!(
+                    f,
+                    "[{}{}{}]{}",
+                    tile,
+                    tile,
+                    tile,
+                    if *is_open { "!" } else { "" }
                 )
             }
             Mentsu::Shuntsu(start_tile, is_open) => {
@@ -54,15 +59,24 @@ impl fmt::Display for Mentsu {
                 second_tile.number += 1;
                 let mut third_tile = second_tile;
                 third_tile.number += 1;
-                write!(f, "[{}{}{}]{}",
-                       start_tile, second_tile, third_tile,
-                       if *is_open { "!" } else { "" }
+                write!(
+                    f,
+                    "[{}{}{}]{}",
+                    start_tile,
+                    second_tile,
+                    third_tile,
+                    if *is_open { "!" } else { "" }
                 )
             }
             Mentsu::Kantsu(tile, is_open) => {
-                write!(f, "[{}{}{}{}]{}",
-                       tile, tile, tile, tile,
-                       if *is_open { "!" } else { "" }
+                write!(
+                    f,
+                    "[{}{}{}{}]{}",
+                    tile,
+                    tile,
+                    tile,
+                    tile,
+                    if *is_open { "!" } else { "" }
                 )
             }
             Mentsu::Janto(tile) => {
