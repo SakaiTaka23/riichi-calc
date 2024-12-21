@@ -20,6 +20,7 @@ fn correct_input() {
     use crate::constants::tiles::{Tile, TileType};
 
     let input = Field {
+        honba: 0,
         zikaze: Zikaze::East,
         bakaze: Bakaze::East,
         dora: vec![Tile {
@@ -36,6 +37,7 @@ fn too_many_dora() {
     use crate::constants::tiles::{Tile, TileType};
 
     let input = Field {
+        honba: 0,
         zikaze: Zikaze::East,
         bakaze: Bakaze::East,
         dora: vec![

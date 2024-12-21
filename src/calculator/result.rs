@@ -1,6 +1,7 @@
 #[derive(Debug)]
 pub struct ScoreResult {
     pub points: Points,
+    pub actual_points: Points,
     pub detail: ScoreDetail,
 }
 

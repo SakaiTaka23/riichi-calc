@@ -173,6 +173,7 @@ pub fn random_wind() -> Wind {
 #[cfg(test)]
 pub fn random_field() -> Field {
     Field {
+        honba: random::<u8>() % 3,
         zikaze: random_wind(),
         bakaze: random_wind(),
         dora: vec![random_tile()],

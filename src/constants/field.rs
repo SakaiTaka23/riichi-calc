@@ -6,11 +6,13 @@ use crate::constants::tiles::Tile;
 ///
 /// - [zikaze](Zikaze) - self wind
 /// - [bakaze](Bakaze) - field wind
+/// - [honba](u8) - number of 本場
 /// - [dora](Dora) - dora must be the dora itself
 #[derive(Debug, Clone)]
 pub struct Field {
     pub zikaze: Zikaze,
     pub bakaze: Bakaze,
+    pub honba: u8,
     pub dora: Dora,
 }
 

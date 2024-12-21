@@ -1,3 +1,4 @@
+use crate::calculator::actual_points::calc_actual_points;
 use crate::calculator::fu::calculate_fu;
 use crate::calculator::result::{ScoreDetail, ScoreResult};
 use crate::constants::field::Field;
@@ -25,6 +26,7 @@ pub fn calc_score(
     };
 
     ScoreResult {
+        actual_points: calc_actual_points(&points, field.honba),
         points,
         detail: ScoreDetail { fu, han },
     }

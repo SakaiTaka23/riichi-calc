@@ -170,6 +170,7 @@ mod valid {
     #[test]
     fn head_is_otakaze() {
         let field = Field {
+            honba: 0,
             zikaze: Wind::East,
             bakaze: Wind::South,
             dora: vec![random_tile()],
@@ -514,6 +515,7 @@ mod invalid {
     #[test]
     fn head_is_yakuhai_wind() {
         let field = Field {
+            honba: 0,
             zikaze: Wind::East,
             bakaze: Wind::South,
             dora: vec![random_tile()],
@@ -546,6 +548,7 @@ mod invalid {
     #[test]
     fn head_is_yakuhai_dragon() {
         let field = Field {
+            honba: 0,
             zikaze: Wind::East,
             bakaze: Wind::South,
             dora: vec![random_tile()],
