@@ -26,9 +26,7 @@ impl FuBase for Mentsu {
 
                     fu += kotu_fu
                 }
-                M::Shuntsu(_, _) => {
-                    continue
-                }
+                M::Shuntsu(_, _) => continue,
                 M::Kantsu(tile, open) => {
                     let mut kotu_fu = 0;
                     if open {
@@ -58,8 +56,10 @@ impl FuBase for Mentsu {
 impl Mentsu {
     fn is_yaochu(tile: &Tile) -> bool {
         if (tile.tile_type == TileType::Wind || tile.tile_type == TileType::Dragon)
-            || (tile.tile_type == TileType::Manzu || tile.tile_type == TileType::Pinzu || tile.tile_type == TileType::Souzu
-            && (tile.number == 1 || tile.number == 9)) {
+            || (tile.tile_type == TileType::Manzu
+                || tile.tile_type == TileType::Pinzu
+                || tile.tile_type == TileType::Souzu && (tile.number == 1 || tile.number == 9))
+        {
             true
         } else {
             false

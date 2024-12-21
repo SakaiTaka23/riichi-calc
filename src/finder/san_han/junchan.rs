@@ -15,7 +15,7 @@ impl YakuBase for Junchan {
                     if tile.tile_type == TileType::Dragon || tile.tile_type == TileType::Wind {
                         return None;
                     } else if tile.number == 1 || tile.number == 9 {
-                        continue
+                        continue;
                     } else {
                         return None;
                     }
@@ -45,27 +45,91 @@ mod valid {
     #[test]
     fn valid_junchan() {
         let hand = [
-            Mentsu::Shuntsu(Tile { tile_type: TileType::Manzu, number: 1 }, false),
-            Mentsu::Shuntsu(Tile { tile_type: TileType::Manzu, number: 7 }, false),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 1 }, false),
-            Mentsu::Kantsu(Tile { tile_type: TileType::Souzu, number: 9 }, false),
-            Mentsu::Janto(Tile { tile_type: TileType::Manzu, number: 9 }),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: 1,
+                },
+                false,
+            ),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: 7,
+                },
+                false,
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 1,
+                },
+                false,
+            ),
+            Mentsu::Kantsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 9,
+                },
+                false,
+            ),
+            Mentsu::Janto(Tile {
+                tile_type: TileType::Manzu,
+                number: 9,
+            }),
         ];
 
-        assert_eq!(Junchan::validate(&random_field(), &from_hand(hand), &random_status()), Some(("純全帯么九".to_string(), 3)), "{:?}", hand);
+        assert_eq!(
+            Junchan::validate(&random_field(), &from_hand(hand), &random_status()),
+            Some(("純全帯么九".to_string(), 3)),
+            "{:?}",
+            hand
+        );
     }
 
     #[test]
     fn valid_junchan_naki() {
         let hand = [
-            Mentsu::Shuntsu(Tile { tile_type: TileType::Manzu, number: 1 }, true),
-            Mentsu::Shuntsu(Tile { tile_type: TileType::Manzu, number: 7 }, false),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 1 }, false),
-            Mentsu::Kantsu(Tile { tile_type: TileType::Souzu, number: 9 }, false),
-            Mentsu::Janto(Tile { tile_type: TileType::Manzu, number: 9 }),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: 1,
+                },
+                true,
+            ),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: 7,
+                },
+                false,
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 1,
+                },
+                false,
+            ),
+            Mentsu::Kantsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 9,
+                },
+                false,
+            ),
+            Mentsu::Janto(Tile {
+                tile_type: TileType::Manzu,
+                number: 9,
+            }),
         ];
 
-        assert_eq!(Junchan::validate(&random_field(), &from_hand(hand), &random_status()), Some(("純全帯么九".to_string(), 2)), "{:?}", hand);
+        assert_eq!(
+            Junchan::validate(&random_field(), &from_hand(hand), &random_status()),
+            Some(("純全帯么九".to_string(), 2)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -80,13 +144,45 @@ mod invalid {
     #[test]
     fn chanta() {
         let hand = [
-            Mentsu::Shuntsu(Tile { tile_type: TileType::Manzu, number: 1 }, false),
-            Mentsu::Shuntsu(Tile { tile_type: TileType::Manzu, number: 7 }, false),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Wind, number: 1 }, false),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 9 }, false),
-            Mentsu::Janto(Tile { tile_type: TileType::Manzu, number: 9 }),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: 1,
+                },
+                false,
+            ),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: 7,
+                },
+                false,
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Wind,
+                    number: 1,
+                },
+                false,
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 9,
+                },
+                false,
+            ),
+            Mentsu::Janto(Tile {
+                tile_type: TileType::Manzu,
+                number: 9,
+            }),
         ];
         let winning_hand = from_hand(hand);
-        assert_eq!(Junchan::validate(&random_field(), &winning_hand, &random_status()), None, "{:?}", hand);
+        assert_eq!(
+            Junchan::validate(&random_field(), &winning_hand, &random_status()),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

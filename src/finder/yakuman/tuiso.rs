@@ -10,10 +10,10 @@ impl YakuBase for Tuiso {
     fn validate(_: &Field, hand: &WinningHand, _: &Status) -> Option<(String, u8)> {
         for mentsu in hand.hand {
             match mentsu {
-                Mentsu::Koutsu(tile, _) |
-                Mentsu::Shuntsu(tile, _) |
-                Mentsu::Kantsu(tile, _) |
-                Mentsu::Janto(tile) => {
+                Mentsu::Koutsu(tile, _)
+                | Mentsu::Shuntsu(tile, _)
+                | Mentsu::Kantsu(tile, _)
+                | Mentsu::Janto(tile) => {
                     if tile.tile_type != TileType::Dragon && tile.tile_type != TileType::Wind {
                         return None;
                     }
@@ -37,14 +37,46 @@ mod valid {
     #[test]
     fn valid_tuiso() {
         let hand = [
-            Mentsu::Koutsu(Tile { tile_type: TileType::Wind, number: 1 }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Wind, number: 2 }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Wind, number: 3 }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Dragon, number: 2 }, random()),
-            Mentsu::Janto(Tile { tile_type: TileType::Dragon, number: 1 })
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Wind,
+                    number: 1,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Wind,
+                    number: 2,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Wind,
+                    number: 3,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Dragon,
+                    number: 2,
+                },
+                random(),
+            ),
+            Mentsu::Janto(Tile {
+                tile_type: TileType::Dragon,
+                number: 1,
+            }),
         ];
 
-        assert_eq!(Tuiso::validate(&random_field(), &from_hand(hand), &random_status()), Some(("字一色".to_string(), 1)), "{:?}", hand);
+        assert_eq!(
+            Tuiso::validate(&random_field(), &from_hand(hand), &random_status()),
+            Some(("字一色".to_string(), 1)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -60,13 +92,39 @@ mod invalid {
     #[test]
     fn nothing() {
         let hand = [
-            Mentsu::Koutsu(Tile { tile_type: TileType::Wind, number: 1 }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Wind, number: 2 }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Wind, number: 3 }, random()),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Wind,
+                    number: 1,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Wind,
+                    number: 2,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Wind,
+                    number: 3,
+                },
+                random(),
+            ),
             random_shuntu(true),
-            Mentsu::Janto(Tile { tile_type: TileType::Dragon, number: 1 })
+            Mentsu::Janto(Tile {
+                tile_type: TileType::Dragon,
+                number: 1,
+            }),
         ];
 
-        assert_eq!(Tuiso::validate(&random_field(), &from_hand(hand), &random_status()), None, "{:?}", hand);
+        assert_eq!(
+            Tuiso::validate(&random_field(), &from_hand(hand), &random_status()),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

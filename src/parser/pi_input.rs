@@ -25,22 +25,34 @@ impl InputBase for PiInput {
 
         for tile in &self.hand {
             if tile.number < 1 {
-                return Err(InvalidTileNumber("Tile number should be greater than or equal to 1".to_string(), tile.number));
+                return Err(InvalidTileNumber(
+                    "Tile number should be greater than or equal to 1".to_string(),
+                    tile.number,
+                ));
             }
             match tile.tile_type {
                 TileType::Wind => {
                     if tile.number > 4 {
-                        return Err(InvalidTileNumber("Invalid wind number".to_string(), tile.number));
+                        return Err(InvalidTileNumber(
+                            "Invalid wind number".to_string(),
+                            tile.number,
+                        ));
                     }
                 }
                 TileType::Dragon => {
                     if tile.number > 3 {
-                        return Err(InvalidTileNumber("Invalid dragon number".to_string(), tile.number));
+                        return Err(InvalidTileNumber(
+                            "Invalid dragon number".to_string(),
+                            tile.number,
+                        ));
                     }
                 }
                 _ => {
                     if tile.number > 10 {
-                        return Err(InvalidTileNumber("Invalid number tile number".to_string(), tile.number));
+                        return Err(InvalidTileNumber(
+                            "Invalid number tile number".to_string(),
+                            tile.number,
+                        ));
                     }
                 }
             }
@@ -54,15 +66,15 @@ impl InputBase for PiInput {
             match furo {
                 Mentsu::Koutsu(_, x) | Mentsu::Shuntsu(_, x) => {
                     if !x {
-                        return Err(InvalidHand("Unopened koutsu or shuntsu in naki".to_string()));
+                        return Err(InvalidHand(
+                            "Unopened koutsu or shuntsu in naki".to_string(),
+                        ));
                     }
                 }
                 Mentsu::Janto(_) => {
                     return Err(InvalidHand("Janto cannot be in naki".to_string()));
                 }
-                Mentsu::Kantsu(_, _) => {
-                    continue
-                }
+                Mentsu::Kantsu(_, _) => continue,
             }
         }
 
@@ -158,22 +170,64 @@ mod validation_test {
     fn menzen_input() {
         let input = PiInput {
             hand: vec![
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 7, tile_type: TileType::Manzu, },
-                Tile { number: 7, tile_type: TileType::Manzu, },
-                Tile { number: 7, tile_type: TileType::Manzu, },
-                Tile { number: 9, tile_type: TileType::Manzu, },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 9,
+                    tile_type: TileType::Manzu,
+                },
             ],
             naki: vec![],
-            hora: Tile { number: 9, tile_type: TileType::Manzu },
+            hora: Tile {
+                number: 9,
+                tile_type: TileType::Manzu,
+            },
         };
 
         assert_eq!(input.validate(), Ok(()));
@@ -183,21 +237,58 @@ mod validation_test {
     fn furo_input() {
         let input = PiInput {
             hand: vec![
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 9, tile_type: TileType::Manzu, },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 9,
+                    tile_type: TileType::Manzu,
+                },
             ],
-            naki: vec![
-                Mentsu::Koutsu(Tile { number: 7, tile_type: TileType::Manzu, }, true)
-            ],
-            hora: Tile { number: 9, tile_type: TileType::Manzu },
+            naki: vec![Mentsu::Koutsu(
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Manzu,
+                },
+                true,
+            )],
+            hora: Tile {
+                number: 9,
+                tile_type: TileType::Manzu,
+            },
         };
 
         assert_eq!(input.validate(), Ok(()));
@@ -207,132 +298,377 @@ mod validation_test {
     fn invalid_pi() {
         let too_big_suhai_input = PiInput {
             hand: vec![
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 90, tile_type: TileType::Manzu, },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 90,
+                    tile_type: TileType::Manzu,
+                },
             ],
-            naki: vec![
-                Mentsu::Koutsu(Tile { number: 7, tile_type: TileType::Manzu, }, true)
-            ],
-            hora: Tile { number: 9, tile_type: TileType::Manzu },
+            naki: vec![Mentsu::Koutsu(
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Manzu,
+                },
+                true,
+            )],
+            hora: Tile {
+                number: 9,
+                tile_type: TileType::Manzu,
+            },
         };
 
-        assert_eq!(too_big_suhai_input.validate(), Err(InvalidTileNumber("Invalid number tile number".to_string(), 90)));
+        assert_eq!(
+            too_big_suhai_input.validate(),
+            Err(InvalidTileNumber(
+                "Invalid number tile number".to_string(),
+                90
+            ))
+        );
 
         let too_big_wind_input = PiInput {
             hand: vec![
-                Tile { number: 5, tile_type: TileType::Wind, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 9, tile_type: TileType::Manzu, },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Wind,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 9,
+                    tile_type: TileType::Manzu,
+                },
             ],
-            naki: vec![
-                Mentsu::Koutsu(Tile { number: 7, tile_type: TileType::Manzu, }, true)
-            ],
-            hora: Tile { number: 9, tile_type: TileType::Manzu },
+            naki: vec![Mentsu::Koutsu(
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Manzu,
+                },
+                true,
+            )],
+            hora: Tile {
+                number: 9,
+                tile_type: TileType::Manzu,
+            },
         };
 
-        assert_eq!(too_big_wind_input.validate(), Err(InvalidTileNumber("Invalid wind number".to_string(), 5)));
+        assert_eq!(
+            too_big_wind_input.validate(),
+            Err(InvalidTileNumber("Invalid wind number".to_string(), 5))
+        );
 
         let too_big_dragon_input = PiInput {
             hand: vec![
-                Tile { number: 4, tile_type: TileType::Dragon, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 9, tile_type: TileType::Manzu, },
+                Tile {
+                    number: 4,
+                    tile_type: TileType::Dragon,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 9,
+                    tile_type: TileType::Manzu,
+                },
             ],
-            naki: vec![
-                Mentsu::Koutsu(Tile { number: 7, tile_type: TileType::Manzu, }, true)
-            ],
-            hora: Tile { number: 9, tile_type: TileType::Manzu },
+            naki: vec![Mentsu::Koutsu(
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Manzu,
+                },
+                true,
+            )],
+            hora: Tile {
+                number: 9,
+                tile_type: TileType::Manzu,
+            },
         };
 
-        assert_eq!(too_big_dragon_input.validate(), Err(InvalidTileNumber("Invalid dragon number".to_string(), 4)));
+        assert_eq!(
+            too_big_dragon_input.validate(),
+            Err(InvalidTileNumber("Invalid dragon number".to_string(), 4))
+        );
 
         let too_small_suhai_input = PiInput {
             hand: vec![
-                Tile { number: 0, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 9, tile_type: TileType::Manzu, },
+                Tile {
+                    number: 0,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 9,
+                    tile_type: TileType::Manzu,
+                },
             ],
-            naki: vec![
-                Mentsu::Koutsu(Tile { number: 7, tile_type: TileType::Manzu, }, true)
-            ],
-            hora: Tile { number: 9, tile_type: TileType::Manzu },
+            naki: vec![Mentsu::Koutsu(
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Manzu,
+                },
+                true,
+            )],
+            hora: Tile {
+                number: 9,
+                tile_type: TileType::Manzu,
+            },
         };
 
-        assert_eq!(too_small_suhai_input.validate(), Err(InvalidTileNumber("Tile number should be greater than or equal to 1".to_string(), 0)));
+        assert_eq!(
+            too_small_suhai_input.validate(),
+            Err(InvalidTileNumber(
+                "Tile number should be greater than or equal to 1".to_string(),
+                0
+            ))
+        );
     }
 
     #[test]
     fn menzen_naki() {
         let naki_anko_input = PiInput {
             hand: vec![
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 9, tile_type: TileType::Manzu, },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 9,
+                    tile_type: TileType::Manzu,
+                },
             ],
-            naki: vec![
-                Mentsu::Koutsu(Tile { number: 7, tile_type: TileType::Manzu, }, false)
-            ],
-            hora: Tile { number: 9, tile_type: TileType::Manzu },
+            naki: vec![Mentsu::Koutsu(
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Manzu,
+                },
+                false,
+            )],
+            hora: Tile {
+                number: 9,
+                tile_type: TileType::Manzu,
+            },
         };
 
-        assert_eq!(naki_anko_input.validate(), Err(InvalidHand("Unopened koutsu or shuntsu in naki".to_string())));
+        assert_eq!(
+            naki_anko_input.validate(),
+            Err(InvalidHand(
+                "Unopened koutsu or shuntsu in naki".to_string()
+            ))
+        );
 
         let naki_janto_input = PiInput {
             hand: vec![
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 1, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 3, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 5, tile_type: TileType::Manzu, },
-                Tile { number: 9, tile_type: TileType::Manzu, },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 9,
+                    tile_type: TileType::Manzu,
+                },
             ],
-            naki: vec![
-                Mentsu::Janto(Tile { number: 7, tile_type: TileType::Manzu, })
-            ],
-            hora: Tile { number: 9, tile_type: TileType::Manzu },
+            naki: vec![Mentsu::Janto(Tile {
+                number: 7,
+                tile_type: TileType::Manzu,
+            })],
+            hora: Tile {
+                number: 9,
+                tile_type: TileType::Manzu,
+            },
         };
 
-        assert_eq!(naki_janto_input.validate(), Err(InvalidHand("Janto cannot be in naki".to_string())));
+        assert_eq!(
+            naki_janto_input.validate(),
+            Err(InvalidHand("Janto cannot be in naki".to_string()))
+        );
     }
 }
 
@@ -347,29 +683,98 @@ mod convertor_test {
     fn all_shuntsu_pinfu_iipeco() {
         let input = PiInput {
             hand: vec![
-                Tile { number: 1, tile_type: TileType::Manzu },
-                Tile { number: 2, tile_type: TileType::Manzu },
-                Tile { number: 3, tile_type: TileType::Manzu },
-                Tile { number: 1, tile_type: TileType::Manzu },
-                Tile { number: 2, tile_type: TileType::Manzu },
-                Tile { number: 3, tile_type: TileType::Manzu },
-                Tile { number: 4, tile_type: TileType::Pinzu },
-                Tile { number: 5, tile_type: TileType::Pinzu },
-                Tile { number: 6, tile_type: TileType::Pinzu },
-                Tile { number: 9, tile_type: TileType::Pinzu },
-                Tile { number: 6, tile_type: TileType::Souzu },
-                Tile { number: 7, tile_type: TileType::Souzu },
-                Tile { number: 8, tile_type: TileType::Souzu },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 2,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 2,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 4,
+                    tile_type: TileType::Pinzu,
+                },
+                Tile {
+                    number: 5,
+                    tile_type: TileType::Pinzu,
+                },
+                Tile {
+                    number: 6,
+                    tile_type: TileType::Pinzu,
+                },
+                Tile {
+                    number: 9,
+                    tile_type: TileType::Pinzu,
+                },
+                Tile {
+                    number: 6,
+                    tile_type: TileType::Souzu,
+                },
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Souzu,
+                },
+                Tile {
+                    number: 8,
+                    tile_type: TileType::Souzu,
+                },
             ],
             naki: vec![],
-            hora: Tile { number: 9, tile_type: TileType::Pinzu },
+            hora: Tile {
+                number: 9,
+                tile_type: TileType::Pinzu,
+            },
         };
         let hand = vec![[
-            Janto(Tile { number: 9, tile_type: TileType::Pinzu }),
-            Shuntsu(Tile { number: 4, tile_type: TileType::Pinzu }, false),
-            Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
-            Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
-            Shuntsu(Tile { number: 6, tile_type: TileType::Souzu }, false),
+            Janto(Tile {
+                number: 9,
+                tile_type: TileType::Pinzu,
+            }),
+            Shuntsu(
+                Tile {
+                    number: 4,
+                    tile_type: TileType::Pinzu,
+                },
+                false,
+            ),
+            Shuntsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                false,
+            ),
+            Shuntsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                false,
+            ),
+            Shuntsu(
+                Tile {
+                    number: 6,
+                    tile_type: TileType::Souzu,
+                },
+                false,
+            ),
         ]];
         assert!(input.validate().is_ok());
         assert_eq!(input.to_mentsu(), Some((hand, 0)))
@@ -379,29 +784,98 @@ mod convertor_test {
     fn all_shuntsu_pinfu_iipeco_red() {
         let input = PiInput {
             hand: vec![
-                Tile { number: 1, tile_type: TileType::Manzu },
-                Tile { number: 2, tile_type: TileType::Manzu },
-                Tile { number: 3, tile_type: TileType::Manzu },
-                Tile { number: 1, tile_type: TileType::Manzu },
-                Tile { number: 2, tile_type: TileType::Manzu },
-                Tile { number: 3, tile_type: TileType::Manzu },
-                Tile { number: 4, tile_type: TileType::Pinzu },
-                Tile { number: 10, tile_type: TileType::Pinzu },
-                Tile { number: 6, tile_type: TileType::Pinzu },
-                Tile { number: 9, tile_type: TileType::Pinzu },
-                Tile { number: 6, tile_type: TileType::Souzu },
-                Tile { number: 7, tile_type: TileType::Souzu },
-                Tile { number: 8, tile_type: TileType::Souzu },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 2,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 2,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Manzu,
+                },
+                Tile {
+                    number: 4,
+                    tile_type: TileType::Pinzu,
+                },
+                Tile {
+                    number: 10,
+                    tile_type: TileType::Pinzu,
+                },
+                Tile {
+                    number: 6,
+                    tile_type: TileType::Pinzu,
+                },
+                Tile {
+                    number: 9,
+                    tile_type: TileType::Pinzu,
+                },
+                Tile {
+                    number: 6,
+                    tile_type: TileType::Souzu,
+                },
+                Tile {
+                    number: 7,
+                    tile_type: TileType::Souzu,
+                },
+                Tile {
+                    number: 8,
+                    tile_type: TileType::Souzu,
+                },
             ],
             naki: vec![],
-            hora: Tile { number: 9, tile_type: TileType::Pinzu },
+            hora: Tile {
+                number: 9,
+                tile_type: TileType::Pinzu,
+            },
         };
         let hand = vec![[
-            Janto(Tile { number: 9, tile_type: TileType::Pinzu }),
-            Shuntsu(Tile { number: 4, tile_type: TileType::Pinzu }, false),
-            Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
-            Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
-            Shuntsu(Tile { number: 6, tile_type: TileType::Souzu }, false),
+            Janto(Tile {
+                number: 9,
+                tile_type: TileType::Pinzu,
+            }),
+            Shuntsu(
+                Tile {
+                    number: 4,
+                    tile_type: TileType::Pinzu,
+                },
+                false,
+            ),
+            Shuntsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                false,
+            ),
+            Shuntsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                false,
+            ),
+            Shuntsu(
+                Tile {
+                    number: 6,
+                    tile_type: TileType::Souzu,
+                },
+                false,
+            ),
         ]];
         assert!(input.validate().is_ok());
         assert_eq!(input.to_mentsu(), Some((hand, 1)))

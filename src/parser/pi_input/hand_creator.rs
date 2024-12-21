@@ -30,7 +30,10 @@ pub fn create_hand(colors: &mut PiHandColor, head: &Tile, naki: &Vec<Mentsu>) ->
     if head_mentsu.is_none() {
         return None;
     }
-    let mut hands: Vec<Mentsu> = vec![Janto(Tile { number: head.number, tile_type: head.tile_type.clone() })];
+    let mut hands: Vec<Mentsu> = vec![Janto(Tile {
+        number: head.number,
+        tile_type: head.tile_type.clone(),
+    })];
     hands.append(head_mentsu.clone().as_mut()?);
 
     if !colors.dragon.is_empty() && head.tile_type != TileType::Dragon {
@@ -88,7 +91,13 @@ fn create_mentu_suhai(hand: &Vec<u8>, tile_type: &TileType) -> Option<Vec<Mentsu
             let read_hand = hand.clone();
             let min = read_hand.iter().min()?;
             if read_hand.contains(&(min + 1)) && read_hand.contains(&(min + 2)) {
-                result.push(Shuntsu(Tile { number: *min, tile_type: tile_type.clone() }, false));
+                result.push(Shuntsu(
+                    Tile {
+                        number: *min,
+                        tile_type: tile_type.clone(),
+                    },
+                    false,
+                ));
                 remove_shuntu(&mut hand, *min);
             } else {
                 continue;
@@ -96,7 +105,13 @@ fn create_mentu_suhai(hand: &Vec<u8>, tile_type: &TileType) -> Option<Vec<Mentsu
         }
         if hand.len() == 0 {
             for anko in &ankos {
-                result.push(Koutsu(Tile { number: *anko, tile_type: tile_type.clone() }, false));
+                result.push(Koutsu(
+                    Tile {
+                        number: *anko,
+                        tile_type: tile_type.clone(),
+                    },
+                    false,
+                ));
             }
             return Some(result);
         }
@@ -113,7 +128,13 @@ fn create_mentu_zihai(hand: &Vec<u8>, tile_type: &TileType) -> Option<Vec<Mentsu
 
     let mut result: Vec<Mentsu> = Vec::new();
     for anko in anko_candidate {
-        result.push(Koutsu(Tile { number: anko, tile_type: tile_type.clone() }, false));
+        result.push(Koutsu(
+            Tile {
+                number: anko,
+                tile_type: tile_type.clone(),
+            },
+            false,
+        ));
     }
 
     Some(result)
@@ -206,15 +227,48 @@ mod valid_hand_test {
             souzu: vec![6, 7, 8],
             wind: vec![],
         };
-        let head = Tile { number: 9, tile_type: TileType::Pinzu };
+        let head = Tile {
+            number: 9,
+            tile_type: TileType::Pinzu,
+        };
         let hand = [
-            Janto(Tile { number: 9, tile_type: TileType::Pinzu }),
-            Shuntsu(Tile { number: 4, tile_type: TileType::Pinzu }, false),
-            Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
-            Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
-            Shuntsu(Tile { number: 6, tile_type: TileType::Souzu }, false),
+            Janto(Tile {
+                number: 9,
+                tile_type: TileType::Pinzu,
+            }),
+            Shuntsu(
+                Tile {
+                    number: 4,
+                    tile_type: TileType::Pinzu,
+                },
+                false,
+            ),
+            Shuntsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                false,
+            ),
+            Shuntsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu,
+                },
+                false,
+            ),
+            Shuntsu(
+                Tile {
+                    number: 6,
+                    tile_type: TileType::Souzu,
+                },
+                false,
+            ),
         ];
-        assert_eq!(create_hand(&mut colors.clone(), &head, &vec![]).unwrap(), hand);
+        assert_eq!(
+            create_hand(&mut colors.clone(), &head, &vec![]).unwrap(),
+            hand
+        );
     }
 
     #[test]
@@ -226,15 +280,45 @@ mod valid_hand_test {
             souzu: vec![],
             wind: vec![],
         };
-        let head = Tile { number: 5, tile_type: TileType::Pinzu };
+        let head = Tile {
+            number: 5,
+            tile_type: TileType::Pinzu,
+        };
         let naki = vec![];
 
         let hand = [
-            Janto(Tile { number: 5, tile_type: TileType::Pinzu }),
-            Koutsu(Tile { number: 3, tile_type: TileType::Pinzu }, false),
-            Koutsu(Tile { number: 4, tile_type: TileType::Pinzu }, false),
-            Koutsu(Tile { number: 2, tile_type: TileType::Pinzu }, false),
-            Koutsu(Tile { number: 1, tile_type: TileType::Pinzu }, false),
+            Janto(Tile {
+                number: 5,
+                tile_type: TileType::Pinzu,
+            }),
+            Koutsu(
+                Tile {
+                    number: 3,
+                    tile_type: TileType::Pinzu,
+                },
+                false,
+            ),
+            Koutsu(
+                Tile {
+                    number: 4,
+                    tile_type: TileType::Pinzu,
+                },
+                false,
+            ),
+            Koutsu(
+                Tile {
+                    number: 2,
+                    tile_type: TileType::Pinzu,
+                },
+                false,
+            ),
+            Koutsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Pinzu,
+                },
+                false,
+            ),
         ];
         let result: Hand = create_hand(&mut colors.clone(), &head, &naki).unwrap();
         assert_eq!(result.len(), hand.len());
@@ -250,17 +334,56 @@ mod valid_hand_test {
             souzu: vec![1, 2, 3, 6, 6, 6, 8, 8],
             wind: vec![],
         };
-        let head = Tile { number: 8, tile_type: TileType::Souzu };
-        let naki = vec![Shuntsu(Tile { number: 1, tile_type: TileType::Souzu }, false), ];
+        let head = Tile {
+            number: 8,
+            tile_type: TileType::Souzu,
+        };
+        let naki = vec![Shuntsu(
+            Tile {
+                number: 1,
+                tile_type: TileType::Souzu,
+            },
+            false,
+        )];
 
         let hand = [
-            Janto(Tile { number: 8, tile_type: TileType::Souzu }),
-            Shuntsu(Tile { number: 1, tile_type: TileType::Souzu }, false),
-            Koutsu(Tile { number: 6, tile_type: TileType::Souzu }, false),
-            Koutsu(Tile { number: 2, tile_type: TileType::Dragon }, false),
-            Shuntsu(Tile { number: 1, tile_type: TileType::Souzu }, false),
+            Janto(Tile {
+                number: 8,
+                tile_type: TileType::Souzu,
+            }),
+            Shuntsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Souzu,
+                },
+                false,
+            ),
+            Koutsu(
+                Tile {
+                    number: 6,
+                    tile_type: TileType::Souzu,
+                },
+                false,
+            ),
+            Koutsu(
+                Tile {
+                    number: 2,
+                    tile_type: TileType::Dragon,
+                },
+                false,
+            ),
+            Shuntsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Souzu,
+                },
+                false,
+            ),
         ];
-        assert_eq!(create_hand(&mut colors.clone(), &head, &naki).unwrap(), hand);
+        assert_eq!(
+            create_hand(&mut colors.clone(), &head, &naki).unwrap(),
+            hand
+        );
     }
 }
 
@@ -274,46 +397,97 @@ mod private_fn_test {
     fn shuntsu_from_suhai() {
         let hand: Vec<u8> = vec![1, 2, 3];
         let hand = create_mentu_suhai(&hand, &TileType::Manzu).unwrap();
-        assert_eq!(hand, vec![
-            Shuntsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
-        ]);
+        assert_eq!(
+            hand,
+            vec![Shuntsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu
+                },
+                false
+            ),]
+        );
     }
 
     #[test]
     fn anko_from_suhai() {
         let hand: Vec<u8> = vec![1, 1, 1];
         let hand = create_mentu_suhai(&hand, &TileType::Manzu).unwrap();
-        assert_eq!(hand, vec![
-            Koutsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
-        ]);
+        assert_eq!(
+            hand,
+            vec![Koutsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Manzu
+                },
+                false
+            ),]
+        );
     }
 
     #[test]
     fn shuntsu_anko_combination_from_suhai() {
         let hand: Vec<u8> = vec![1, 1, 1, 4, 5, 6];
         let hand = create_mentu_suhai(&hand, &TileType::Manzu).unwrap();
-        assert_eq!(hand, vec![
-            Shuntsu(Tile { number: 4, tile_type: TileType::Manzu }, false),
-            Koutsu(Tile { number: 1, tile_type: TileType::Manzu }, false),
-        ]);
+        assert_eq!(
+            hand,
+            vec![
+                Shuntsu(
+                    Tile {
+                        number: 4,
+                        tile_type: TileType::Manzu
+                    },
+                    false
+                ),
+                Koutsu(
+                    Tile {
+                        number: 1,
+                        tile_type: TileType::Manzu
+                    },
+                    false
+                ),
+            ]
+        );
     }
 
     #[test]
     fn shuntsu_anko_combination_from_suhai_reverse() {
         let hand: Vec<u8> = vec![4, 5, 6, 7, 7, 7];
         let hand = create_mentu_suhai(&hand, &TileType::Manzu).unwrap();
-        assert_eq!(hand, vec![
-            Shuntsu(Tile { number: 4, tile_type: TileType::Manzu }, false),
-            Koutsu(Tile { number: 7, tile_type: TileType::Manzu }, false),
-        ]);
+        assert_eq!(
+            hand,
+            vec![
+                Shuntsu(
+                    Tile {
+                        number: 4,
+                        tile_type: TileType::Manzu
+                    },
+                    false
+                ),
+                Koutsu(
+                    Tile {
+                        number: 7,
+                        tile_type: TileType::Manzu
+                    },
+                    false
+                ),
+            ]
+        );
     }
 
     #[test]
     fn anko_from_zihai() {
         let hand: Vec<u8> = vec![1, 1, 1];
         let hand = create_mentu_suhai(&hand, &TileType::Dragon).unwrap();
-        assert_eq!(hand, vec![
-            Koutsu(Tile { number: 1, tile_type: TileType::Dragon }, false),
-        ]);
+        assert_eq!(
+            hand,
+            vec![Koutsu(
+                Tile {
+                    number: 1,
+                    tile_type: TileType::Dragon
+                },
+                false
+            ),]
+        );
     }
 }

@@ -9,10 +9,8 @@ impl YakuBase for ToiToi {
     fn validate(_: &Field, hand: &WinningHand, _: &Status) -> Option<(String, u8)> {
         for mentsu in hand.hand {
             match mentsu {
-                Mentsu::Shuntsu(_, _) => {
-                    return None
-                }
-                _ => { continue }
+                Mentsu::Shuntsu(_, _) => return None,
+                _ => continue,
             }
         }
 
@@ -24,7 +22,9 @@ impl YakuBase for ToiToi {
 mod valid {
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ryan_han::toitoi::ToiToi;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_koutsu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_koutsu, random_status,
+    };
 
     #[test]
     fn valid_toitoi() {
@@ -36,7 +36,12 @@ mod valid {
             random_janto(false),
         ];
 
-        assert_eq!(ToiToi::validate(&random_field(), &from_hand(hand), &random_status()), Some(("対対和".to_string(), 2)), "{:?}", hand);
+        assert_eq!(
+            ToiToi::validate(&random_field(), &from_hand(hand), &random_status()),
+            Some(("対対和".to_string(), 2)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -44,7 +49,9 @@ mod valid {
 mod invalid {
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ryan_han::toitoi::ToiToi;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_koutsu, random_shuntu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_koutsu, random_shuntu, random_status,
+    };
 
     #[test]
     fn have_shuntu() {
@@ -56,6 +63,11 @@ mod invalid {
             random_janto(false),
         ];
 
-        assert_eq!(ToiToi::validate(&random_field(), &from_hand(hand), &random_status()), None, "{:?}", hand);
+        assert_eq!(
+            ToiToi::validate(&random_field(), &from_hand(hand), &random_status()),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

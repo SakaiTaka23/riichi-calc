@@ -11,9 +11,18 @@ pub fn find_dora(dora: &Vec<Tile>, hand: &Hand) -> u8 {
                 }
             }
             Mentsu::Shuntsu(tile, _) => {
-                let tile1 = Tile { number: tile.number, tile_type: tile.tile_type };
-                let tile2 = Tile { number: tile.number + 1, tile_type: tile.tile_type };
-                let tile3 = Tile { number: tile.number + 2, tile_type: tile.tile_type };
+                let tile1 = Tile {
+                    number: tile.number,
+                    tile_type: tile.tile_type,
+                };
+                let tile2 = Tile {
+                    number: tile.number + 1,
+                    tile_type: tile.tile_type,
+                };
+                let tile3 = Tile {
+                    number: tile.number + 2,
+                    tile_type: tile.tile_type,
+                };
                 dora_count += if dora.contains(&tile1) { 1 } else { 0 };
                 dora_count += if dora.contains(&tile2) { 1 } else { 0 };
                 dora_count += if dora.contains(&tile3) { 1 } else { 0 };

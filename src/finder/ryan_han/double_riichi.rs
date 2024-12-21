@@ -9,10 +9,8 @@ pub struct DoubleRiichi;
 impl YakuBase for DoubleRiichi {
     fn validate(_: &Field, _: &WinningHand, status: &Status) -> Option<(String, u8)> {
         match status.riichi {
-            DoubleRiichiStatus(_) => {
-                Some(("ダブルリーチ".to_string(), 2))
-            }
-            _ => None
+            DoubleRiichiStatus(_) => Some(("ダブルリーチ".to_string(), 2)),
+            _ => None,
         }
     }
 }
@@ -22,7 +20,9 @@ mod valid {
     use crate::constants::status::RiichiStatus;
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ryan_han::double_riichi::DoubleRiichi;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_status, random_tile};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_mentsu, random_status, random_tile,
+    };
 
     #[test]
     fn valid_double_riichi() {
@@ -37,7 +37,12 @@ mod valid {
         let winning_hand = from_hand(hand);
         let mut status = random_status();
         status.riichi = RiichiStatus::DoubleRiichi(vec![random_tile()]);
-        assert_eq!(DoubleRiichi::validate(&field, &winning_hand, &status), Some(("ダブルリーチ".to_string(), 2)), "{:?}", hand);
+        assert_eq!(
+            DoubleRiichi::validate(&field, &winning_hand, &status),
+            Some(("ダブルリーチ".to_string(), 2)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -46,7 +51,9 @@ mod invalid {
     use crate::constants::status::RiichiStatus;
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ryan_han::double_riichi::DoubleRiichi;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_status, random_tile};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_mentsu, random_status, random_tile,
+    };
     use rand::random;
 
     #[test]
@@ -66,6 +73,11 @@ mod invalid {
             1 => RiichiStatus::Riichi(vec![random_tile(), random_tile()]),
             _ => unreachable!(),
         };
-        assert_eq!(DoubleRiichi::validate(&field, &winning_hand, &status), None, "{:?}", hand);
+        assert_eq!(
+            DoubleRiichi::validate(&field, &winning_hand, &status),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

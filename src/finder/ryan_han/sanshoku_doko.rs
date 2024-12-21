@@ -11,15 +11,14 @@ impl YakuBase for SanshokuDoko {
         let mut suhai = Vec::new();
         for mentsu in hand.hand {
             match mentsu {
-                Mentsu::Koutsu(tile, _) |
-                Mentsu::Kantsu(tile, _) => {
+                Mentsu::Koutsu(tile, _) | Mentsu::Kantsu(tile, _) => {
                     if tile.tile_type == TileType::Dragon || tile.tile_type == TileType::Wind {
                         continue;
                     }
 
                     suhai.push(tile.number);
                 }
-                _ => continue
+                _ => continue,
             }
         }
 
@@ -44,21 +43,46 @@ mod valid {
     use crate::constants::tiles::{Tile, TileType};
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ryan_han::sanshoku_doko::SanshokuDoko;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_shuntu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_shuntu, random_status,
+    };
     use rand::{random, Rng};
 
     #[test]
     fn valid_sanshoku_doko() {
         let kotu_number = rand::thread_rng().gen_range(1..=9);
         let hand = [
-            Mentsu::Koutsu(Tile { tile_type: TileType::Manzu, number: kotu_number }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Pinzu, number: kotu_number }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: kotu_number }, random()),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: kotu_number,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Pinzu,
+                    number: kotu_number,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: kotu_number,
+                },
+                random(),
+            ),
             random_shuntu(true),
             random_janto(false),
         ];
 
-        assert_eq!(SanshokuDoko::validate(&random_field(), &from_hand(hand), &random_status()), Some(("三色同刻".to_string(), 2)), "{:?}", hand);
+        assert_eq!(
+            SanshokuDoko::validate(&random_field(), &from_hand(hand), &random_status()),
+            Some(("三色同刻".to_string(), 2)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -68,20 +92,39 @@ mod invalid {
     use crate::constants::tiles::{Tile, TileType};
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ryan_han::sanshoku_doko::SanshokuDoko;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_shuntu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_shuntu, random_status,
+    };
     use rand::{random, Rng};
 
     #[test]
     fn two_color_sanshoku() {
         let kotu_number = rand::thread_rng().gen_range(1..=9);
         let hand = [
-            Mentsu::Koutsu(Tile { tile_type: TileType::Manzu, number: kotu_number }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Pinzu, number: kotu_number }, random()),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: kotu_number,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Pinzu,
+                    number: kotu_number,
+                },
+                random(),
+            ),
             random_shuntu(true),
             random_shuntu(true),
             random_janto(false),
         ];
 
-        assert_eq!(SanshokuDoko::validate(&random_field(), &from_hand(hand), &random_status()), None, "{:?}", hand);
+        assert_eq!(
+            SanshokuDoko::validate(&random_field(), &from_hand(hand), &random_status()),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

@@ -4,9 +4,9 @@ use crate::constants::status::Status;
 use crate::finder::finder_base::{YakuBase, YakuValidator};
 
 mod aka;
+mod dora_finder;
 mod omote;
 mod ura;
-mod dora_finder;
 
 pub fn dora_count(field: &Field, winning_hand: &WinningHand, status: &Status) -> Vec<(String, u8)> {
     let validators: Vec<YakuValidator> = vec![

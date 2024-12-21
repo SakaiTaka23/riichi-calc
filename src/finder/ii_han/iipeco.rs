@@ -34,13 +34,19 @@ impl YakuBase for IIPeco {
 mod valid {
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::iipeco::IIPeco;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu_unique, random_shuntu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_mentsu_unique, random_shuntu, random_status,
+    };
 
     #[test]
     fn valid_iipeco() {
         let random_shuntsu = random_shuntu(false);
         let random_mentsu_1 = random_mentsu_unique(false, false, vec![random_shuntsu.clone()]);
-        let random_mentsu_2 = random_mentsu_unique(false, false, vec![random_shuntsu.clone(), random_mentsu_1.clone()]);
+        let random_mentsu_2 = random_mentsu_unique(
+            false,
+            false,
+            vec![random_shuntsu.clone(), random_mentsu_1.clone()],
+        );
 
         let hand = [
             random_shuntsu,
@@ -52,7 +58,12 @@ mod valid {
         let winning_hand = from_hand(hand);
         let field = random_field();
         let status = random_status();
-        assert_eq!(IIPeco::validate(&field, &winning_hand, &status), Some(("一盃口".to_string(), 1)), "{:?}", hand);
+        assert_eq!(
+            IIPeco::validate(&field, &winning_hand, &status),
+            Some(("一盃口".to_string(), 1)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -62,7 +73,10 @@ mod invalid {
     use crate::constants::tiles::{Tile, TileType};
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::iipeco::IIPeco;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_koutsu, random_mentsu, random_shuntu, random_shuntu_number, random_shuntu_unique, random_status, random_tile_type};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_koutsu, random_mentsu, random_shuntu,
+        random_shuntu_number, random_shuntu_unique, random_status, random_tile_type,
+    };
 
     #[test]
     fn ryanpeko() {
@@ -78,7 +92,12 @@ mod invalid {
         let winning_hand = from_hand(hand);
         let field = random_field();
         let status = random_status();
-        assert_eq!(IIPeco::validate(&field, &winning_hand, &status), None, "{:?}", hand);
+        assert_eq!(
+            IIPeco::validate(&field, &winning_hand, &status),
+            None,
+            "{:?}",
+            hand
+        );
     }
 
     #[test]
@@ -87,7 +106,9 @@ mod invalid {
             Tile {
                 tile_type: random_tile_type(),
                 number: random_shuntu_number(),
-            }, true);
+            },
+            true,
+        );
         let hand = [
             random_shuntsu,
             random_shuntsu,
@@ -98,7 +119,12 @@ mod invalid {
         let winning_hand = from_hand(hand);
         let field = random_field();
         let status = random_status();
-        assert_eq!(IIPeco::validate(&field, &winning_hand, &status), None, "{:?}", hand);
+        assert_eq!(
+            IIPeco::validate(&field, &winning_hand, &status),
+            None,
+            "{:?}",
+            hand
+        );
     }
 
     #[test]
@@ -109,12 +135,16 @@ mod invalid {
                 Tile {
                     tile_type: TileType::Manzu,
                     number: shuntu_number,
-                }, true),
+                },
+                true,
+            ),
             Mentsu::Shuntsu(
                 Tile {
                     tile_type: TileType::Souzu,
                     number: shuntu_number,
-                }, false),
+                },
+                false,
+            ),
             random_koutsu(false, false),
             random_koutsu(false, false),
             random_janto(false),
@@ -122,6 +152,11 @@ mod invalid {
         let winning_hand = from_hand(hand);
         let field = random_field();
         let status = random_status();
-        assert_eq!(IIPeco::validate(&field, &winning_hand, &status), None, "{:?}", hand);
+        assert_eq!(
+            IIPeco::validate(&field, &winning_hand, &status),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

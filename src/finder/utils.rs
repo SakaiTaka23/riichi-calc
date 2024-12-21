@@ -5,9 +5,11 @@ use crate::constants::tiles::{Tile, TileType};
 pub fn is_menzen(hand: &Hand) -> bool {
     for mentsu in hand {
         match mentsu {
-            Mentsu::Koutsu(_, x)
-            | Mentsu::Shuntsu(_, x)
-            | Mentsu::Kantsu(_, x) => { if *x { return false; } }
+            Mentsu::Koutsu(_, x) | Mentsu::Shuntsu(_, x) | Mentsu::Kantsu(_, x) => {
+                if *x {
+                    return false;
+                }
+            }
             Mentsu::Janto(_) => {}
         }
     }
@@ -24,7 +26,15 @@ pub fn check_kuisagari(hand: &Hand, yaku_name: String, han: u8) -> Option<(Strin
 /**
 * return: Manzu, Pinzu, Sozu, WInd, Dragon
 */
-pub fn split_colors(hand: &Hand) -> (Vec<Mentsu>, Vec<Mentsu>, Vec<Mentsu>, Vec<Mentsu>, Vec<Mentsu>) {
+pub fn split_colors(
+    hand: &Hand,
+) -> (
+    Vec<Mentsu>,
+    Vec<Mentsu>,
+    Vec<Mentsu>,
+    Vec<Mentsu>,
+    Vec<Mentsu>,
+) {
     let mut manzu = Vec::new();
     let mut pinzu = Vec::new();
     let mut sozu = Vec::new();
@@ -54,7 +64,7 @@ pub fn is_same_wind(tile_number: u8, wind: &Wind) -> bool {
         2 => wind == &Wind::South,
         3 => wind == &Wind::West,
         4 => wind == &Wind::North,
-        _ => false
+        _ => false,
     }
 }
 

@@ -19,8 +19,8 @@ impl YakuBase for RiyanPeco {
                 Mentsu::Shuntsu(_, _) => {
                     shuntu.push(mentsu.clone());
                 }
-                Mentsu::Janto(_) => { continue }
-                _ => return None
+                Mentsu::Janto(_) => continue,
+                _ => return None,
             }
         }
 
@@ -45,7 +45,9 @@ mod valid {
     use crate::constants::tiles::Tile;
     use crate::finder::finder_base::YakuBase;
     use crate::finder::san_han::riyan_peco::RiyanPeco;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_status, random_suhai_tile_type};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_status, random_suhai_tile_type,
+    };
 
     #[test]
     fn valid_riyanpeco() {
@@ -54,14 +56,43 @@ mod valid {
         let shuntu_2 = 3;
         let color_2 = random_suhai_tile_type();
         let hand = [
-            Mentsu::Shuntsu(Tile { tile_type: color_1, number: shuntu_1 }, false),
-            Mentsu::Shuntsu(Tile { tile_type: color_1, number: shuntu_1 }, false),
-            Mentsu::Shuntsu(Tile { tile_type: color_2, number: shuntu_2 }, false),
-            Mentsu::Shuntsu(Tile { tile_type: color_2, number: shuntu_2 }, false),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: color_1,
+                    number: shuntu_1,
+                },
+                false,
+            ),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: color_1,
+                    number: shuntu_1,
+                },
+                false,
+            ),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: color_2,
+                    number: shuntu_2,
+                },
+                false,
+            ),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: color_2,
+                    number: shuntu_2,
+                },
+                false,
+            ),
             random_janto(false),
         ];
 
-        assert_eq!(RiyanPeco::validate(&random_field(), &from_hand(hand), &random_status()), Some(("二盃口".to_string(), 3)), "{:?}", hand);
+        assert_eq!(
+            RiyanPeco::validate(&random_field(), &from_hand(hand), &random_status()),
+            Some(("二盃口".to_string(), 3)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -69,7 +100,10 @@ mod valid {
 mod invalid {
     use crate::finder::finder_base::YakuBase;
     use crate::finder::san_han::riyan_peco::RiyanPeco;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_shuntu, random_shuntu_unique, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_mentsu, random_shuntu, random_shuntu_unique,
+        random_status,
+    };
 
     #[test]
     fn iipeco() {
@@ -84,7 +118,12 @@ mod invalid {
         let winning_hand = from_hand(hand);
         let field = random_field();
         let status = random_status();
-        assert_eq!(RiyanPeco::validate(&field, &winning_hand, &status), None, "{:?}", hand);
+        assert_eq!(
+            RiyanPeco::validate(&field, &winning_hand, &status),
+            None,
+            "{:?}",
+            hand
+        );
     }
 
     #[test]
@@ -100,6 +139,11 @@ mod invalid {
         let winning_hand = from_hand(hand);
         let field = random_field();
         let status = random_status();
-        assert_eq!(RiyanPeco::validate(&field, &winning_hand, &status), None, "{:?}", hand);
+        assert_eq!(
+            RiyanPeco::validate(&field, &winning_hand, &status),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

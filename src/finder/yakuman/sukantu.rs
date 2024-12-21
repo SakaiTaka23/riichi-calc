@@ -9,9 +9,12 @@ impl YakuBase for Sukantu {
     fn validate(_: &Field, hand: &WinningHand, _: &Status) -> Option<(String, u8)> {
         for mentsu in hand.hand {
             match mentsu {
-                Mentsu::Janto(_) |
-                Mentsu::Kantsu(_, _) => { continue; }
-                _ => { return None; }
+                Mentsu::Janto(_) | Mentsu::Kantsu(_, _) => {
+                    continue;
+                }
+                _ => {
+                    return None;
+                }
             }
         }
 
@@ -22,7 +25,9 @@ impl YakuBase for Sukantu {
 #[cfg(test)]
 mod valid {
     use crate::finder::finder_base::YakuBase;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_kantsu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_kantsu, random_status,
+    };
     use crate::finder::yakuman::sukantu::Sukantu;
 
     #[test]
@@ -35,14 +40,21 @@ mod valid {
             random_janto(false),
         ];
 
-        assert_eq!(Sukantu::validate(&random_field(), &from_hand(hand), &random_status()), Some(("四槓子".to_string(), 1)), "{:?}", hand);
+        assert_eq!(
+            Sukantu::validate(&random_field(), &from_hand(hand), &random_status()),
+            Some(("四槓子".to_string(), 1)),
+            "{:?}",
+            hand
+        );
     }
 }
 
 #[cfg(test)]
 mod invalid {
     use crate::finder::finder_base::YakuBase;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_kantsu, random_koutsu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_kantsu, random_koutsu, random_status,
+    };
     use crate::finder::yakuman::sukantu::Sukantu;
 
     #[test]
@@ -55,6 +67,11 @@ mod invalid {
             random_janto(false),
         ];
 
-        assert_eq!(Sukantu::validate(&random_field(), &from_hand(hand), &random_status()), None, "{:?}", hand);
+        assert_eq!(
+            Sukantu::validate(&random_field(), &from_hand(hand), &random_status()),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

@@ -20,7 +20,9 @@ mod count {
     use crate::constants::hand::WinningHand;
     use crate::finder::dora::aka::Aka;
     use crate::finder::finder_base::YakuBase;
-    use crate::finder::test_utils::{random_field, random_janto, random_mentsu, random_status, random_tile};
+    use crate::finder::test_utils::{
+        random_field, random_janto, random_mentsu, random_status, random_tile,
+    };
 
     #[test]
     fn one() {
@@ -37,7 +39,10 @@ mod count {
             red_tile: 1,
         };
 
-        assert_eq!(Aka::validate(&random_field(), &winning_hand, &random_status()), Some(("赤ドラ".to_string(), 1)));
+        assert_eq!(
+            Aka::validate(&random_field(), &winning_hand, &random_status()),
+            Some(("赤ドラ".to_string(), 1))
+        );
     }
 
     #[test]
@@ -55,6 +60,9 @@ mod count {
             red_tile: 0,
         };
 
-        assert_eq!(Aka::validate(&random_field(), &winning_hand, &random_status()), None);
+        assert_eq!(
+            Aka::validate(&random_field(), &winning_hand, &random_status()),
+            None
+        );
     }
 }

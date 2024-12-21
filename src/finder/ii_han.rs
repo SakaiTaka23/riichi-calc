@@ -18,23 +18,27 @@ use crate::finder::ii_han::tanyao::Tanyao;
 use crate::finder::ii_han::tumo::Tumo;
 use crate::finder::ii_han::zikaze::Zikaze;
 
+mod bakaze;
+mod chankan;
+mod chun;
+mod haitei;
+mod haku;
+mod hatu;
+mod hotei;
+mod iipeco;
+mod ipatu;
+mod pinfu;
 mod riichi;
+mod rinshan;
 mod tanyao;
 mod tumo;
 mod zikaze;
-mod bakaze;
-mod haku;
-mod hatu;
-mod chun;
-mod pinfu;
-mod iipeco;
-mod chankan;
-mod rinshan;
-mod haitei;
-mod hotei;
-mod ipatu;
 
-pub fn ii_han_yaku(field: &Field, winning_hand: &WinningHand, status: &Status) -> Vec<(String, u8)> {
+pub fn ii_han_yaku(
+    field: &Field,
+    winning_hand: &WinningHand,
+    status: &Status,
+) -> Vec<(String, u8)> {
     let validators: Vec<YakuValidator> = vec![
         Riichi::validate,
         Tanyao::validate,

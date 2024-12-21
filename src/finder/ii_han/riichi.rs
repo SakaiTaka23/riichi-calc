@@ -19,7 +19,9 @@ mod valid {
     use crate::constants::status::RiichiStatus;
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::riichi::Riichi;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_status, random_tile};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_mentsu, random_status, random_tile,
+    };
 
     #[test]
     fn valid_riichi() {
@@ -34,7 +36,12 @@ mod valid {
         let winning_hand = from_hand(hand);
         let mut status = random_status();
         status.riichi = RiichiStatus::Riichi(vec![random_tile()]);
-        assert_eq!(Riichi::validate(&field, &winning_hand, &status), Some(("立直".to_string(), 1)), "{:?}", hand);
+        assert_eq!(
+            Riichi::validate(&field, &winning_hand, &status),
+            Some(("立直".to_string(), 1)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -43,7 +50,9 @@ mod invalid {
     use crate::constants::status::RiichiStatus;
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::riichi::Riichi;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_status, random_tile};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_mentsu, random_status, random_tile,
+    };
     use rand::random;
 
     #[test]
@@ -63,6 +72,11 @@ mod invalid {
             1 => RiichiStatus::DoubleRiichi(vec![random_tile(), random_tile()]),
             _ => unreachable!(),
         };
-        assert_eq!(Riichi::validate(&field, &winning_hand, &status), None, "{:?}", hand);
+        assert_eq!(
+            Riichi::validate(&field, &winning_hand, &status),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

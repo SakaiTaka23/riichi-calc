@@ -12,26 +12,39 @@ impl InputBase for Status {
             NoRiichi => {}
             Riichi(x) => {
                 if x.len() > 4 {
-                    return Err(OutOfRange("Number of dora should be less than or equal to 4".to_string()));
+                    return Err(OutOfRange(
+                        "Number of dora should be less than or equal to 4".to_string(),
+                    ));
                 }
             }
             DoubleRiichi(x) => {
                 if x.len() > 4 {
-                    return Err(OutOfRange("Number of dora should be less than or equal to 4".to_string()));
+                    return Err(OutOfRange(
+                        "Number of dora should be less than or equal to 4".to_string(),
+                    ));
                 }
             }
         }
 
         let win = &self.special_win;
         if win.contains(&Ipatu) && win.contains(&Rinshan) {
-            return Err(InvalidWinCombination(Ipatu.to_string(), Rinshan.to_string()));
+            return Err(InvalidWinCombination(
+                Ipatu.to_string(),
+                Rinshan.to_string(),
+            ));
         }
         if win.contains(&Ipatu) && self.riichi == NoRiichi {
-            return Err(InvalidWinCombination(Ipatu.to_string(), "No riichi".to_string()));
+            return Err(InvalidWinCombination(
+                Ipatu.to_string(),
+                "No riichi".to_string(),
+            ));
         }
 
         if win.contains(&Rinshan) && win.contains(&Chankan) {
-            return Err(InvalidWinCombination(Rinshan.to_string(), Chankan.to_string()));
+            return Err(InvalidWinCombination(
+                Rinshan.to_string(),
+                Chankan.to_string(),
+            ));
         }
         if win.contains(&Chankan) && self.win_method != Ron {
             return Err(InvalidWinCombination(Chankan.to_string(), Tumo.to_string()));
@@ -51,10 +64,12 @@ impl InputBase for Status {
         }
 
         if win.contains(&DaiichiTumo)
-            && (win.len() != 1
-            || self.riichi != NoRiichi
-            || self.win_method != Tumo) {
-            return Err(InvalidWinCombination(DaiichiTumo.to_string(), "Other win combination".to_string()));
+            && (win.len() != 1 || self.riichi != NoRiichi || self.win_method != Tumo)
+        {
+            return Err(InvalidWinCombination(
+                DaiichiTumo.to_string(),
+                "Other win combination".to_string(),
+            ));
         }
 
         Ok(())
@@ -90,8 +105,19 @@ mod status_input_utils {
     use crate::constants::tiles::Tile;
     use crate::constants::tiles::TileType::Manzu;
 
-    pub fn build_status_input(is_riichi: bool, win_method: WinMethod, special_win: Vec<SpecialWin>) -> Status {
-        let riichi = if is_riichi { Riichi(vec![Tile { number: 1, tile_type: Manzu }]) } else { NoRiichi };
+    pub fn build_status_input(
+        is_riichi: bool,
+        win_method: WinMethod,
+        special_win: Vec<SpecialWin>,
+    ) -> Status {
+        let riichi = if is_riichi {
+            Riichi(vec![Tile {
+                number: 1,
+                tile_type: Manzu,
+            }])
+        } else {
+            NoRiichi
+        };
         Status {
             riichi,
             win_method,
@@ -128,26 +154,66 @@ mod dora_related {
     fn too_many_uradora_riichi() {
         let mut input = build_status_input(false, Ron, vec![]);
         input.riichi = Riichi(vec![
-            Tile { number: 1, tile_type: Manzu },
-            Tile { number: 2, tile_type: Manzu },
-            Tile { number: 3, tile_type: Manzu },
-            Tile { number: 4, tile_type: Manzu },
-            Tile { number: 5, tile_type: Manzu },
+            Tile {
+                number: 1,
+                tile_type: Manzu,
+            },
+            Tile {
+                number: 2,
+                tile_type: Manzu,
+            },
+            Tile {
+                number: 3,
+                tile_type: Manzu,
+            },
+            Tile {
+                number: 4,
+                tile_type: Manzu,
+            },
+            Tile {
+                number: 5,
+                tile_type: Manzu,
+            },
         ]);
-        assert_eq!(input.validate(), Err(OutOfRange("Number of dora should be less than or equal to 4".to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(OutOfRange(
+                "Number of dora should be less than or equal to 4".to_string()
+            ))
+        );
     }
 
     #[test]
     fn too_many_uradora_double_riichi() {
         let mut input = build_status_input(false, Ron, vec![]);
         input.riichi = DoubleRiichi(vec![
-            Tile { number: 1, tile_type: Manzu },
-            Tile { number: 2, tile_type: Manzu },
-            Tile { number: 3, tile_type: Manzu },
-            Tile { number: 4, tile_type: Manzu },
-            Tile { number: 5, tile_type: Manzu },
+            Tile {
+                number: 1,
+                tile_type: Manzu,
+            },
+            Tile {
+                number: 2,
+                tile_type: Manzu,
+            },
+            Tile {
+                number: 3,
+                tile_type: Manzu,
+            },
+            Tile {
+                number: 4,
+                tile_type: Manzu,
+            },
+            Tile {
+                number: 5,
+                tile_type: Manzu,
+            },
         ]);
-        assert_eq!(input.validate(), Err(OutOfRange("Number of dora should be less than or equal to 4".to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(OutOfRange(
+                "Number of dora should be less than or equal to 4".to_string()
+            ))
+        );
     }
 }
 
@@ -163,14 +229,26 @@ mod ipatu_related {
     #[test]
     fn ipatu_without_riichi_invalid() {
         let input = build_status_input(false, Ron, vec![Ipatu]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(Ipatu.to_string(), "No riichi".to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(InvalidWinCombination(
+                Ipatu.to_string(),
+                "No riichi".to_string()
+            ))
+        );
     }
 
     #[test]
     fn ipatu_rinshan_invalid() {
         let mut input = build_status_input(true, Ron, vec![Ipatu, Rinshan]);
         input.riichi = Riichi(vec![]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(Ipatu.to_string(), Rinshan.to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(InvalidWinCombination(
+                Ipatu.to_string(),
+                Rinshan.to_string()
+            ))
+        );
     }
 }
 
@@ -185,7 +263,13 @@ mod kan_related {
     #[test]
     fn chakan_rinshan_invalid() {
         let input = build_status_input(false, Ron, vec![Chankan, Rinshan]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(Rinshan.to_string(), Chankan.to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(InvalidWinCombination(
+                Rinshan.to_string(),
+                Chankan.to_string()
+            ))
+        );
     }
 
     #[test]
@@ -197,13 +281,19 @@ mod kan_related {
     #[test]
     fn chakan_tumo_invalid() {
         let input = build_status_input(false, Tumo, vec![Chankan]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(Chankan.to_string(), Tumo.to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(InvalidWinCombination(Chankan.to_string(), Tumo.to_string()))
+        );
     }
 
     #[test]
     fn rinshan_ron_invalid() {
         let input = build_status_input(false, Ron, vec![Rinshan]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(Rinshan.to_string(), Ron.to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(InvalidWinCombination(Rinshan.to_string(), Ron.to_string()))
+        );
     }
 
     #[test]
@@ -227,13 +317,19 @@ mod kawa_related {
     #[test]
     fn haitei_hotei_invalid() {
         let input = build_status_input(false, Ron, vec![Haitei, Hotei]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(Haitei.to_string(), Hotei.to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(InvalidWinCombination(Haitei.to_string(), Hotei.to_string()))
+        );
     }
 
     #[test]
     fn haitei_ron_invalid() {
         let input = build_status_input(false, Ron, vec![Haitei]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(Haitei.to_string(), Ron.to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(InvalidWinCombination(Haitei.to_string(), Ron.to_string()))
+        );
     }
 
     #[test]
@@ -251,7 +347,10 @@ mod kawa_related {
     #[test]
     fn hotei_tumo_invalid() {
         let input = build_status_input(false, Tumo, vec![Hotei]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(Hotei.to_string(), Tumo.to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(InvalidWinCombination(Hotei.to_string(), Tumo.to_string()))
+        );
     }
 }
 
@@ -269,15 +368,26 @@ mod tenchiho_related {
         assert_eq!(input.validate(), Ok(()));
     }
 
-
     #[test]
     fn daiichi_tumo_riichi_invalid() {
         let input = build_status_input(true, Tumo, vec![DaiichiTumo]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(DaiichiTumo.to_string(), "Other win combination".to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(InvalidWinCombination(
+                DaiichiTumo.to_string(),
+                "Other win combination".to_string()
+            ))
+        );
     }
     #[test]
     fn daiichi_tumo_ron_invalid() {
         let input = build_status_input(true, Ron, vec![DaiichiTumo]);
-        assert_eq!(input.validate(), Err(InvalidWinCombination(DaiichiTumo.to_string(), "Other win combination".to_string())));
+        assert_eq!(
+            input.validate(),
+            Err(InvalidWinCombination(
+                DaiichiTumo.to_string(),
+                "Other win combination".to_string()
+            ))
+        );
     }
 }

@@ -17,26 +17,14 @@ const ALL_TILE_VARIANTS: [TileType; 5] = [
 ];
 
 #[cfg(test)]
-const SUHAI_TILE_VARIANTS: [TileType; 3] = [
-    TileType::Manzu,
-    TileType::Pinzu,
-    TileType::Souzu,
-];
+const SUHAI_TILE_VARIANTS: [TileType; 3] = [TileType::Manzu, TileType::Pinzu, TileType::Souzu];
 
 #[cfg(test)]
 pub fn random_tile_number(tile_type: &TileType) -> u8 {
     match tile_type {
-        TileType::Manzu |
-        TileType::Pinzu |
-        TileType::Souzu => {
-            rand::thread_rng().gen_range(1..=9)
-        }
-        TileType::Wind => {
-            rand::thread_rng().gen_range(1..=4)
-        }
-        TileType::Dragon => {
-            rand::thread_rng().gen_range(1..=3)
-        }
+        TileType::Manzu | TileType::Pinzu | TileType::Souzu => rand::thread_rng().gen_range(1..=9),
+        TileType::Wind => rand::thread_rng().gen_range(1..=4),
+        TileType::Dragon => rand::thread_rng().gen_range(1..=3),
     }
 }
 
@@ -69,7 +57,8 @@ pub fn random_shuntu(can_be_open: bool) -> Mentsu {
     Mentsu::Shuntsu(
         Tile {
             number: random_shuntu_number(),
-            tile_type: SUHAI_TILE_VARIANTS[rand::thread_rng().gen_range(0..SUHAI_TILE_VARIANTS.len())],
+            tile_type: SUHAI_TILE_VARIANTS
+                [rand::thread_rng().gen_range(0..SUHAI_TILE_VARIANTS.len())],
         },
         if can_be_open { random() } else { false },
     )
@@ -87,7 +76,11 @@ pub fn random_shuntu_unique(can_be_open: bool, existing: Vec<Mentsu>) -> Mentsu 
 
 #[cfg(test)]
 pub fn random_koutsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
-    let tile_type = if suhai_only { random_suhai_tile_type() } else { random_tile_type() };
+    let tile_type = if suhai_only {
+        random_suhai_tile_type()
+    } else {
+        random_tile_type()
+    };
     Mentsu::Koutsu(
         Tile {
             number: random_tile_number(&tile_type),
@@ -109,7 +102,11 @@ pub fn random_koutsu_unique(can_be_open: bool, suhai_only: bool, existing: Vec<M
 
 #[cfg(test)]
 pub fn random_kantsu(can_be_open: bool, suhai_only: bool) -> Mentsu {
-    let tile_type = if suhai_only { random_suhai_tile_type() } else { random_tile_type() };
+    let tile_type = if suhai_only {
+        random_suhai_tile_type()
+    } else {
+        random_tile_type()
+    };
     Mentsu::Kantsu(
         Tile {
             number: random_tile_number(&tile_type),
@@ -141,13 +138,15 @@ pub fn random_mentsu_unique(can_be_open: bool, suhai_only: bool, existing: Vec<M
 
 #[cfg(test)]
 pub fn random_janto(suhai_only: bool) -> Mentsu {
-    let tile_type = if suhai_only { random_suhai_tile_type() } else { random_tile_type() };
-    Mentsu::Janto(
-        Tile {
-            number: random_tile_number(&tile_type),
-            tile_type,
-        },
-    )
+    let tile_type = if suhai_only {
+        random_suhai_tile_type()
+    } else {
+        random_tile_type()
+    };
+    Mentsu::Janto(Tile {
+        number: random_tile_number(&tile_type),
+        tile_type,
+    })
 }
 
 #[cfg(test)]

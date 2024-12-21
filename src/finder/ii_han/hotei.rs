@@ -20,7 +20,9 @@ mod valid {
     use crate::constants::status::SpecialWin;
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::hotei::Hotei;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_mentsu, random_status,
+    };
 
     #[test]
     fn valid_hotei() {
@@ -35,7 +37,12 @@ mod valid {
         let winning_hand = from_hand(hand);
         let mut status = random_status();
         status.special_win.insert(SpecialWin::Hotei);
-        assert_eq!(Hotei::validate(&field, &winning_hand, &status), Some(("河底撈魚".to_string(), 1)), "{:?}", hand);
+        assert_eq!(
+            Hotei::validate(&field, &winning_hand, &status),
+            Some(("河底撈魚".to_string(), 1)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -43,7 +50,9 @@ mod valid {
 mod invalid {
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::hotei::Hotei;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_mentsu, random_status,
+    };
 
     #[test]
     fn invalid_hotei() {
@@ -57,6 +66,11 @@ mod invalid {
         ];
         let winning_hand = from_hand(hand);
         let status = random_status();
-        assert_eq!(Hotei::validate(&field, &winning_hand, &status), None, "{:?}", hand);
+        assert_eq!(
+            Hotei::validate(&field, &winning_hand, &status),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

@@ -58,7 +58,9 @@ impl Churen {
     fn is_one_color(hand: &Hand) -> bool {
         let (manzu, pinzu, sozu, wind, dragon) = split_colors(hand);
         let non_empty_count = [!manzu.is_empty(), !pinzu.is_empty(), !sozu.is_empty()]
-            .iter().filter(|&&x| x).count();
+            .iter()
+            .filter(|&&x| x)
+            .count();
         if non_empty_count != 1 {
             return false;
         }
@@ -95,14 +97,41 @@ mod valid {
         static ref HAND: (Hand, TileType) = {
             let tile_type = random_suhai_tile_type();
             let hand = [
-                Mentsu::Koutsu(Tile { tile_type, number: 1 }, false),
-                Mentsu::Shuntsu(Tile { tile_type, number: 2 }, false),
-                Mentsu::Shuntsu(Tile { tile_type, number: 5 }, false),
-                Mentsu::Koutsu(Tile { tile_type, number: 9 }, false),
-                Mentsu::Janto(Tile { tile_type, number: 8 }),
+                Mentsu::Koutsu(
+                    Tile {
+                        tile_type,
+                        number: 1,
+                    },
+                    false,
+                ),
+                Mentsu::Shuntsu(
+                    Tile {
+                        tile_type,
+                        number: 2,
+                    },
+                    false,
+                ),
+                Mentsu::Shuntsu(
+                    Tile {
+                        tile_type,
+                        number: 5,
+                    },
+                    false,
+                ),
+                Mentsu::Koutsu(
+                    Tile {
+                        tile_type,
+                        number: 9,
+                    },
+                    false,
+                ),
+                Mentsu::Janto(Tile {
+                    tile_type,
+                    number: 8,
+                }),
             ];
-                (hand, tile_type)
-            };
+            (hand, tile_type)
+        };
     }
 
     #[test]
@@ -110,11 +139,19 @@ mod valid {
         let (hand, tile_type) = HAND.clone();
         let winning = WinningHand {
             hand,
-            winning_tile: Tile { tile_type, number: 3 },
+            winning_tile: Tile {
+                tile_type,
+                number: 3,
+            },
             red_tile: 0,
         };
 
-        assert_eq!(Churen::validate(&random_field(), &winning, &random_status()), Some(("九蓮宝燈".to_string(), 1)), "{:?}", hand);
+        assert_eq!(
+            Churen::validate(&random_field(), &winning, &random_status()),
+            Some(("九蓮宝燈".to_string(), 1)),
+            "{:?}",
+            hand
+        );
     }
 
     #[test]
@@ -122,11 +159,19 @@ mod valid {
         let (hand, tile_type) = HAND.clone();
         let winning = WinningHand {
             hand,
-            winning_tile: Tile { tile_type, number: 8 },
+            winning_tile: Tile {
+                tile_type,
+                number: 8,
+            },
             red_tile: 0,
         };
 
-        assert_eq!(Churen::validate(&random_field(), &winning, &random_status()), Some(("純正九蓮宝燈".to_string(), 2)), "{:?}", hand);
+        assert_eq!(
+            Churen::validate(&random_field(), &winning, &random_status()),
+            Some(("純正九蓮宝燈".to_string(), 2)),
+            "{:?}",
+            hand
+        );
     }
 
     #[test]
@@ -134,11 +179,19 @@ mod valid {
         let (hand, tile_type) = HAND.clone();
         let winning = WinningHand {
             hand,
-            winning_tile: Tile { tile_type, number: 1 },
+            winning_tile: Tile {
+                tile_type,
+                number: 1,
+            },
             red_tile: 0,
         };
 
-        assert_eq!(Churen::validate(&random_field(), &winning, &random_status()), Some(("九蓮宝燈".to_string(), 1)), "{:?}", hand);
+        assert_eq!(
+            Churen::validate(&random_field(), &winning, &random_status()),
+            Some(("九蓮宝燈".to_string(), 1)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -153,13 +206,54 @@ mod invalid {
     #[test]
     fn not_one_color() {
         let hand = [
-            Mentsu::Koutsu(Tile { tile_type: TileType::Manzu, number: 1 }, false),
-            Mentsu::Shuntsu(Tile { tile_type: TileType::Manzu, number: 2 }, false),
-            Mentsu::Shuntsu(Tile { tile_type: TileType::Manzu, number: 5 }, false),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 9 }, false),
-            Mentsu::Janto(Tile { tile_type: TileType::Manzu, number: 8 }),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: 1,
+                },
+                false,
+            ),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: 2,
+                },
+                false,
+            ),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: TileType::Manzu,
+                    number: 5,
+                },
+                false,
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 9,
+                },
+                false,
+            ),
+            Mentsu::Janto(Tile {
+                tile_type: TileType::Manzu,
+                number: 8,
+            }),
         ];
 
-        assert_eq!(Churen::validate(&random_field(), &WinningHand { hand, winning_tile: Tile { tile_type: TileType::Manzu, number: 3 }, red_tile: 0 }, &random_status()), None);
+        assert_eq!(
+            Churen::validate(
+                &random_field(),
+                &WinningHand {
+                    hand,
+                    winning_tile: Tile {
+                        tile_type: TileType::Manzu,
+                        number: 3
+                    },
+                    red_tile: 0
+                },
+                &random_status()
+            ),
+            None
+        );
     }
 }

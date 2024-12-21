@@ -26,7 +26,7 @@ impl Machi {
                         false
                     }
                 }
-                _ => { continue }
+                _ => continue,
             }
         }
 
@@ -37,13 +37,15 @@ impl Machi {
         for mentsu in hand.hand {
             match mentsu {
                 Mentsu::Shuntsu(tile, _) => {
-                    return if tile.tile_type == hand.winning_tile.tile_type && tile.number == hand.winning_tile.number - 1 {
+                    return if tile.tile_type == hand.winning_tile.tile_type
+                        && tile.number == hand.winning_tile.number - 1
+                    {
                         true
                     } else {
-                        continue
+                        continue;
                     }
                 }
-                _ => { continue }
+                _ => continue,
             }
         }
 
@@ -57,10 +59,10 @@ impl Machi {
                     return if Self::is_penchan3(hand) || Self::is_penchan7(hand) {
                         true
                     } else {
-                        continue
+                        continue;
                     }
                 }
-                _ => { continue }
+                _ => continue,
             }
         }
 
@@ -79,10 +81,10 @@ impl Machi {
                     return if tile.tile_type == winning_tile.tile_type && tile.number == 1 {
                         true
                     } else {
-                        continue
+                        continue;
                     }
                 }
-                _ => { continue }
+                _ => continue,
             }
         }
 
@@ -101,10 +103,10 @@ impl Machi {
                     return if tile.tile_type == winning_tile.tile_type && tile.number == 7 {
                         true
                     } else {
-                        continue
+                        continue;
                     }
                 }
-                _ => { continue }
+                _ => continue,
             }
         }
 

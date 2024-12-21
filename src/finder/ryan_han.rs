@@ -13,18 +13,22 @@ use crate::finder::ryan_han::sanshoku_doko::SanshokuDoko;
 use crate::finder::ryan_han::shosangen::Shosangen;
 use crate::finder::ryan_han::toitoi::ToiToi;
 
-mod double_riichi;
-mod sanshoku_doko;
-mod sankantu;
-mod toitoi;
-mod sananko;
-mod shosangen;
-mod honroto;
 mod chanta;
+mod double_riichi;
+mod honroto;
 mod ixtukitukan;
+mod sananko;
+mod sankantu;
 mod sanshoku_dojun;
+mod sanshoku_doko;
+mod shosangen;
+mod toitoi;
 
-pub fn ryan_han_yaku(field: &Field, winning_hand: &WinningHand, status: &Status) -> Vec<(String, u8)> {
+pub fn ryan_han_yaku(
+    field: &Field,
+    winning_hand: &WinningHand,
+    status: &Status,
+) -> Vec<(String, u8)> {
     let validators: Vec<YakuValidator> = vec![
         DoubleRiichi::validate,
         SanshokuDoko::validate,
@@ -35,7 +39,7 @@ pub fn ryan_han_yaku(field: &Field, winning_hand: &WinningHand, status: &Status)
         Honroto::validate,
         Chanta::validate,
         Ixtukitukan::validate,
-        SanshokuDojun::validate
+        SanshokuDojun::validate,
     ];
 
     validators

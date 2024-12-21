@@ -2,10 +2,10 @@ use crate::constants::field::Field;
 use crate::constants::hand::WinningHand;
 use crate::constants::status::Status;
 
-mod futei;
-mod mentsu;
 mod agari;
+mod futei;
 mod machi;
+mod mentsu;
 
 trait FuBase {
     fn validate(field: &Field, hand: &WinningHand, status: &Status) -> u8;

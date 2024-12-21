@@ -15,9 +15,7 @@ impl YakuBase for Ryuiso {
                         return None;
                     }
                 }
-                Mentsu::Koutsu(tile, _) |
-                Mentsu::Kantsu(tile, _) |
-                Mentsu::Janto(tile) => {
+                Mentsu::Koutsu(tile, _) | Mentsu::Kantsu(tile, _) | Mentsu::Janto(tile) => {
                     if !Ryuiso::is_allowed_tile(tile) {
                         return None;
                     }
@@ -40,12 +38,30 @@ impl Ryuiso {
 
     fn is_allowed_tile(tile: Tile) -> bool {
         let allowed: Vec<Tile> = Vec::from([
-            Tile { number: 2, tile_type: TileType::Souzu },
-            Tile { number: 3, tile_type: TileType::Souzu },
-            Tile { number: 4, tile_type: TileType::Souzu },
-            Tile { number: 6, tile_type: TileType::Souzu },
-            Tile { number: 8, tile_type: TileType::Souzu },
-            Tile { number: 2, tile_type: TileType::Dragon },
+            Tile {
+                number: 2,
+                tile_type: TileType::Souzu,
+            },
+            Tile {
+                number: 3,
+                tile_type: TileType::Souzu,
+            },
+            Tile {
+                number: 4,
+                tile_type: TileType::Souzu,
+            },
+            Tile {
+                number: 6,
+                tile_type: TileType::Souzu,
+            },
+            Tile {
+                number: 8,
+                tile_type: TileType::Souzu,
+            },
+            Tile {
+                number: 2,
+                tile_type: TileType::Dragon,
+            },
         ]);
 
         if allowed.contains(&tile) {
@@ -68,13 +84,45 @@ mod valid {
     #[test]
     fn valid_ryuiso() {
         let hand = [
-            Mentsu::Shuntsu(Tile { tile_type: TileType::Souzu, number: 2 }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 3 }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 6 }, random()),
-            Mentsu::Kantsu(Tile { tile_type: TileType::Souzu, number: 8 }, random()),
-            Mentsu::Janto(Tile { tile_type: TileType::Dragon, number: 2 }),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 2,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 3,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 6,
+                },
+                random(),
+            ),
+            Mentsu::Kantsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 8,
+                },
+                random(),
+            ),
+            Mentsu::Janto(Tile {
+                tile_type: TileType::Dragon,
+                number: 2,
+            }),
         ];
-        assert_eq!(Ryuiso::validate(&random_field(), &from_hand(hand), &random_status()), Some(("緑一色".to_string(), 1)), "{:?}", hand);
+        assert_eq!(
+            Ryuiso::validate(&random_field(), &from_hand(hand), &random_status()),
+            Some(("緑一色".to_string(), 1)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -90,12 +138,44 @@ mod invalid {
     #[test]
     fn using_iiso() {
         let hand = [
-            Mentsu::Shuntsu(Tile { tile_type: TileType::Souzu, number: 2 }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 3 }, random()),
-            Mentsu::Koutsu(Tile { tile_type: TileType::Souzu, number: 1 }, random()),
-            Mentsu::Kantsu(Tile { tile_type: TileType::Souzu, number: 8 }, random()),
-            Mentsu::Janto(Tile { tile_type: TileType::Dragon, number: 2 }),
+            Mentsu::Shuntsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 2,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 3,
+                },
+                random(),
+            ),
+            Mentsu::Koutsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 1,
+                },
+                random(),
+            ),
+            Mentsu::Kantsu(
+                Tile {
+                    tile_type: TileType::Souzu,
+                    number: 8,
+                },
+                random(),
+            ),
+            Mentsu::Janto(Tile {
+                tile_type: TileType::Dragon,
+                number: 2,
+            }),
         ];
-        assert_eq!(Ryuiso::validate(&random_field(), &from_hand(hand), &random_status()), None, "{:?}", hand);
+        assert_eq!(
+            Ryuiso::validate(&random_field(), &from_hand(hand), &random_status()),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

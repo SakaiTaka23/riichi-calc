@@ -11,9 +11,13 @@ pub struct Bakaze;
 impl YakuBase for Bakaze {
     fn validate(field: &Field, winning_hand: &WinningHand, _: &Status) -> Option<(String, u8)> {
         for mentsu in winning_hand.hand {
-            if let Janto(_) = mentsu { continue; }
+            if let Janto(_) = mentsu {
+                continue;
+            }
             let tile = mentsu.tile();
-            if tile.tile_type != TileType::Wind { continue; }
+            if tile.tile_type != TileType::Wind {
+                continue;
+            }
             if is_same_wind(tile.number, &field.bakaze) {
                 return Some(("役牌:場風牌".to_string(), 1));
             }
@@ -29,7 +33,9 @@ mod valid {
     use crate::constants::tiles::{Tile, TileType};
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::bakaze::Bakaze;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_mentsu, random_status,
+    };
     use rand::random;
 
     #[test]
@@ -38,7 +44,10 @@ mod valid {
         field.bakaze = Wind::East;
         let hand = [
             Mentsu::Koutsu(
-                Tile { tile_type: TileType::Wind, number: 1 },
+                Tile {
+                    tile_type: TileType::Wind,
+                    number: 1,
+                },
                 random(),
             ),
             random_mentsu(true, true),
@@ -46,7 +55,12 @@ mod valid {
             random_mentsu(true, true),
             random_janto(false),
         ];
-        assert_eq!(Bakaze::validate(&field, &from_hand(hand), &random_status()), Some(("役牌:場風牌".to_string(), 1)), "{:?}", hand);
+        assert_eq!(
+            Bakaze::validate(&field, &from_hand(hand), &random_status()),
+            Some(("役牌:場風牌".to_string(), 1)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -64,14 +78,20 @@ mod invalid {
         let mut field = random_field();
         field.bakaze = Wind::East;
         let hand = [
-            Mentsu::Janto(
-                Tile { tile_type: TileType::Wind, number: 1 },
-            ),
+            Mentsu::Janto(Tile {
+                tile_type: TileType::Wind,
+                number: 1,
+            }),
             random_mentsu(true, true),
             random_mentsu(true, true),
             random_mentsu(true, true),
             random_mentsu(true, true),
         ];
-        assert_eq!(Bakaze::validate(&field, &from_hand(hand), &random_status()), None, "{:?}", hand);
+        assert_eq!(
+            Bakaze::validate(&field, &from_hand(hand), &random_status()),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

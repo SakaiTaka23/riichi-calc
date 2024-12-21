@@ -14,19 +14,20 @@ impl YakuBase for Suanko {
                 Mentsu::Shuntsu(_, _) => {
                     return None;
                 }
-                Mentsu::Koutsu(_, open) |
-                Mentsu::Kantsu(_, open) => {
+                Mentsu::Koutsu(_, open) | Mentsu::Kantsu(_, open) => {
                     if open {
                         return None;
                     }
                 }
-                Mentsu::Janto(tile) => {
-                    janto = Some(tile)
-                }
+                Mentsu::Janto(tile) => janto = Some(tile),
             }
         }
 
-        let janto = if janto.is_some() { janto.unwrap() } else { return None; };
+        let janto = if janto.is_some() {
+            janto.unwrap()
+        } else {
+            return None;
+        };
         if hand.winning_tile == janto {
             Some(("四暗刻単騎".to_string(), 2))
         } else if status.win_method == WinMethod::Tumo {
@@ -50,7 +51,8 @@ mod util {
         let mut janto: Mentsu;
         loop {
             janto = random_janto(false);
-            if !vec![anko1.tile(), anko2.tile(), anko3.tile(), anko4.tile()].contains(&janto.tile()) {
+            if !vec![anko1.tile(), anko2.tile(), anko3.tile(), anko4.tile()].contains(&janto.tile())
+            {
                 break;
             }
         }
@@ -58,7 +60,6 @@ mod util {
         [anko1, anko2, anko3, anko4, janto]
     }
 }
-
 
 #[cfg(test)]
 mod valid {
@@ -72,20 +73,38 @@ mod valid {
     #[test]
     fn valid_suanko() {
         let hand = generate_hand();
-        let winning_hand = WinningHand { hand, winning_tile: hand[0].tile(), red_tile: 0 };
+        let winning_hand = WinningHand {
+            hand,
+            winning_tile: hand[0].tile(),
+            red_tile: 0,
+        };
         let mut status = random_status();
         status.win_method = WinMethod::Tumo;
 
-        assert_eq!(Suanko::validate(&random_field(), &winning_hand, &status), Some(("四暗刻".to_string(), 1)), "{:?}", hand);
+        assert_eq!(
+            Suanko::validate(&random_field(), &winning_hand, &status),
+            Some(("四暗刻".to_string(), 1)),
+            "{:?}",
+            hand
+        );
     }
 
     #[test]
     fn valid_suanko_tanki() {
         let hand = generate_hand();
-        let winning_hand = WinningHand { hand, winning_tile: hand[4].tile(), red_tile: 0 };
+        let winning_hand = WinningHand {
+            hand,
+            winning_tile: hand[4].tile(),
+            red_tile: 0,
+        };
         let status = random_status();
 
-        assert_eq!(Suanko::validate(&random_field(), &winning_hand, &status), Some(("四暗刻単騎".to_string(), 2)), "{:?}", hand);
+        assert_eq!(
+            Suanko::validate(&random_field(), &winning_hand, &status),
+            Some(("四暗刻単騎".to_string(), 2)),
+            "{:?}",
+            hand
+        );
     }
 }
 
@@ -101,10 +120,19 @@ mod invalid {
     #[test]
     fn ron_suanko() {
         let hand = generate_hand();
-        let winning_hand = WinningHand { hand, winning_tile: hand[0].tile(), red_tile: 0 };
+        let winning_hand = WinningHand {
+            hand,
+            winning_tile: hand[0].tile(),
+            red_tile: 0,
+        };
         let mut status = random_status();
         status.win_method = WinMethod::Ron;
 
-        assert_eq!(Suanko::validate(&random_field(), &winning_hand, &status), None, "{:?}", hand);
+        assert_eq!(
+            Suanko::validate(&random_field(), &winning_hand, &status),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }

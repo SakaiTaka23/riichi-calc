@@ -1,11 +1,11 @@
+mod dora;
+pub mod finder;
 mod finder_base;
 mod ii_han;
-mod utils;
+pub mod result;
+mod roku_han;
 mod ryan_han;
 mod san_han;
-mod roku_han;
-mod yakuman;
-pub mod finder;
-mod dora;
-pub mod result;
 mod test_utils;
+mod utils;
+mod yakuman;

@@ -10,9 +10,13 @@ pub struct Zikaze;
 impl YakuBase for Zikaze {
     fn validate(field: &Field, hand: &WinningHand, _: &Status) -> Option<(String, u8)> {
         for mentsu in hand.hand {
-            if let Mentsu::Janto(_) = mentsu { continue; }
+            if let Mentsu::Janto(_) = mentsu {
+                continue;
+            }
             let tile = mentsu.tile();
-            if tile.tile_type != TileType::Wind { continue; }
+            if tile.tile_type != TileType::Wind {
+                continue;
+            }
             if is_same_wind(tile.number, &field.zikaze) {
                 return Some(("役牌:自風牌".to_string(), 1));
             }
@@ -28,7 +32,9 @@ mod valid {
     use crate::constants::tiles::{Tile, TileType};
     use crate::finder::finder_base::YakuBase;
     use crate::finder::ii_han::zikaze::Zikaze;
-    use crate::finder::test_utils::{from_hand, random_field, random_janto, random_mentsu, random_status};
+    use crate::finder::test_utils::{
+        from_hand, random_field, random_janto, random_mentsu, random_status,
+    };
     use rand::random;
 
     #[test]
@@ -37,7 +43,10 @@ mod valid {
         field.zikaze = Wind::East;
         let hand = [
             Mentsu::Koutsu(
-                Tile { tile_type: TileType::Wind, number: 1 },
+                Tile {
+                    tile_type: TileType::Wind,
+                    number: 1,
+                },
                 random(),
             ),
             random_mentsu(true, true),
@@ -45,7 +54,10 @@ mod valid {
             random_mentsu(true, true),
             random_janto(false),
         ];
-        assert_eq!(Zikaze::validate(&field, &from_hand(hand), &random_status()), Some(("役牌:自風牌".to_string(), 1)));
+        assert_eq!(
+            Zikaze::validate(&field, &from_hand(hand), &random_status()),
+            Some(("役牌:自風牌".to_string(), 1))
+        );
     }
 }
 
@@ -63,14 +75,20 @@ mod invalid {
         let mut field = random_field();
         field.zikaze = Wind::East;
         let hand = [
-            Mentsu::Janto(
-                Tile { tile_type: TileType::Wind, number: 1 },
-            ),
+            Mentsu::Janto(Tile {
+                tile_type: TileType::Wind,
+                number: 1,
+            }),
             random_mentsu(true, true),
             random_mentsu(true, true),
             random_mentsu(true, true),
             random_mentsu(true, true),
         ];
-        assert_eq!(Zikaze::validate(&field, &from_hand(hand), &random_status()), None, "{:?}", hand);
+        assert_eq!(
+            Zikaze::validate(&field, &from_hand(hand), &random_status()),
+            None,
+            "{:?}",
+            hand
+        );
     }
 }
