@@ -9,6 +9,10 @@ description = "Library to calculate the score of a hand in riichi mahjong"
 repository = "https://github.com/SakaiTaka23/riichi-calc"
 keywords = ["riichi", "mahjong", "game-game"]
 categories = ["algorithms", "games"]
+exclude = [
+    ".gitignore",
+    "examples"
+]
 
 [dependencies]
 rand = "0.8.5"
